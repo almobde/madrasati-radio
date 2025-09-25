@@ -109,6 +109,9 @@ const TopicViewer = () => {
       content: (
         <div className="content-box">
           <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-8 rounded-2xl border-r-4 border-purple-400">
+            <div className="mb-4 text-sm text-purple-600 font-medium">
+              طول النص: {getContentByLevel(currentTopic.content.morningWord).length} حرف
+            </div>
             <p className="text-xl font-body leading-loose text-right" dir="rtl">
               {getContentByLevel(currentTopic.content.morningWord)}
             </p>
@@ -217,29 +220,29 @@ const TopicViewer = () => {
         {/* التبويبات */}
         <Card className="card-primary p-6 slide-up">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 gap-1 bg-secondary/50 p-1 rounded-xl mb-6">
+            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 gap-2 bg-secondary/50 p-2 rounded-xl mb-12">
               {tabs.map((tab) => (
                 <TabsTrigger 
                   key={tab.id} 
                   value={tab.id}
-                  className={`flex flex-col items-center gap-1 p-3 rounded-lg transition-all ${
+                  className={`flex flex-col items-center gap-2 p-4 rounded-lg transition-all ${
                     activeTab === tab.id ? 'tab-active' : 'tab-inactive'
                   }`}
                 >
-                  <tab.icon className="w-4 h-4" />
+                  <tab.icon className="w-5 h-5" />
                   <span className="text-xs font-medium">{tab.label}</span>
                 </TabsTrigger>
               ))}
             </TabsList>
 
             {tabs.map((tab) => (
-              <TabsContent key={tab.id} value={tab.id} className="mt-6">
+              <TabsContent key={tab.id} value={tab.id} className="mt-8">
                 <div className="fade-in">
-                  <div className="flex items-center gap-2 mb-4">
-                    <tab.icon className="w-5 h-5 text-primary" />
-                    <h2 className="text-xl font-semibold text-foreground">{tab.label}</h2>
+                  <div className="flex items-center gap-3 mb-8 p-4 bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl border-r-4 border-primary">
+                    <tab.icon className="w-6 h-6 text-primary" />
+                    <h2 className="text-2xl font-bold text-foreground">{tab.label}</h2>
                   </div>
-                  <div className="prose max-w-none">
+                  <div className="prose max-w-none relative z-10">
                     {typeof tab.content === 'string' ? (
                       <div className="bg-gradient-to-r from-white to-secondary/30 p-8 rounded-2xl border border-border content-box">
                         <p className="text-xl font-body leading-loose text-right" dir="rtl">

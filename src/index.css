@@ -201,6 +201,8 @@
     margin-bottom: 1rem;
     padding: 1rem;
     box-sizing: border-box;
+    position: relative;
+    z-index: 5;
   }
 
   .verse-container {
@@ -263,14 +265,14 @@
     @apply bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--primary-dark))]
            text-white shadow-card font-semibold
            border-b-4 border-[hsl(var(--primary-light))]
-           transform scale-105;
+           transform scale-[1.05] z-20 relative;
   }
   
   .tab-inactive {
     @apply bg-white/60 backdrop-blur-sm text-[hsl(var(--primary))] 
            border-2 border-[hsl(var(--primary))]/20 font-medium
            hover:bg-[hsl(var(--secondary))]/80 hover:border-[hsl(var(--primary))]/40
-           hover:scale-[1.02] transition-all duration-300 ease-out;
+           hover:scale-[1.02] transition-all duration-300 ease-out z-10 relative;
   }
   
   /* ✨ انتقالات متقدمة - Advanced Transitions */
