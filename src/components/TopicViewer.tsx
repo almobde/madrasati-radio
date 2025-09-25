@@ -132,11 +132,9 @@ const TopicViewer = () => {
                   </ModernCardTitle>
                 </ModernCardHeader>
                 <ModernCardContent>
-                  <div className="bg-gradient-to-br from-[hsl(var(--primary))]/5 to-[hsl(var(--accent))]/10 rounded-2xl p-8 mx-auto max-w-5xl border border-[hsl(var(--primary))]/20">
-                    <p className="text-base font-body leading-relaxed text-foreground">
-                      {getContentByLevel(currentTopic.content.introduction)}
-                    </p>
-                  </div>
+                  <p className="text-base font-body leading-relaxed text-foreground">
+                    {getContentByLevel(currentTopic.content.introduction)}
+                  </p>
                 </ModernCardContent>
               </ModernCard>
             </TabsContent>
@@ -151,16 +149,14 @@ const TopicViewer = () => {
                   </ModernCardTitle>
                 </ModernCardHeader>
                 <ModernCardContent>
-                  <div className="bg-gradient-to-r from-[hsl(var(--accent))]/20 to-[hsl(var(--secondary))]/30 rounded-2xl p-8 border-r-4 border-[hsl(var(--primary))] shadow-inner">
-                    <p className="text-xl font-heading leading-loose text-foreground text-center mb-4">
-                      {currentTopic.content.quranVerse?.text || 'لا توجد آيات متاحة حالياً'}
+                  <p className="text-xl font-heading leading-loose text-foreground text-center mb-4">
+                    {currentTopic.content.quranVerse?.text || 'لا توجد آيات متاحة حالياً'}
+                  </p>
+                  {currentTopic.content.quranVerse?.reference && (
+                    <p className="text-sm text-[hsl(var(--primary))] font-semibold text-center">
+                      {currentTopic.content.quranVerse.reference}
                     </p>
-                    {currentTopic.content.quranVerse?.reference && (
-                      <p className="text-sm text-[hsl(var(--primary))] font-semibold text-center">
-                        {currentTopic.content.quranVerse.reference}
-                      </p>
-                    )}
-                  </div>
+                  )}
                 </ModernCardContent>
               </ModernCard>
             </TabsContent>
@@ -175,16 +171,14 @@ const TopicViewer = () => {
                   </ModernCardTitle>
                 </ModernCardHeader>
                 <ModernCardContent>
-                  <div className="bg-gradient-to-r from-[hsl(var(--secondary))]/30 to-[hsl(var(--accent))]/20 rounded-2xl p-8 border-r-4 border-[hsl(var(--primary))] shadow-inner">
-                    <p className="text-lg font-body leading-loose text-foreground mb-4">
-                      {currentTopic.content.hadith?.text || 'لا يوجد حديث متاح حالياً'}
+                  <p className="text-lg font-body leading-loose text-foreground mb-4">
+                    {currentTopic.content.hadith?.text || 'لا يوجد حديث متاح حالياً'}
+                  </p>
+                  {currentTopic.content.hadith?.reference && (
+                    <p className="text-sm text-[hsl(var(--primary))] font-semibold text-center">
+                      {currentTopic.content.hadith.reference}
                     </p>
-                    {currentTopic.content.hadith?.reference && (
-                      <p className="text-sm text-[hsl(var(--primary))] font-semibold text-center">
-                        {currentTopic.content.hadith.reference}
-                      </p>
-                    )}
-                  </div>
+                  )}
                 </ModernCardContent>
               </ModernCard>
             </TabsContent>
@@ -312,17 +306,13 @@ const TopicViewer = () => {
                 <ModernCardContent>
                   <div className="space-y-4">
                     {currentTopic.content.conclusion && (
-                      <div className="bg-gradient-to-r from-rose-50 to-rose-100 p-6 rounded-xl border-r-4 border-rose-400">
-                        <p className="text-base font-body leading-relaxed text-right">
-                          {currentTopic.content.conclusion}
-                        </p>
-                      </div>
-                    )}
-                    <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-xl border-r-4 border-gray-400">
                       <p className="text-base font-body leading-relaxed text-right">
-                        {currentTopic.content.radioEnding}
+                        {currentTopic.content.conclusion}
                       </p>
-                    </div>
+                    )}
+                    <p className="text-base font-body leading-relaxed text-right">
+                      {currentTopic.content.radioEnding}
+                    </p>
                   </div>
                 </ModernCardContent>
               </ModernCard>
