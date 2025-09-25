@@ -1,14 +1,24 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+// الصفحة الرئيسية للإذاعة المدرسية - Main Page for School Radio
+import { useAppContext } from '../context/AppContext';
+import PreferencesSelector from '../components/PreferencesSelector';
+import TopicsList from '../components/TopicsList';
+import TopicViewer from '../components/TopicViewer';
 
 const Index = () => {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
-  );
+  const { preferences, currentTopic } = useAppContext();
+
+  // إذا لم يتم اختيار التفضيلات بعد
+  if (!preferences) {
+    return <PreferencesSelector />;
+  }
+
+  // إذا تم اختيار موضوع للعرض
+  if (currentTopic) {
+    return <TopicViewer />;
+  }
+
+  // عرض قائمة المواضيع
+  return <TopicsList />;
 };
 
 export default Index;

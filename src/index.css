@@ -2,41 +2,75 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+/* نظام التصميم للإذاعة المدرسية - School Radio Design System 
+جميع الألوان والتدرجات والخطوط يجب تعريفها هنا
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    /* ألوان أساسية - Base Colors */
+    --background: 0 0% 98%;
+    --foreground: 220 13% 18%;
+    
+    /* كروت ومحتوى - Cards & Content */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
+    --card-foreground: 220 13% 18%;
+    
+    /* منبثقات - Popovers */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
+    --popover-foreground: 220 13% 18%;
+    
+    /* ألوان للبنين - Boys Theme (Blue) */
+    --boys-primary: 214 84% 56%;
+    --boys-primary-dark: 214 84% 46%;
+    --boys-primary-light: 214 84% 66%;
+    --boys-secondary: 210 100% 96%;
+    --boys-accent: 214 100% 85%;
+    --boys-gradient-start: 214 84% 56%;
+    --boys-gradient-end: 220 100% 70%;
+    
+    /* ألوان للبنات - Girls Theme (Pink) */
+    --girls-primary: 340 75% 65%;
+    --girls-primary-dark: 340 75% 55%;
+    --girls-primary-light: 340 75% 75%;
+    --girls-secondary: 340 100% 97%;
+    --girls-accent: 340 100% 90%;
+    --girls-gradient-start: 340 75% 65%;
+    --girls-gradient-end: 320 70% 75%;
+    
+    /* ألوان ديناميكية - Dynamic Colors (default to boys) */
+    --primary: 214 84% 56%;
+    --primary-dark: 214 84% 46%;
+    --primary-light: 214 84% 66%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 210 100% 96%;
+    --secondary-foreground: 220 13% 18%;
+    
+    --accent: 214 100% 85%;
+    --accent-foreground: 220 13% 18%;
+    
+    /* ألوان مساعدة - Helper Colors */
+    --muted: 210 40% 96%;
     --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    
+    /* حدود وإدخال - Borders & Input */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: hsl(var(--primary));
+    
+    /* نصف القطر - Border Radius */
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -92,6 +126,24 @@ All colors MUST be HSL.
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+  
+  /* فئة البنات - Girls Theme */
+  .girls-theme {
+    --primary: var(--girls-primary);
+    --primary-dark: var(--girls-primary-dark);
+    --primary-light: var(--girls-primary-light);
+    --secondary: var(--girls-secondary);
+    --accent: var(--girls-accent);
+  }
+  
+  /* فئة البنين - Boys Theme */
+  .boys-theme {
+    --primary: var(--boys-primary);
+    --primary-dark: var(--boys-primary-dark);
+    --primary-light: var(--boys-primary-light);
+    --secondary: var(--boys-secondary);
+    --accent: var(--boys-accent);
+  }
 }
 
 @layer base {
@@ -100,6 +152,58 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-arabic;
+  }
+  
+  /* خط عربي جميل - Beautiful Arabic Font */
+  .font-arabic {
+    font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+    direction: rtl;
+  }
+}
+
+@layer components {
+  /* أزرار مخصصة - Custom Buttons */
+  .btn-primary {
+    @apply bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--primary-dark))] 
+           text-white font-bold py-4 px-8 rounded-xl 
+           hover:shadow-lg hover:scale-105 transition-all duration-300
+           border-0 focus:ring-4 focus:ring-[hsl(var(--primary))]/30;
+  }
+  
+  .btn-secondary {
+    @apply bg-[hsl(var(--secondary))] text-[hsl(var(--primary))] 
+           font-semibold py-3 px-6 rounded-lg border-2 border-[hsl(var(--primary))]
+           hover:bg-[hsl(var(--primary))] hover:text-white
+           transition-all duration-300;
+  }
+  
+  /* كروت جميلة - Beautiful Cards */
+  .card-primary {
+    @apply bg-gradient-to-br from-white to-[hsl(var(--secondary))]
+           rounded-2xl shadow-lg hover:shadow-xl
+           border border-[hsl(var(--accent))]/30
+           transition-all duration-300 hover:scale-[1.02];
+  }
+  
+  /* تبويبات أنيقة - Elegant Tabs */
+  .tab-active {
+    @apply bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--primary-dark))]
+           text-white shadow-md;
+  }
+  
+  .tab-inactive {
+    @apply bg-white text-[hsl(var(--primary))] 
+           border-2 border-[hsl(var(--primary))]/30
+           hover:bg-[hsl(var(--secondary))] hover:border-[hsl(var(--primary))];
+  }
+  
+  /* انتقالات ناعمة - Smooth Transitions */
+  .fade-in {
+    @apply animate-in fade-in-0 duration-500;
+  }
+  
+  .slide-up {
+    @apply animate-in slide-in-from-bottom-4 duration-500;
   }
 }
