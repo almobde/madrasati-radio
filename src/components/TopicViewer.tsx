@@ -195,15 +195,13 @@ const TopicViewer = () => {
                 <ModernCardContent>
                   <div className="space-y-4">
                     {getContentByLevel(currentTopic.content.didYouKnow).map((fact: string, index: number) => (
-                      <div key={index} className="bg-gradient-to-r from-yellow-50 to-yellow-100 p-4 rounded-xl border-r-4 border-yellow-400">
-                        <div className="flex items-start gap-3">
-                          <div className="bg-yellow-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mt-1">
-                            {index + 1}
-                          </div>
-                          <p className="text-base font-body leading-relaxed text-right flex-1">
-                            {fact}
-                          </p>
+                      <div key={index} className="flex items-start gap-3">
+                        <div className="bg-yellow-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mt-1">
+                          {index + 1}
                         </div>
+                        <p className="text-base font-body leading-relaxed text-right flex-1">
+                          {fact}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -243,7 +241,7 @@ const TopicViewer = () => {
                 <ModernCardContent>
                   <div className="space-y-6">
                     {getContentByLevel(currentTopic.content.miscellaneous).map((item: any, index: number) => (
-                      <div key={index} className="bg-gradient-to-r from-emerald-50 to-emerald-100 p-6 rounded-xl border-r-4 border-emerald-400">
+                      <div key={index}>
                         <div className="mb-3">
                           <Badge variant="secondary" className="text-xs font-body">
                             {item.type === 'story' ? 'قصة' : item.type === 'dua' ? 'دعاء' : item.type === 'medical' ? 'نصيحة طبية' : 'موضوع'}
@@ -274,7 +272,7 @@ const TopicViewer = () => {
                 <ModernCardContent>
                   <div className="space-y-6">
                     {getContentByLevel(currentTopic.content.questions).map((qa: any, index: number) => (
-                      <div key={index} className="bg-gradient-to-r from-orange-50 to-orange-100 p-6 rounded-xl border border-orange-200">
+                      <div key={index}>
                         <div className="flex items-start gap-3 mb-4">
                           <Badge variant="secondary" className="text-xs font-body">س{index + 1}</Badge>
                           <p className="text-base font-body font-medium text-right flex-1">
