@@ -63,6 +63,8 @@ export default {
           "primary-light": "hsl(var(--boys-primary-light))",
           secondary: "hsl(var(--boys-secondary))",
           accent: "hsl(var(--boys-accent))",
+          gradient: "var(--boys-gradient)",
+          "gradient-subtle": "var(--boys-gradient-subtle)",
         },
         girls: {
           primary: "hsl(var(--girls-primary))",
@@ -70,6 +72,8 @@ export default {
           "primary-light": "hsl(var(--girls-primary-light))",
           secondary: "hsl(var(--girls-secondary))",
           accent: "hsl(var(--girls-accent))",
+          gradient: "var(--girls-gradient)",
+          "gradient-subtle": "var(--girls-gradient-subtle)",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -81,6 +85,22 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      fontFamily: {
+        'arabic': ['Cairo', 'Noto Sans Arabic', 'system-ui', 'sans-serif'],
+        'heading': ['Amiri', 'Cairo', 'serif'],
+        'body': ['Noto Sans Arabic', 'Cairo', 'system-ui', 'sans-serif'],
+      },
+      backgroundImage: {
+        'boys-gradient': 'var(--boys-gradient)',
+        'girls-gradient': 'var(--girls-gradient)',
+        'boys-gradient-subtle': 'var(--boys-gradient-subtle)',
+        'girls-gradient-subtle': 'var(--girls-gradient-subtle)',
+      },
+      boxShadow: {
+        'elegant': '0 10px 40px -10px rgba(0, 0, 0, 0.1)',
+        'glow': '0 0 30px rgba(var(--primary-rgb), 0.3)',
+        'card': '0 4px 20px -2px rgba(0, 0, 0, 0.08)',
       },
       borderRadius: {
         lg: "var(--radius)",

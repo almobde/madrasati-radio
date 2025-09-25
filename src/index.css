@@ -2,54 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-/* نظام التصميم للإذاعة المدرسية - School Radio Design System 
-جميع الألوان والتدرجات والخطوط يجب تعريفها هنا
-All colors MUST be HSL.
+/* 🎙️ نظام التصميم للإذاعة المدرسية - Professional School Radio Design System 
+   تصميم احترافي مع خطوط عربية جميلة وألوان متطورة
+   جميع الألوان والتدرجات والخطوط يجب تعريفها هنا - All colors MUST be HSL
 */
 
 @layer base {
   :root {
-    /* ألوان أساسية - Base Colors */
-    --background: 0 0% 98%;
-    --foreground: 220 13% 18%;
+    /* 🎨 ألوان أساسية متطورة - Advanced Base Colors */
+    --background: 240 20% 99%;
+    --foreground: 225 15% 15%;
     
-    /* كروت ومحتوى - Cards & Content */
+    /* 🃏 كروت ومحتوى أنيق - Elegant Cards & Content */
     --card: 0 0% 100%;
-    --card-foreground: 220 13% 18%;
+    --card-foreground: 225 15% 15%;
     
-    /* منبثقات - Popovers */
+    /* 💭 منبثقات عصرية - Modern Popovers */
     --popover: 0 0% 100%;
-    --popover-foreground: 220 13% 18%;
+    --popover-foreground: 225 15% 15%;
     
-    /* ألوان للبنين - Boys Theme (Blue) */
-    --boys-primary: 214 84% 56%;
-    --boys-primary-dark: 214 84% 46%;
-    --boys-primary-light: 214 84% 66%;
-    --boys-secondary: 210 100% 96%;
-    --boys-accent: 214 100% 85%;
-    --boys-gradient-start: 214 84% 56%;
-    --boys-gradient-end: 220 100% 70%;
+    /* 👦 ألوان للبنين - Boys Professional Theme */
+    --boys-primary: 217 91% 60%;
+    --boys-primary-dark: 217 91% 50%;
+    --boys-primary-light: 217 91% 70%;
+    --boys-secondary: 217 100% 97%;
+    --boys-accent: 217 100% 88%;
+    --boys-gradient: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(230 80% 65%) 50%, hsl(240 70% 70%) 100%);
+    --boys-gradient-subtle: linear-gradient(135deg, hsl(217 100% 97%) 0%, hsl(230 100% 99%) 100%);
     
-    /* ألوان للبنات - Girls Theme (Pink) */
-    --girls-primary: 340 75% 65%;
-    --girls-primary-dark: 340 75% 55%;
-    --girls-primary-light: 340 75% 75%;
-    --girls-secondary: 340 100% 97%;
-    --girls-accent: 340 100% 90%;
-    --girls-gradient-start: 340 75% 65%;
-    --girls-gradient-end: 320 70% 75%;
+    /* 👧 ألوان للبنات - Girls Professional Theme */
+    --girls-primary: 330 81% 60%;
+    --girls-primary-dark: 330 81% 50%;
+    --girls-primary-light: 330 81% 70%;
+    --girls-secondary: 330 100% 97%;
+    --girls-accent: 330 100% 88%;
+    --girls-gradient: linear-gradient(135deg, hsl(330 81% 60%) 0%, hsl(340 75% 65%) 50%, hsl(350 70% 70%) 100%);
+    --girls-gradient-subtle: linear-gradient(135deg, hsl(330 100% 97%) 0%, hsl(340 100% 99%) 100%);
     
-    /* ألوان ديناميكية - Dynamic Colors (default to boys) */
-    --primary: 214 84% 56%;
-    --primary-dark: 214 84% 46%;
-    --primary-light: 214 84% 66%;
+    /* 🎯 ألوان ديناميكية - Dynamic Professional Colors (default to boys) */
+    --primary: 217 91% 60%;
+    --primary-dark: 217 91% 50%;
+    --primary-light: 217 91% 70%;
     --primary-foreground: 0 0% 100%;
+    --primary-rgb: 62 142 208;
     
-    --secondary: 210 100% 96%;
-    --secondary-foreground: 220 13% 18%;
+    --secondary: 217 100% 97%;
+    --secondary-foreground: 225 15% 15%;
     
-    --accent: 214 100% 85%;
-    --accent-foreground: 220 13% 18%;
+    --accent: 217 100% 88%;
+    --accent-foreground: 225 15% 15%;
     
     /* ألوان مساعدة - Helper Colors */
     --muted: 210 40% 96%;
@@ -153,57 +154,104 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground font-arabic;
+    font-feature-settings: "liga" 1, "kern" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
-  /* خط عربي جميل - Beautiful Arabic Font */
+  /* 🌟 خطوط عربية احترافية - Professional Arabic Fonts */
   .font-arabic {
-    font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+    font-family: 'Cairo', 'Noto Sans Arabic', system-ui, sans-serif;
+    direction: rtl;
+  }
+  
+  .font-heading {
+    font-family: 'Amiri', 'Cairo', serif;
+    direction: rtl;
+  }
+  
+  .font-body {
+    font-family: 'Noto Sans Arabic', 'Cairo', system-ui, sans-serif;
     direction: rtl;
   }
 }
 
 @layer components {
-  /* أزرار مخصصة - Custom Buttons */
+  /* 🚀 أزرار احترافية - Professional Buttons */
   .btn-primary {
-    @apply bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--primary-dark))] 
-           text-white font-bold py-4 px-8 rounded-xl 
-           hover:shadow-lg hover:scale-105 transition-all duration-300
-           border-0 focus:ring-4 focus:ring-[hsl(var(--primary))]/30;
+    @apply relative bg-gradient-to-r from-[hsl(var(--primary))] via-[hsl(var(--primary-dark))] to-[hsl(var(--primary))]
+           text-white font-semibold py-4 px-8 rounded-2xl 
+           hover:shadow-elegant hover:scale-[1.02] active:scale-[0.98]
+           transition-all duration-300 ease-out
+           border-0 focus:ring-4 focus:ring-[hsl(var(--primary))]/25
+           before:absolute before:inset-0 before:bg-white/10 before:rounded-2xl before:opacity-0 
+           hover:before:opacity-100 before:transition-opacity before:duration-300;
   }
   
   .btn-secondary {
-    @apply bg-[hsl(var(--secondary))] text-[hsl(var(--primary))] 
-           font-semibold py-3 px-6 rounded-lg border-2 border-[hsl(var(--primary))]
-           hover:bg-[hsl(var(--primary))] hover:text-white
-           transition-all duration-300;
+    @apply bg-white/80 backdrop-blur-sm text-[hsl(var(--primary))] 
+           font-semibold py-3 px-6 rounded-xl border-2 border-[hsl(var(--primary))]/20
+           hover:bg-[hsl(var(--primary))] hover:text-white hover:border-[hsl(var(--primary))]
+           hover:shadow-card transition-all duration-300 ease-out;
   }
   
-  /* كروت جميلة - Beautiful Cards */
+  /* 💎 كروت احترافية - Premium Cards */
   .card-primary {
-    @apply bg-gradient-to-br from-white to-[hsl(var(--secondary))]
-           rounded-2xl shadow-lg hover:shadow-xl
-           border border-[hsl(var(--accent))]/30
-           transition-all duration-300 hover:scale-[1.02];
+    @apply bg-white/90 backdrop-blur-sm
+           rounded-3xl shadow-card hover:shadow-elegant
+           border border-white/20 
+           transition-all duration-500 ease-out hover:scale-[1.01]
+           before:absolute before:inset-0 before:bg-gradient-to-br 
+           before:from-white/10 before:to-transparent before:rounded-3xl before:pointer-events-none;
   }
   
-  /* تبويبات أنيقة - Elegant Tabs */
+  .card-gradient {
+    @apply relative overflow-hidden bg-gradient-to-br from-white via-[hsl(var(--secondary))]/50 to-white
+           rounded-3xl shadow-card hover:shadow-elegant
+           border border-[hsl(var(--accent))]/20
+           transition-all duration-500 ease-out hover:scale-[1.01];
+  }
+  
+  /* 📑 تبويبات أنيقة - Elegant Tabs */
   .tab-active {
     @apply bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--primary-dark))]
-           text-white shadow-md;
+           text-white shadow-card font-semibold
+           border-b-4 border-[hsl(var(--primary-light))]
+           transform scale-105;
   }
   
   .tab-inactive {
-    @apply bg-white text-[hsl(var(--primary))] 
-           border-2 border-[hsl(var(--primary))]/30
-           hover:bg-[hsl(var(--secondary))] hover:border-[hsl(var(--primary))];
+    @apply bg-white/60 backdrop-blur-sm text-[hsl(var(--primary))] 
+           border-2 border-[hsl(var(--primary))]/20 font-medium
+           hover:bg-[hsl(var(--secondary))]/80 hover:border-[hsl(var(--primary))]/40
+           hover:scale-[1.02] transition-all duration-300 ease-out;
   }
   
-  /* انتقالات ناعمة - Smooth Transitions */
+  /* ✨ انتقالات متقدمة - Advanced Transitions */
   .fade-in {
-    @apply animate-in fade-in-0 duration-500;
+    @apply animate-in fade-in-0 slide-in-from-bottom-2 duration-700 ease-out;
   }
   
   .slide-up {
-    @apply animate-in slide-in-from-bottom-4 duration-500;
+    @apply animate-in slide-in-from-bottom-6 fade-in-0 duration-500 ease-out;
+  }
+  
+  .scale-in {
+    @apply animate-in zoom-in-95 fade-in-0 duration-300 ease-out;
+  }
+  
+  /* 🎨 تأثيرات بصرية احترافية */
+  .glass-effect {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+  
+  .glow-effect {
+    @apply shadow-glow;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--primary-dark))] 
+           bg-clip-text text-transparent;
   }
 }

@@ -54,13 +54,13 @@ const PreferencesSelector = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-secondary flex items-center justify-center p-4">
-      <Card className="w-full max-w-4xl p-8 card-primary">
+    <div className="min-h-screen bg-gradient-to-br from-background to-secondary flex items-center justify-center p-6">
+      <Card className="w-full max-w-5xl p-10 card-gradient shadow-elegant">
         <div className="text-center mb-8 fade-in">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
+          <h1 className="text-5xl md:text-6xl font-heading font-bold text-gradient mb-6 leading-tight">
             🎙️ الإذاعة المدرسية
           </h1>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-xl md:text-2xl text-muted-foreground font-body leading-relaxed">
             اختر تفضيلاتك لتحصل على محتوى مناسب لك
           </p>
         </div>
@@ -68,20 +68,22 @@ const PreferencesSelector = () => {
         <div className="space-y-8 slide-up">
           {/* اختيار الجنس */}
           <div>
-            <h2 className="text-2xl font-semibold mb-4 text-foreground">الجنس:</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h2 className="text-3xl font-heading font-semibold mb-6 text-foreground">الجنس:</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {genderOptions.map((option) => (
                 <button
                   key={option.value}
                   onClick={() => setSelectedGender(option.value)}
-                  className={`p-6 rounded-xl border-2 transition-all duration-300 ${
+                  className={`p-8 rounded-3xl border-2 transition-all duration-500 hover:scale-[1.02] ${
                     selectedGender === option.value
-                      ? 'border-primary bg-gradient-to-r ' + option.color + ' text-white shadow-lg scale-105'
-                      : 'border-border bg-card hover:border-primary hover:shadow-md'
+                      ? option.value === 'boys' 
+                        ? 'border-boys-primary bg-boys-gradient text-white shadow-elegant scale-105'
+                        : 'border-girls-primary bg-girls-gradient text-white shadow-elegant scale-105'
+                      : 'border-border bg-card hover:border-primary hover:shadow-card glass-effect'
                   }`}
                 >
-                  <option.icon className="w-8 h-8 mx-auto mb-2" />
-                  <span className="text-xl font-semibold">{option.label}</span>
+                  <option.icon className="w-10 h-10 mx-auto mb-4" />
+                  <span className="text-2xl font-body font-semibold">{option.label}</span>
                 </button>
               ))}
             </div>
@@ -89,32 +91,32 @@ const PreferencesSelector = () => {
 
           {/* اختيار المرحلة */}
           <div>
-            <h2 className="text-2xl font-semibold mb-4 text-foreground">المرحلة الدراسية:</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <h2 className="text-3xl font-heading font-semibold mb-6 text-foreground">المرحلة الدراسية:</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {levelOptions.map((option) => (
                 <button
                   key={option.value}
                   onClick={() => setSelectedLevel(option.value)}
-                  className={`p-6 rounded-xl border-2 transition-all duration-300 text-center ${
+                  className={`p-8 rounded-3xl border-2 transition-all duration-500 text-center hover:scale-[1.02] ${
                     selectedLevel === option.value
-                      ? 'tab-active shadow-lg scale-105'
-                      : 'tab-inactive'
+                      ? 'border-primary bg-gradient-to-br from-primary to-primary-dark text-white shadow-elegant scale-105'
+                      : 'tab-inactive glass-effect'
                   }`}
                 >
-                  <option.icon className="w-8 h-8 mx-auto mb-2" />
-                  <div className="text-lg font-semibold mb-1">{option.label}</div>
-                  <div className="text-sm opacity-80">{option.description}</div>
+                  <option.icon className="w-10 h-10 mx-auto mb-4" />
+                  <div className="text-xl font-body font-semibold mb-2">{option.label}</div>
+                  <div className="text-sm opacity-80 font-body">{option.description}</div>
                 </button>
               ))}
             </div>
           </div>
 
           {/* زر البدء */}
-          <div className="text-center pt-6">
+          <div className="text-center pt-8">
             <Button
               onClick={handleSubmit}
               disabled={!selectedGender || !selectedLevel}
-              className="btn-primary text-xl px-12 py-4 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-primary text-2xl px-16 py-6 disabled:opacity-50 disabled:cursor-not-allowed font-body scale-in"
             >
               ابدأ التصفح 🚀
             </Button>
