@@ -132,7 +132,7 @@ const TopicViewer = () => {
                   </ModernCardTitle>
                 </ModernCardHeader>
                 <ModernCardContent>
-                  <div className="bg-gradient-to-br from-[hsl(var(--primary))]/5 to-[hsl(var(--accent))]/10 rounded-2xl p-6 border border-[hsl(var(--primary))]/20">
+                  <div className="bg-gradient-to-br from-[hsl(var(--primary))]/5 to-[hsl(var(--accent))]/10 rounded-2xl p-8 mx-auto max-w-5xl border border-[hsl(var(--primary))]/20">
                     <p className="text-base font-body leading-relaxed text-foreground">
                       {getContentByLevel(currentTopic.content.introduction)}
                     </p>
