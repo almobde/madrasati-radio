@@ -164,16 +164,61 @@
   .font-arabic {
     font-family: 'Cairo', 'Noto Sans Arabic', system-ui, sans-serif;
     direction: rtl;
+    text-align: right;
+    line-height: 1.8;
+    word-spacing: 0.1em;
   }
   
   .font-heading {
     font-family: 'Amiri', 'Cairo', serif;
     direction: rtl;
+    text-align: right;
+    line-height: 1.6;
   }
   
   .font-body {
     font-family: 'Noto Sans Arabic', 'Cairo', system-ui, sans-serif;
     direction: rtl;
+    text-align: right;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+  }
+
+  /* 📝 تحسين النصوص العربية - Arabic Text Enhancement */
+  p, div, span {
+    direction: rtl;
+    text-align: right;
+    line-height: 1.8;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* 🎯 منع تداخل النصوص - Prevent Text Overlap */
+  .content-box {
+    display: block;
+    width: 100%;
+    clear: both;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+
+  .verse-container {
+    direction: rtl;
+    text-align: right;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    clear: both;
+    display: block;
+  }
+
+  .hadith-container {
+    direction: rtl;
+    text-align: right;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    clear: both;
+    display: block;
   }
 }
 

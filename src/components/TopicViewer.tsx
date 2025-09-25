@@ -40,10 +40,14 @@ const TopicViewer = () => {
       label: 'آيات قرآنية', 
       icon: Sparkles, 
       content: (
-        <div className="space-y-4">
-          <div className="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-lg border-r-4 border-green-400">
-            <p className="text-lg leading-relaxed mb-4">{currentTopic.content.quranVerse.text}</p>
-            <p className="text-sm text-green-700 font-semibold">{currentTopic.content.quranVerse.reference}</p>
+        <div className="verse-container">
+          <div className="bg-gradient-to-r from-green-50 to-green-100 p-8 rounded-2xl border-r-4 border-green-400 content-box">
+            <p className="text-xl font-body leading-loose mb-6 text-right" dir="rtl">
+              {currentTopic.content.quranVerse.text}
+            </p>
+            <p className="text-base text-green-700 font-semibold text-right font-body" dir="rtl">
+              {currentTopic.content.quranVerse.reference}
+            </p>
           </div>
         </div>
       )
@@ -53,10 +57,14 @@ const TopicViewer = () => {
       label: 'حديث نبوي', 
       icon: MessageCircle, 
       content: (
-        <div className="space-y-4">
-          <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-lg border-r-4 border-blue-400">
-            <p className="text-lg leading-relaxed mb-4">{currentTopic.content.hadith.text}</p>
-            <p className="text-sm text-blue-700 font-semibold">{currentTopic.content.hadith.reference}</p>
+        <div className="hadith-container">
+          <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-8 rounded-2xl border-r-4 border-blue-400 content-box">
+            <p className="text-xl font-body leading-loose mb-6 text-right" dir="rtl">
+              {currentTopic.content.hadith.text}
+            </p>
+            <p className="text-base text-blue-700 font-semibold text-right font-body" dir="rtl">
+              {currentTopic.content.hadith.reference}
+            </p>
           </div>
         </div>
       )
@@ -66,8 +74,12 @@ const TopicViewer = () => {
       label: 'هل تعلم؟', 
       icon: Lightbulb, 
       content: (
-        <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 p-6 rounded-lg border-r-4 border-yellow-400">
-          <p className="text-lg">{currentTopic.content.didYouKnow}</p>
+        <div className="content-box">
+          <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 p-8 rounded-2xl border-r-4 border-yellow-400">
+            <p className="text-xl font-body leading-loose text-right" dir="rtl">
+              {currentTopic.content.didYouKnow}
+            </p>
+          </div>
         </div>
       )
     },
@@ -76,8 +88,12 @@ const TopicViewer = () => {
       label: 'كلمة صباحية', 
       icon: Mic, 
       content: (
-        <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-6 rounded-lg border-r-4 border-purple-400">
-          <p className="text-lg leading-relaxed">{currentTopic.content.morningWord}</p>
+        <div className="content-box">
+          <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-8 rounded-2xl border-r-4 border-purple-400">
+            <p className="text-xl font-body leading-loose text-right" dir="rtl">
+              {currentTopic.content.morningWord}
+            </p>
+          </div>
         </div>
       )
     },
@@ -86,10 +102,12 @@ const TopicViewer = () => {
       label: 'شعر وحكم', 
       icon: Quote, 
       content: (
-        <div className="space-y-4">
+        <div className="content-box space-y-6">
           {currentTopic.content.poetry.map((line, index) => (
-            <div key={index} className="bg-gradient-to-r from-indigo-50 to-indigo-100 p-4 rounded-lg border-r-4 border-indigo-400">
-              <p className="text-lg font-medium italic">{line}</p>
+            <div key={index} className="bg-gradient-to-r from-indigo-50 to-indigo-100 p-6 rounded-2xl border-r-4 border-indigo-400">
+              <p className="text-xl font-heading font-medium text-right leading-loose" dir="rtl">
+                {line}
+              </p>
             </div>
           ))}
         </div>
@@ -100,16 +118,20 @@ const TopicViewer = () => {
       label: 'أسئلة وألغاز', 
       icon: HelpCircle, 
       content: (
-        <div className="space-y-6">
+        <div className="content-box space-y-8">
           {currentTopic.content.questions.map((qa, index) => (
-            <div key={index} className="bg-gradient-to-r from-orange-50 to-orange-100 p-6 rounded-lg border border-orange-200">
-              <div className="flex items-start gap-3 mb-3">
-                <Badge variant="secondary" className="text-xs">س{index + 1}</Badge>
-                <p className="text-lg font-medium">{qa.question}</p>
+            <div key={index} className="bg-gradient-to-r from-orange-50 to-orange-100 p-8 rounded-2xl border border-orange-200">
+              <div className="flex items-start gap-4 mb-6">
+                <Badge variant="secondary" className="text-sm font-body">س{index + 1}</Badge>
+                <p className="text-xl font-body font-medium text-right flex-1" dir="rtl">
+                  {qa.question}
+                </p>
               </div>
-              <div className="flex items-start gap-3 mr-8">
-                <Badge variant="outline" className="text-xs bg-green-100 text-green-700">جواب</Badge>
-                <p className="text-base text-green-800">{qa.answer}</p>
+              <div className="flex items-start gap-4 mr-12">
+                <Badge variant="outline" className="text-sm bg-green-100 text-green-700 font-body">جواب</Badge>
+                <p className="text-lg text-green-800 font-body text-right flex-1" dir="rtl">
+                  {qa.answer}
+                </p>
               </div>
             </div>
           ))}
@@ -121,14 +143,18 @@ const TopicViewer = () => {
       label: 'خاتمة', 
       icon: Heart, 
       content: (
-        <div className="space-y-4">
+        <div className="content-box space-y-6">
           {currentTopic.content.conclusion && (
-            <div className="bg-gradient-to-r from-rose-50 to-rose-100 p-6 rounded-lg border-r-4 border-rose-400">
-              <p className="text-lg leading-relaxed">{currentTopic.content.conclusion}</p>
+            <div className="bg-gradient-to-r from-rose-50 to-rose-100 p-8 rounded-2xl border-r-4 border-rose-400">
+              <p className="text-xl font-body leading-loose text-right" dir="rtl">
+                {currentTopic.content.conclusion}
+              </p>
             </div>
           )}
-          <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-lg border-r-4 border-gray-400">
-            <p className="text-lg leading-relaxed">{currentTopic.content.radioEnding}</p>
+          <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-8 rounded-2xl border-r-4 border-gray-400">
+            <p className="text-xl font-body leading-loose text-right" dir="rtl">
+              {currentTopic.content.radioEnding}
+            </p>
           </div>
         </div>
       )
@@ -196,8 +222,10 @@ const TopicViewer = () => {
                   </div>
                   <div className="prose max-w-none">
                     {typeof tab.content === 'string' ? (
-                      <div className="bg-gradient-to-r from-white to-secondary/30 p-6 rounded-lg border border-border">
-                        <p className="text-lg leading-relaxed">{tab.content}</p>
+                      <div className="bg-gradient-to-r from-white to-secondary/30 p-8 rounded-2xl border border-border content-box">
+                        <p className="text-xl font-body leading-loose text-right" dir="rtl">
+                          {tab.content}
+                        </p>
                       </div>
                     ) : (
                       tab.content

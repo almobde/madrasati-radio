@@ -5,12 +5,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useAppContext } from '../context/AppContext';
-import { topics } from '../data/topics';
+import { createTopics } from '../data/topics';
 import { Search, Book, ArrowRight } from 'lucide-react';
 
 const TopicsList = () => {
   const { preferences, setCurrentTopic, setPreferences } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
+
+  // إنشاء المواضيع حسب المرحلة التعليمية
+  const topics = createTopics(preferences?.educationLevel || 'middle');
 
   const filteredTopics = topics.filter(topic =>
     topic.title.includes(searchTerm) || topic.category.includes(searchTerm)
