@@ -217,10 +217,10 @@ const TopicViewer = () => {
           </div>
         </div>
 
-        {/* التبويبات */}
+        /* التبويبات والمحتوى */
         <Card className="card-primary p-6 slide-up">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 gap-2 bg-secondary/50 p-2 rounded-xl mb-12">
+            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 gap-2 bg-secondary/50 p-2 rounded-xl mb-16">
               {tabs.map((tab) => (
                 <TabsTrigger 
                   key={tab.id} 
@@ -235,14 +235,15 @@ const TopicViewer = () => {
               ))}
             </TabsList>
 
-            {tabs.map((tab) => (
-              <TabsContent key={tab.id} value={tab.id} className="mt-8">
-                <div className="fade-in">
-                  <div className="flex items-center gap-3 mb-8 p-4 bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl border-r-4 border-primary">
-                    <tab.icon className="w-6 h-6 text-primary" />
-                    <h2 className="text-2xl font-bold text-foreground">{tab.label}</h2>
-                  </div>
-                  <div className="prose max-w-none relative z-10">
+            <div className="relative">
+              {tabs.map((tab) => (
+                <TabsContent key={tab.id} value={tab.id} className="mt-0">
+                  <div className="fade-in">
+                    <div className="flex items-center gap-3 mb-8 p-6 bg-gradient-to-r from-primary/15 to-primary/5 rounded-xl border-r-4 border-primary shadow-md">
+                      <tab.icon className="w-7 h-7 text-primary" />
+                      <h2 className="text-3xl font-bold text-foreground">{tab.label}</h2>
+                    </div>
+                    <div className="prose max-w-none relative mt-8">
                     {typeof tab.content === 'string' ? (
                       <div className="bg-gradient-to-r from-white to-secondary/30 p-8 rounded-2xl border border-border content-box">
                         <p className="text-xl font-body leading-loose text-right" dir="rtl">
@@ -252,10 +253,11 @@ const TopicViewer = () => {
                     ) : (
                       tab.content
                     )}
+                    </div>
                   </div>
-                </div>
-              </TabsContent>
-            ))}
+                </TabsContent>
+              ))}
+            </div>
           </Tabs>
         </Card>
       </div>
