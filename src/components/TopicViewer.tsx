@@ -28,12 +28,24 @@ const TopicViewer = () => {
     setCurrentTopic(null);
   };
 
+  // دالة للحصول على المحتوى حسب المرحلة التعليمية
+  const getContentByLevel = (content: any) => {
+    if (!preferences) return content.middle || content;
+    
+    switch (preferences.educationLevel) {
+      case 'primary': return content.primary || content;
+      case 'middle': return content.middle || content;
+      case 'secondary': return content.secondary || content;
+      default: return content.middle || content;
+    }
+  };
+
   const tabs = [
     { 
       id: 'introduction', 
       label: 'مقدمة', 
       icon: BookOpen, 
-      content: currentTopic.content.introduction 
+      content: getContentByLevel(currentTopic.content.introduction)
     },
     { 
       id: 'quran', 
@@ -74,12 +86,19 @@ const TopicViewer = () => {
       label: 'هل تعلم؟', 
       icon: Lightbulb, 
       content: (
-        <div className="content-box">
-          <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 p-8 rounded-2xl border-r-4 border-yellow-400">
-            <p className="text-xl font-body leading-loose text-right" dir="rtl">
-              {currentTopic.content.didYouKnow}
-            </p>
-          </div>
+        <div className="content-box space-y-4">
+          {getContentByLevel(currentTopic.content.didYouKnow).map((fact: string, index: number) => (
+            <div key={index} className="bg-gradient-to-r from-yellow-50 to-yellow-100 p-6 rounded-2xl border-r-4 border-yellow-400">
+              <div className="flex items-start gap-4">
+                <div className="bg-yellow-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                  {index + 1}
+                </div>
+                <p className="text-xl font-body leading-loose text-right flex-1" dir="rtl">
+                  {fact}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       )
     },
@@ -91,7 +110,7 @@ const TopicViewer = () => {
         <div className="content-box">
           <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-8 rounded-2xl border-r-4 border-purple-400">
             <p className="text-xl font-body leading-loose text-right" dir="rtl">
-              {currentTopic.content.morningWord}
+              {getContentByLevel(currentTopic.content.morningWord)}
             </p>
           </div>
         </div>
@@ -103,7 +122,7 @@ const TopicViewer = () => {
       icon: Quote, 
       content: (
         <div className="content-box space-y-6">
-          {currentTopic.content.poetry.map((line, index) => (
+          {getContentByLevel(currentTopic.content.poetry).map((line: string, index: number) => (
             <div key={index} className="bg-gradient-to-r from-indigo-50 to-indigo-100 p-6 rounded-2xl border-r-4 border-indigo-400">
               <p className="text-xl font-heading font-medium text-right leading-loose" dir="rtl">
                 {line}
@@ -119,7 +138,7 @@ const TopicViewer = () => {
       icon: HelpCircle, 
       content: (
         <div className="content-box space-y-8">
-          {currentTopic.content.questions.map((qa, index) => (
+          {getContentByLevel(currentTopic.content.questions).map((qa: any, index: number) => (
             <div key={index} className="bg-gradient-to-r from-orange-50 to-orange-100 p-8 rounded-2xl border border-orange-200">
               <div className="flex items-start gap-4 mb-6">
                 <Badge variant="secondary" className="text-sm font-body">س{index + 1}</Badge>

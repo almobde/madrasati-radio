@@ -5,21 +5,33 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useAppContext } from '../context/AppContext';
-import { createTopics } from '../data/topics';
+import { topics } from '../data/topics';
 import { Search, Book, ArrowRight } from 'lucide-react';
 
 const TopicsList = () => {
   const { preferences, setCurrentTopic, setPreferences } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
 
-  // إنشاء المواضيع حسب المرحلة التعليمية
-  const topics = createTopics(preferences?.educationLevel || 'middle');
+  // دالة للحصول على المحتوى حسب المرحلة التعليمية
+  const getContentByLevel = (content: any) => {
+    if (!preferences) return content.middle || content;
+    
+    switch (preferences.educationLevel) {
+      case 'primary': return content.primary || content;
+      case 'middle': return content.middle || content;
+      case 'secondary': return content.secondary || content;
+      default: return content.middle || content;
+    }
+  };
 
-  const filteredTopics = topics.filter(topic =>
+  // المواضيع المتاحة
+  const availableTopics = topics;
+
+  const filteredTopics = availableTopics.filter(topic =>
     topic.title.includes(searchTerm) || topic.category.includes(searchTerm)
   );
 
-  const handleTopicSelect = (topic: typeof topics[0]) => {
+  const handleTopicSelect = (topic: typeof availableTopics[0]) => {
     setCurrentTopic(topic);
   };
 
@@ -89,7 +101,7 @@ const TopicsList = () => {
               </div>
               
               <p className="text-muted-foreground text-base font-body mb-6 line-clamp-3 leading-relaxed">
-                {topic.content.introduction}
+                {getContentByLevel(topic.content.introduction)}
               </p>
               
               <Button 

@@ -8,7 +8,11 @@ export interface Topic {
   title: string;
   category: string;
   content: {
-    introduction: string;
+    introduction: {
+      primary: string;
+      middle: string;
+      secondary: string;
+    };
     quranVerse: {
       text: string;
       reference: string;
@@ -17,20 +21,28 @@ export interface Topic {
       text: string;
       reference: string;
     };
-    didYouKnow: string;
-    morningWord: string;
-    poetry: string[];
+    didYouKnow: {
+      primary: string[];
+      middle: string[];
+      secondary: string[];
+    };
+    morningWord: {
+      primary: string;
+      middle: string;
+      secondary: string;
+    };
+    poetry: {
+      primary: string[];
+      middle: string[];
+      secondary: string[];
+    };
     questions: {
-      question: string;
-      answer: string;
-    }[];
+      primary: Array<{ question: string; answer: string }>;
+      middle: Array<{ question: string; answer: string }>;
+      secondary: Array<{ question: string; answer: string }>;
+    };
     conclusion?: string;
     radioEnding: string;
-  };
-  adaptedContent?: {
-    [key in EducationLevel]: {
-      [key in Gender]: Partial<Topic['content']>;
-    };
   };
 }
 
