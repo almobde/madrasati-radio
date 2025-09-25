@@ -31,10 +31,10 @@ export interface Topic {
       middle: string;
       secondary: string;
     };
-    poetry: {
-      primary: string[];
-      middle: string[];
-      secondary: string[];
+    miscellaneous: {
+      primary: Array<{ type: 'story' | 'dua' | 'medical' | 'topic'; title: string; content: string }>;
+      middle: Array<{ type: 'story' | 'dua' | 'medical' | 'topic'; title: string; content: string }>;
+      secondary: Array<{ type: 'story' | 'dua' | 'medical' | 'topic'; title: string; content: string }>;
     };
     questions: {
       primary: Array<{ question: string; answer: string }>;

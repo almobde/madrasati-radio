@@ -98,11 +98,11 @@ const TopicViewer = () => {
               <span className="text-xs">كلمة الصباح</span>
             </TabsTrigger>
             <TabsTrigger 
-              value="poetry" 
+              value="miscellaneous" 
               className="tab-luxury-inactive data-[state=active]:tab-luxury-active text-sm font-bold transition-all duration-500 hover:scale-[1.02] p-3"
             >
-              <Quote className="w-4 h-4 mb-1" />
-              <span className="text-xs">شعر وحكم</span>
+              <Sparkles className="w-4 h-4 mb-1" />
+              <span className="text-xs">منوعات</span>
             </TabsTrigger>
             <TabsTrigger 
               value="questions" 
@@ -239,21 +239,29 @@ const TopicViewer = () => {
               </ModernCard>
             </TabsContent>
 
-            {/* شعر وحكم */}
-            <TabsContent value="poetry" className="fade-in">
+            {/* منوعات */}
+            <TabsContent value="miscellaneous" className="fade-in">
               <ModernCard variant="luxury" padding="lg">
                 <ModernCardHeader>
                   <ModernCardTitle className="text-2xl flex items-center gap-3">
-                    <Quote className="w-6 h-6 text-[hsl(var(--primary))]" />
-                    شعر وحكم
+                    <Sparkles className="w-6 h-6 text-[hsl(var(--primary))]" />
+                    منوعات
                   </ModernCardTitle>
                 </ModernCardHeader>
                 <ModernCardContent>
-                  <div className="space-y-4">
-                    {getContentByLevel(currentTopic.content.poetry).map((line: string, index: number) => (
-                      <div key={index} className="bg-gradient-to-r from-indigo-50 to-indigo-100 p-4 rounded-xl border-r-4 border-indigo-400">
-                        <p className="text-base font-heading font-medium text-right leading-relaxed">
-                          {line}
+                  <div className="space-y-6">
+                    {getContentByLevel(currentTopic.content.miscellaneous).map((item: any, index: number) => (
+                      <div key={index} className="bg-gradient-to-r from-emerald-50 to-emerald-100 p-6 rounded-xl border-r-4 border-emerald-400">
+                        <div className="mb-3">
+                          <Badge variant="secondary" className="text-xs font-body">
+                            {item.type === 'story' ? 'قصة' : item.type === 'dua' ? 'دعاء' : item.type === 'medical' ? 'نصيحة طبية' : 'موضوع'}
+                          </Badge>
+                        </div>
+                        <h4 className="text-lg font-heading font-bold mb-3 text-right">
+                          {item.title}
+                        </h4>
+                        <p className="text-base font-body leading-relaxed text-right">
+                          {item.content}
                         </p>
                       </div>
                     ))}
