@@ -2,55 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 🎙️ نظام التصميم للإذاعة المدرسية - Professional School Radio Design System 
-   تصميم احترافي مع خطوط عربية جميلة وألوان متطورة
-   جميع الألوان والتدرجات والخطوط يجب تعريفها هنا - All colors MUST be HSL
+/* 🌟 نظام التصميم الاحترافي الجديد - New Professional Design System 
+   تصميم حديث وأنيق مع ألوان متطورة وتأثيرات بصرية رائعة
+   جميع الألوان والتدرجات يجب تعريفها هنا - All colors MUST be HSL
 */
 
 @layer base {
   :root {
-    /* 🎨 ألوان أساسية متطورة - Advanced Base Colors */
-    --background: 240 20% 99%;
-    --foreground: 225 15% 15%;
+    /* 🎨 الألوان الأساسية الجديدة - New Modern Base Colors */
+    --background: 222 15% 97%;
+    --foreground: 215 25% 15%;
     
-    /* 🃏 كروت ومحتوى أنيق - Elegant Cards & Content */
+    /* 🃏 كروت ومحتوى حديث - Modern Cards & Content */
     --card: 0 0% 100%;
-    --card-foreground: 225 15% 15%;
+    --card-foreground: 215 25% 15%;
     
-    /* 💭 منبثقات عصرية - Modern Popovers */
+    /* 💭 منبثقات أنيقة - Elegant Popovers */
     --popover: 0 0% 100%;
-    --popover-foreground: 225 15% 15%;
+    --popover-foreground: 215 25% 15%;
     
-    /* 👦 ألوان للبنين - Boys Professional Theme */
-    --boys-primary: 217 91% 60%;
-    --boys-primary-dark: 217 91% 50%;
-    --boys-primary-light: 217 91% 70%;
-    --boys-secondary: 217 100% 97%;
-    --boys-accent: 217 100% 88%;
-    --boys-gradient: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(230 80% 65%) 50%, hsl(240 70% 70%) 100%);
-    --boys-gradient-subtle: linear-gradient(135deg, hsl(217 100% 97%) 0%, hsl(230 100% 99%) 100%);
+    /* 👦 تصميم البنين الجديد - New Boys Modern Theme */
+    --boys-primary: 261 100% 65%;
+    --boys-primary-dark: 261 100% 55%;
+    --boys-primary-light: 261 100% 75%;
+    --boys-secondary: 261 100% 98%;
+    --boys-accent: 261 50% 92%;
+    --boys-gradient: linear-gradient(135deg, hsl(261 100% 65%) 0%, hsl(275 85% 70%) 40%, hsl(290 75% 75%) 100%);
+    --boys-gradient-subtle: linear-gradient(135deg, hsl(261 100% 98%) 0%, hsl(270 100% 99%) 100%);
     
-    /* 👧 ألوان للبنات - Girls Professional Theme */
-    --girls-primary: 330 81% 60%;
-    --girls-primary-dark: 330 81% 50%;
-    --girls-primary-light: 330 81% 70%;
-    --girls-secondary: 330 100% 97%;
-    --girls-accent: 330 100% 88%;
-    --girls-gradient: linear-gradient(135deg, hsl(330 81% 60%) 0%, hsl(340 75% 65%) 50%, hsl(350 70% 70%) 100%);
-    --girls-gradient-subtle: linear-gradient(135deg, hsl(330 100% 97%) 0%, hsl(340 100% 99%) 100%);
+    /* 👧 تصميم البنات الجديد - New Girls Modern Theme */
+    --girls-primary: 320 85% 62%;
+    --girls-primary-dark: 320 85% 52%;
+    --girls-primary-light: 320 85% 72%;
+    --girls-secondary: 320 100% 98%;
+    --girls-accent: 320 45% 92%;
+    --girls-gradient: linear-gradient(135deg, hsl(320 85% 62%) 0%, hsl(335 80% 67%) 40%, hsl(350 75% 72%) 100%);
+    --girls-gradient-subtle: linear-gradient(135deg, hsl(320 100% 98%) 0%, hsl(330 100% 99%) 100%);
     
-    /* 🎯 ألوان ديناميكية - Dynamic Professional Colors (default to boys) */
-    --primary: 217 91% 60%;
-    --primary-dark: 217 91% 50%;
-    --primary-light: 217 91% 70%;
+    /* 🚀 الألوان الديناميكية الجديدة - New Dynamic Professional Colors */
+    --primary: 261 100% 65%;
+    --primary-dark: 261 100% 55%;
+    --primary-light: 261 100% 75%;
     --primary-foreground: 0 0% 100%;
-    --primary-rgb: 62 142 208;
+    --primary-rgb: 138 84 255;
     
-    --secondary: 217 100% 97%;
-    --secondary-foreground: 225 15% 15%;
+    --secondary: 261 100% 98%;
+    --secondary-foreground: 215 25% 15%;
     
-    --accent: 217 100% 88%;
-    --accent-foreground: 225 15% 15%;
+    --accent: 261 50% 92%;
+    --accent-foreground: 215 25% 15%;
     
     /* ألوان مساعدة - Helper Colors */
     --muted: 210 40% 96%;
@@ -225,62 +225,80 @@
 }
 
 @layer components {
-  /* 🚀 أزرار احترافية - Professional Buttons */
-  .btn-primary {
-    @apply relative bg-gradient-to-r from-[hsl(var(--primary))] via-[hsl(var(--primary-dark))] to-[hsl(var(--primary))]
-           text-white font-semibold py-4 px-8 rounded-2xl 
-           hover:shadow-elegant hover:scale-[1.02] active:scale-[0.98]
-           transition-all duration-300 ease-out
-           border-0 focus:ring-4 focus:ring-[hsl(var(--primary))]/25
-           before:absolute before:inset-0 before:bg-white/10 before:rounded-2xl before:opacity-0 
-           hover:before:opacity-100 before:transition-opacity before:duration-300;
+  /* 🚀 أزرار فاخرة جديدة - New Luxury Buttons */
+  .btn-premium {
+    @apply relative overflow-hidden bg-gradient-to-r from-[hsl(var(--primary))] via-[hsl(var(--primary-dark))] to-[hsl(var(--primary))]
+           text-white font-bold py-5 px-10 rounded-3xl shadow-2xl
+           hover:shadow-[0_20px_50px_-10px_hsl(var(--primary))/30] hover:scale-[1.03] active:scale-[0.97]
+           transition-all duration-[400ms] ease-out border-0 focus:ring-4 focus:ring-[hsl(var(--primary))]/30
+           before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:via-transparent before:to-white/20 
+           before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-700
+           after:absolute after:inset-0 after:bg-white/5 after:rounded-3xl;
   }
   
-  .btn-secondary {
-    @apply bg-white/80 backdrop-blur-sm text-[hsl(var(--primary))] 
-           font-semibold py-3 px-6 rounded-xl border-2 border-[hsl(var(--primary))]/20
-           hover:bg-[hsl(var(--primary))] hover:text-white hover:border-[hsl(var(--primary))]
-           hover:shadow-card transition-all duration-300 ease-out;
+  .btn-glass {
+    @apply relative bg-white/10 backdrop-blur-lg text-[hsl(var(--primary))] border border-white/20
+           font-semibold py-4 px-8 rounded-2xl shadow-lg
+           hover:bg-white/20 hover:shadow-xl hover:border-[hsl(var(--primary))]/30
+           hover:scale-[1.02] transition-all duration-300 ease-out;
   }
   
-  /* 💎 كروت احترافية - Premium Cards */
-  .card-primary {
-    @apply bg-white/90 backdrop-blur-sm
-           rounded-3xl shadow-card hover:shadow-elegant
-           border border-white/20 
-           transition-all duration-500 ease-out hover:scale-[1.01]
-           before:absolute before:inset-0 before:bg-gradient-to-br 
-           before:from-white/10 before:to-transparent before:rounded-3xl before:pointer-events-none;
+  .btn-neon {
+    @apply relative bg-transparent text-[hsl(var(--primary))] border-2 border-[hsl(var(--primary))]
+           font-bold py-4 px-8 rounded-2xl
+           hover:bg-[hsl(var(--primary))] hover:text-white hover:shadow-[0_0_30px_hsl(var(--primary))/50]
+           transition-all duration-300 ease-out;
   }
   
-  .card-gradient {
-    @apply relative overflow-hidden bg-gradient-to-br from-white via-[hsl(var(--secondary))]/50 to-white
-           rounded-3xl shadow-card hover:shadow-elegant
-           border border-[hsl(var(--accent))]/20
+  /* 💎 كروت فاخرة جديدة - New Luxury Cards */
+  .card-luxury {
+    @apply relative overflow-hidden bg-gradient-to-br from-white/95 via-white/90 to-[hsl(var(--secondary))]/80
+           backdrop-blur-md rounded-3xl shadow-2xl hover:shadow-[0_25px_60px_-10px_rgba(0,0,0,0.15)]
+           border border-white/30 transition-all duration-500 ease-out hover:scale-[1.02]
+           before:absolute before:inset-0 before:bg-gradient-to-br before:from-[hsl(var(--primary))]/5 
+           before:via-transparent before:to-[hsl(var(--accent))]/5 before:rounded-3xl before:pointer-events-none;
+  }
+  
+  .card-glass {
+    @apply relative bg-white/20 backdrop-blur-xl border border-white/30
+           rounded-3xl shadow-xl hover:shadow-2xl hover:bg-white/25
            transition-all duration-500 ease-out hover:scale-[1.01];
   }
   
-  /* 📑 تبويبات أنيقة مع حل مشكلة التداخل */
-  .tab-active {
-    @apply bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--primary-dark))]
-           text-white shadow-card font-semibold
-           border-b-4 border-[hsl(var(--primary-light))]
-           transform scale-[1.05] z-50 relative;
+  .card-neon {
+    @apply relative bg-gradient-to-br from-[hsl(var(--primary))]/10 to-transparent
+           border-2 border-[hsl(var(--primary))]/20 rounded-3xl p-1
+           hover:border-[hsl(var(--primary))]/40 hover:shadow-[0_0_40px_hsl(var(--primary))/20]
+           transition-all duration-500 ease-out;
   }
   
-  .tab-inactive {
-    @apply bg-white/60 backdrop-blur-sm text-[hsl(var(--primary))] 
-           border-2 border-[hsl(var(--primary))]/20 font-medium
-           hover:bg-[hsl(var(--secondary))]/80 hover:border-[hsl(var(--primary))]/40
-           hover:scale-[1.02] transition-all duration-300 ease-out z-40 relative;
+  /* 📑 تبويبات فاخرة جديدة مع حل مشكلة التداخل */
+  .tab-luxury-active {
+    @apply relative overflow-hidden bg-gradient-to-r from-[hsl(var(--primary))] via-[hsl(var(--primary-light))] to-[hsl(var(--primary))]
+           text-white shadow-2xl font-bold rounded-t-2xl px-8 py-4
+           before:absolute before:inset-0 before:bg-white/10 
+           after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 after:bg-gradient-to-r 
+           after:from-transparent after:via-white/50 after:to-transparent
+           transform scale-[1.02] z-50 relative transition-all duration-400;
   }
   
-  /* منع التداخل مع المحتوى */
-  .tabs-content {
+  .tab-luxury-inactive {
+    @apply relative bg-white/80 backdrop-blur-md text-[hsl(var(--primary))] 
+           border border-[hsl(var(--primary))]/20 font-semibold rounded-t-2xl px-8 py-4
+           hover:bg-white/90 hover:border-[hsl(var(--primary))]/40 hover:shadow-lg
+           hover:scale-[1.01] transition-all duration-300 ease-out z-40 relative;
+  }
+  
+  /* حل مشكلة التداخل مع المحتوى */
+  .tabs-content-safe {
     position: relative;
-    z-index: 1;
-    margin-top: 3rem;
+    z-index: 10;
+    margin-top: 4rem;
     clear: both;
+    background: white;
+    border-radius: 2rem;
+    padding: 2rem;
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
   }
   
   /* ✨ انتقالات متقدمة - Advanced Transitions */

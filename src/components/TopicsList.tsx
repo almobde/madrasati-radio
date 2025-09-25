@@ -1,12 +1,12 @@
-// مكون قائمة المواضيع - Topics List Component
+// مكون قائمة المواضيع الجديد - New Modern Topics List
 import { useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { ModernCard } from '@/components/ui/modern-card';
+import { ModernButton } from '@/components/ui/modern-button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useAppContext } from '../context/AppContext';
 import { topics } from '../data/topics';
-import { Search, Book, ArrowRight } from 'lucide-react';
+import { Search, Book, ArrowRight, Sparkles, Radio, Settings, Globe } from 'lucide-react';
 
 const TopicsList = () => {
   const { preferences, setCurrentTopic, setPreferences } = useAppContext();
@@ -45,87 +45,127 @@ const TopicsList = () => {
     preferences?.educationLevel === 'middle' ? 'متوسط' : 'ثانوي';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-secondary p-4">
-      <div className="max-w-6xl mx-auto">
-        {/* رأس الصفحة */}
-        <div className="mb-8 fade-in">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-4xl md:text-5xl font-heading font-bold text-gradient">
-              📚 مواضيع الإذاعة المدرسية
-            </h1>
-            <Button 
-              variant="outline" 
-              onClick={handleBackToPreferences}
-              className="btn-secondary font-body"
-            >
-              تغيير التفضيلات
-            </Button>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--background))] via-[hsl(var(--secondary))]/40 to-[hsl(var(--accent))]/20 p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* رأس الصفحة الفاخر */}
+        <div className="mb-12 fade-in">
+          <ModernCard variant="glass" padding="lg" className="mb-8">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+              <div className="text-center md:text-right">
+                <div className="flex items-center justify-center md:justify-start gap-4 mb-4">
+                  <Radio className="w-12 h-12 text-[hsl(var(--primary))]" />
+                  <h1 className="text-5xl md:text-6xl font-heading font-bold text-gradient">
+                    مكتبة المواضيع الإذاعية
+                  </h1>
+                  <Globe className="w-12 h-12 text-[hsl(var(--primary))]" />
+                </div>
+                <p className="text-xl text-muted-foreground font-body">
+                  اختر من مجموعة متنوعة من المواضيع المتخصصة والمعدة بعناية
+                </p>
+              </div>
+              <ModernButton 
+                variant="glass" 
+                onClick={handleBackToPreferences}
+                className="font-body"
+              >
+                <Settings className="w-5 h-5" />
+                تغيير التفضيلات
+              </ModernButton>
+            </div>
+          </ModernCard>
           
-          <div className="flex gap-3 mb-6">
-            <Badge variant="secondary" className="text-sm font-body py-2 px-4 rounded-full bg-gradient-to-r from-primary/10 to-primary/20 text-primary border-primary/20">
+          <div className="flex justify-center gap-4 mb-8">
+            <Badge className="text-base font-body py-3 px-6 rounded-full bg-gradient-to-r from-[hsl(var(--primary))]/20 to-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] border-2 border-[hsl(var(--primary))]/30 shadow-lg">
+              <Sparkles className="w-4 h-4 ml-2" />
               {genderText}
             </Badge>
-            <Badge variant="secondary" className="text-sm font-body py-2 px-4 rounded-full bg-gradient-to-r from-primary/10 to-primary/20 text-primary border-primary/20">
+            <Badge className="text-base font-body py-3 px-6 rounded-full bg-gradient-to-r from-[hsl(var(--primary))]/20 to-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] border-2 border-[hsl(var(--primary))]/30 shadow-lg">
+              <Book className="w-4 h-4 ml-2" />
               {levelText}
             </Badge>
           </div>
 
-          {/* شريط البحث */}
-          <div className="relative max-w-lg mx-auto">
-            <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-            <Input
-              type="text"
-              placeholder="ابحث عن موضوع..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pr-12 py-3 text-lg font-body rounded-2xl border-2 border-primary/20 focus:border-primary bg-white/80 backdrop-blur-sm"
-            />
-          </div>
+          {/* شريط البحث الفاخر */}
+          <ModernCard variant="glass" padding="default" className="max-w-2xl mx-auto">
+            <div className="relative">
+              <Search className="absolute right-6 top-1/2 transform -translate-y-1/2 text-[hsl(var(--primary))] w-6 h-6" />
+              <Input
+                type="text"
+                placeholder="🔍 ابحث في مكتبة المواضيع المتنوعة..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pr-16 py-4 text-xl font-body rounded-2xl border-2 border-[hsl(var(--primary))]/30 focus:border-[hsl(var(--primary))] bg-white/90 backdrop-blur-sm shadow-lg"
+              />
+            </div>
+          </ModernCard>
         </div>
 
-        {/* قائمة المواضيع */}
+        {/* قائمة المواضيع الفاخرة */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 slide-up">
-          {filteredTopics.map((topic) => (
-            <Card key={topic.id} className="card-gradient p-8 cursor-pointer group hover:shadow-elegant transition-all duration-500">
+          {filteredTopics.map((topic, index) => (
+            <ModernCard 
+              key={topic.id} 
+              variant="luxury" 
+              padding="lg"
+              className="cursor-pointer group hover:shadow-2xl transition-all duration-500 hover:scale-[1.03] hover:-translate-y-2"
+            >
               <div className="flex items-start justify-between mb-6">
                 <div className="flex-1">
-                  <h3 className="text-2xl font-heading font-semibold text-foreground mb-3 group-hover:text-primary transition-colors leading-tight">
-                    {topic.title}
-                  </h3>
-                  <Badge variant="outline" className="text-sm font-body py-1 px-3 rounded-full border-primary/30 text-primary">
-                    {topic.category}
-                  </Badge>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--primary-dark))] flex items-center justify-center shadow-lg">
+                      <span className="text-white font-bold text-lg">{index + 1}</span>
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-heading font-bold text-foreground group-hover:text-[hsl(var(--primary))] transition-colors leading-tight">
+                        {topic.title}
+                      </h3>
+                      <Badge className="mt-2 text-sm font-body py-1 px-4 rounded-full bg-gradient-to-r from-[hsl(var(--primary))]/20 to-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30">
+                        {topic.category}
+                      </Badge>
+                    </div>
+                  </div>
                 </div>
-                <Book className="w-8 h-8 text-primary/60 group-hover:text-primary transition-colors" />
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[hsl(var(--primary))]/20 to-[hsl(var(--accent))]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <Book className="w-8 h-8 text-[hsl(var(--primary))] group-hover:text-[hsl(var(--primary-dark))]" />
+                </div>
               </div>
               
-              <p className="text-muted-foreground text-base font-body mb-6 line-clamp-3 leading-relaxed">
+              <p className="text-muted-foreground text-base font-body mb-8 line-clamp-3 leading-relaxed">
                 {getContentByLevel(topic.content.introduction)}
               </p>
               
-              <Button 
+              <ModernButton 
                 onClick={() => handleTopicSelect(topic)}
-                className="btn-primary w-full group-hover:shadow-glow transition-all duration-300 font-body"
+                variant="premium"
+                className="w-full group-hover:shadow-[0_0_30px_hsl(var(--primary))/40] transition-all duration-300 font-body"
               >
+                <Sparkles className="w-5 h-5" />
                 <span>اختر هذا الموضوع</span>
-                <ArrowRight className="w-5 h-5 mr-2" />
-              </Button>
-            </Card>
+                <ArrowRight className="w-5 h-5" />
+              </ModernButton>
+            </ModernCard>
           ))}
         </div>
 
         {/* حالة عدم وجود نتائج */}
         {filteredTopics.length === 0 && (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">🔍</div>
-            <h3 className="text-xl font-semibold text-foreground mb-2">
-              لم نجد أي نتائج
+          <ModernCard variant="glass" padding="xl" className="text-center max-w-2xl mx-auto">
+            <div className="text-8xl mb-6">🔍</div>
+            <h3 className="text-3xl font-heading font-bold text-foreground mb-4">
+              لم نعثر على نتائج مطابقة
             </h3>
-            <p className="text-muted-foreground">
-              جرب البحث بكلمات أخرى أو تصفح جميع المواضيع
+            <p className="text-xl text-muted-foreground font-body leading-relaxed mb-6">
+              جرب البحث بكلمات مختلفة أو تصفح جميع المواضيع المتاحة
             </p>
-          </div>
+            <ModernButton 
+              variant="glass"
+              onClick={() => setSearchTerm('')}
+              className="font-body"
+            >
+              <Globe className="w-5 h-5" />
+              عرض جميع المواضيع
+            </ModernButton>
+          </ModernCard>
         )}
       </div>
     </div>
