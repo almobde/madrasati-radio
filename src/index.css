@@ -230,7 +230,7 @@
     @apply relative overflow-hidden bg-gradient-to-r from-[hsl(var(--primary))] via-[hsl(var(--primary-dark))] to-[hsl(var(--primary))]
            text-white font-bold py-5 px-10 rounded-3xl shadow-2xl
            hover:shadow-[0_20px_50px_-10px_hsl(var(--primary))/30] hover:scale-[1.03] active:scale-[0.97]
-           transition-all duration-[400ms] ease-out border-0 focus:ring-4 focus:ring-[hsl(var(--primary))]/30
+           transition-all duration-500 ease-out border-0 focus:ring-4 focus:ring-[hsl(var(--primary))]/30
            before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:via-transparent before:to-white/20 
            before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-700
            after:absolute after:inset-0 after:bg-white/5 after:rounded-3xl;
@@ -279,7 +279,7 @@
            before:absolute before:inset-0 before:bg-white/10 
            after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 after:bg-gradient-to-r 
            after:from-transparent after:via-white/50 after:to-transparent
-           transform scale-[1.02] z-50 relative transition-all duration-400;
+           transform scale-[1.02] z-50 relative transition-all duration-500;
   }
   
   .tab-luxury-inactive {

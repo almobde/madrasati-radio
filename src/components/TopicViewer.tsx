@@ -1,30 +1,16 @@
-// مكون عارض الموضوع - Topic Viewer Component
-import { useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+// مكون عارض الموضوع الجديد - New Modern Topic Viewer
 import { useAppContext } from '../context/AppContext';
-import { 
-  BookOpen, 
-  Sparkles, 
-  MessageCircle, 
-  Lightbulb, 
-  Mic, 
-  Quote, 
-  HelpCircle,
-  Heart,
-  ArrowRight,
-  Share2
-} from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ModernButton } from '@/components/ui/modern-button';
+import { ModernCard, ModernCardHeader, ModernCardTitle, ModernCardContent } from '@/components/ui/modern-card';
+import { ArrowRight, Home, BookOpen, Mic, Heart, Sparkles, Radio, Crown } from 'lucide-react';
 
 const TopicViewer = () => {
   const { currentTopic, setCurrentTopic, preferences } = useAppContext();
-  const [activeTab, setActiveTab] = useState('introduction');
 
   if (!currentTopic) return null;
 
-  const handleBack = () => {
+  const handleBackToTopics = () => {
     setCurrentTopic(null);
   };
 
@@ -40,226 +26,158 @@ const TopicViewer = () => {
     }
   };
 
-  const tabs = [
-    { 
-      id: 'introduction', 
-      label: 'مقدمة', 
-      icon: BookOpen, 
-      content: getContentByLevel(currentTopic.content.introduction)
-    },
-    { 
-      id: 'quran', 
-      label: 'آيات قرآنية', 
-      icon: Sparkles, 
-      content: (
-        <div className="verse-container">
-          <div className="bg-gradient-to-r from-green-50 to-green-100 p-8 rounded-2xl border-r-4 border-green-400 content-box">
-            <p className="text-xl font-body leading-loose mb-6 text-right" dir="rtl">
-              {currentTopic.content.quranVerse.text}
-            </p>
-            <p className="text-base text-green-700 font-semibold text-right font-body" dir="rtl">
-              {currentTopic.content.quranVerse.reference}
-            </p>
-          </div>
-        </div>
-      )
-    },
-    { 
-      id: 'hadith', 
-      label: 'حديث نبوي', 
-      icon: MessageCircle, 
-      content: (
-        <div className="hadith-container">
-          <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-8 rounded-2xl border-r-4 border-blue-400 content-box">
-            <p className="text-xl font-body leading-loose mb-6 text-right" dir="rtl">
-              {currentTopic.content.hadith.text}
-            </p>
-            <p className="text-base text-blue-700 font-semibold text-right font-body" dir="rtl">
-              {currentTopic.content.hadith.reference}
-            </p>
-          </div>
-        </div>
-      )
-    },
-    { 
-      id: 'didyouknow', 
-      label: 'هل تعلم؟', 
-      icon: Lightbulb, 
-      content: (
-        <div className="content-box space-y-4">
-          {getContentByLevel(currentTopic.content.didYouKnow).map((fact: string, index: number) => (
-            <div key={index} className="bg-gradient-to-r from-yellow-50 to-yellow-100 p-6 rounded-2xl border-r-4 border-yellow-400">
-              <div className="flex items-start gap-4">
-                <div className="bg-yellow-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
-                  {index + 1}
-                </div>
-                <p className="text-xl font-body leading-loose text-right flex-1" dir="rtl">
-                  {fact}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      )
-    },
-    { 
-      id: 'morning-word', 
-      label: 'كلمة صباحية', 
-      icon: Mic, 
-      content: (
-        <div className="content-box">
-          <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-8 rounded-2xl border-r-4 border-purple-400">
-            <div className="mb-4 text-sm text-purple-600 font-medium">
-              طول النص: {getContentByLevel(currentTopic.content.morningWord).length} حرف
-            </div>
-            <p className="text-xl font-body leading-loose text-right" dir="rtl">
-              {getContentByLevel(currentTopic.content.morningWord)}
-            </p>
-          </div>
-        </div>
-      )
-    },
-    { 
-      id: 'poetry', 
-      label: 'شعر وحكم', 
-      icon: Quote, 
-      content: (
-        <div className="content-box space-y-6">
-          {getContentByLevel(currentTopic.content.poetry).map((line: string, index: number) => (
-            <div key={index} className="bg-gradient-to-r from-indigo-50 to-indigo-100 p-6 rounded-2xl border-r-4 border-indigo-400">
-              <p className="text-xl font-heading font-medium text-right leading-loose" dir="rtl">
-                {line}
-              </p>
-            </div>
-          ))}
-        </div>
-      )
-    },
-    { 
-      id: 'questions', 
-      label: 'أسئلة وألغاز', 
-      icon: HelpCircle, 
-      content: (
-        <div className="content-box space-y-8">
-          {getContentByLevel(currentTopic.content.questions).map((qa: any, index: number) => (
-            <div key={index} className="bg-gradient-to-r from-orange-50 to-orange-100 p-8 rounded-2xl border border-orange-200">
-              <div className="flex items-start gap-4 mb-6">
-                <Badge variant="secondary" className="text-sm font-body">س{index + 1}</Badge>
-                <p className="text-xl font-body font-medium text-right flex-1" dir="rtl">
-                  {qa.question}
-                </p>
-              </div>
-              <div className="flex items-start gap-4 mr-12">
-                <Badge variant="outline" className="text-sm bg-green-100 text-green-700 font-body">جواب</Badge>
-                <p className="text-lg text-green-800 font-body text-right flex-1" dir="rtl">
-                  {qa.answer}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      )
-    },
-    { 
-      id: 'conclusion', 
-      label: 'خاتمة', 
-      icon: Heart, 
-      content: (
-        <div className="content-box space-y-6">
-          {currentTopic.content.conclusion && (
-            <div className="bg-gradient-to-r from-rose-50 to-rose-100 p-8 rounded-2xl border-r-4 border-rose-400">
-              <p className="text-xl font-body leading-loose text-right" dir="rtl">
-                {currentTopic.content.conclusion}
-              </p>
-            </div>
-          )}
-          <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-8 rounded-2xl border-r-4 border-gray-400">
-            <p className="text-xl font-body leading-loose text-right" dir="rtl">
-              {currentTopic.content.radioEnding}
-            </p>
-          </div>
-        </div>
-      )
-    }
-  ];
-
-  const genderText = preferences?.gender === 'boys' ? 'بنين' : 'بنات';
-  const levelText = 
-    preferences?.educationLevel === 'primary' ? 'ابتدائي' :
-    preferences?.educationLevel === 'middle' ? 'متوسط' : 'ثانوي';
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-secondary p-4">
-      <div className="max-w-6xl mx-auto">
-        {/* رأس الصفحة */}
-        <div className="mb-8 fade-in">
-          <div className="flex justify-between items-center mb-4">
-            <div>
-              <h1 className="text-3xl font-bold text-foreground mb-2">
-                📖 {currentTopic.title}
-              </h1>
-              <div className="flex gap-2">
-                <Badge variant="secondary">{currentTopic.category}</Badge>
-                <Badge variant="outline">{genderText}</Badge>
-                <Badge variant="outline">{levelText}</Badge>
+    <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--background))] via-[hsl(var(--secondary))]/30 to-[hsl(var(--accent))]/20 p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* رأس الصفحة الفاخر */}
+        <div className="mb-12 fade-in">
+          <ModernCard variant="glass" padding="lg" className="mb-8">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+              <div className="text-center md:text-right flex-1">
+                <div className="flex items-center justify-center md:justify-start gap-4 mb-4">
+                  <Radio className="w-12 h-12 text-[hsl(var(--primary))]" />
+                  <h1 className="text-4xl md:text-6xl font-heading font-bold text-gradient leading-tight">
+                    {currentTopic.title}
+                  </h1>
+                  <Crown className="w-12 h-12 text-[hsl(var(--primary))]" />
+                </div>
+                <p className="text-xl text-muted-foreground font-body">
+                  محتوى إذاعي متخصص ومعد بعناية فائقة
+                </p>
               </div>
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" className="btn-secondary">
-                <Share2 className="w-4 h-4 ml-2" />
-                مشاركة
-              </Button>
-              <Button onClick={handleBack} className="btn-primary">
+              <ModernButton 
+                variant="glass" 
+                onClick={handleBackToTopics}
+                className="font-body"
+              >
+                <Home className="w-5 h-5" />
                 العودة للمواضيع
-                <ArrowRight className="w-4 h-4 mr-2" />
-              </Button>
+              </ModernButton>
             </div>
-          </div>
+          </ModernCard>
         </div>
 
-        /* التبويبات والمحتوى */
-        <Card className="card-primary p-6 slide-up">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 gap-2 bg-secondary/50 p-2 rounded-xl mb-16">
-              {tabs.map((tab) => (
-                <TabsTrigger 
-                  key={tab.id} 
-                  value={tab.id}
-                  className={`flex flex-col items-center gap-2 p-4 rounded-lg transition-all ${
-                    activeTab === tab.id ? 'tab-active' : 'tab-inactive'
-                  }`}
-                >
-                  <tab.icon className="w-5 h-5" />
-                  <span className="text-xs font-medium">{tab.label}</span>
-                </TabsTrigger>
-              ))}
-            </TabsList>
+        {/* التبويبات الفاخرة */}
+        <Tabs defaultValue="introduction" className="w-full" dir="rtl">
+          <TabsList className="grid w-full grid-cols-4 gap-4 bg-transparent p-2 h-auto mb-12">
+            <TabsTrigger 
+              value="introduction" 
+              className="tab-luxury-inactive data-[state=active]:tab-luxury-active text-lg font-bold transition-all duration-500 hover:scale-[1.02]"
+            >
+              <BookOpen className="w-6 h-6 ml-3" />
+              المقدمة الشاملة
+            </TabsTrigger>
+            <TabsTrigger 
+              value="verses" 
+              className="tab-luxury-inactive data-[state=active]:tab-luxury-active text-lg font-bold transition-all duration-500 hover:scale-[1.02]"
+            >
+              <Heart className="w-6 h-6 ml-3" />
+              الآيات الكريمة
+            </TabsTrigger>
+            <TabsTrigger 
+              value="hadith" 
+              className="tab-luxury-inactive data-[state=active]:tab-luxury-active text-lg font-bold transition-all duration-500 hover:scale-[1.02]"
+            >
+              <Mic className="w-6 h-6 ml-3" />
+              الحديث الشريف
+            </TabsTrigger>
+            <TabsTrigger 
+              value="morningWord" 
+              className="tab-luxury-inactive data-[state=active]:tab-luxury-active text-lg font-bold transition-all duration-500 hover:scale-[1.02]"
+            >
+              <Sparkles className="w-6 h-6 ml-3" />
+              كلمة الصباح
+            </TabsTrigger>
+          </TabsList>
 
-            <div className="tabs-content">
-              {tabs.map((tab) => (
-                <TabsContent key={tab.id} value={tab.id} className="mt-0">
-                  <div className="fade-in">
-                    <div className="flex items-center gap-3 mb-8 p-6 bg-gradient-to-r from-primary/15 to-primary/5 rounded-xl border-r-4 border-primary shadow-md relative z-10">
-                      <tab.icon className="w-7 h-7 text-primary" />
-                      <h2 className="text-3xl font-bold text-foreground">{tab.label}</h2>
-                    </div>
-                    <div className="prose max-w-none relative z-10 mt-8 clear-both">
-                    {typeof tab.content === 'string' ? (
-                      <div className="bg-gradient-to-r from-white to-secondary/30 p-8 rounded-2xl border border-border content-box">
-                        <p className="text-xl font-body leading-loose text-right" dir="rtl">
-                          {tab.content}
-                        </p>
-                      </div>
-                    ) : (
-                      tab.content
+          {/* محتوى التبويبات الفاخر */}
+          <div className="tabs-content-safe">
+            <TabsContent value="introduction" className="fade-in">
+              <ModernCard variant="luxury" padding="xl">
+                <ModernCardHeader>
+                  <ModernCardTitle className="text-4xl flex items-center gap-4">
+                    <BookOpen className="w-10 h-10 text-[hsl(var(--primary))]" />
+                    مقدمة شاملة عن {currentTopic.title}
+                  </ModernCardTitle>
+                </ModernCardHeader>
+                <ModernCardContent>
+                  <div className="bg-gradient-to-br from-[hsl(var(--primary))]/5 to-[hsl(var(--accent))]/10 rounded-3xl p-8 border-2 border-[hsl(var(--primary))]/20">
+                    <p className="text-xl font-body leading-relaxed text-foreground">
+                      {getContentByLevel(currentTopic.content.introduction)}
+                    </p>
+                  </div>
+                </ModernCardContent>
+              </ModernCard>
+            </TabsContent>
+
+            <TabsContent value="verses" className="fade-in">
+              <ModernCard variant="luxury" padding="xl">
+                <ModernCardHeader>
+                  <ModernCardTitle className="text-4xl flex items-center gap-4">
+                    <Heart className="w-10 h-10 text-[hsl(var(--primary))]" />
+                    آيات قرآنية كريمة
+                  </ModernCardTitle>
+                </ModernCardHeader>
+                <ModernCardContent>
+                  <div className="bg-gradient-to-r from-[hsl(var(--accent))]/20 to-[hsl(var(--secondary))]/30 rounded-3xl p-10 border-r-8 border-[hsl(var(--primary))] shadow-inner">
+                    <p className="text-3xl font-heading leading-loose text-foreground text-center">
+                      {currentTopic.content.quranVerse?.text || 'لا توجد آيات متاحة حالياً'}
+                    </p>
+                    {currentTopic.content.quranVerse?.reference && (
+                      <p className="text-lg text-[hsl(var(--primary))] font-semibold text-center mt-6">
+                        {currentTopic.content.quranVerse.reference}
+                      </p>
                     )}
+                  </div>
+                </ModernCardContent>
+              </ModernCard>
+            </TabsContent>
+
+            <TabsContent value="hadith" className="fade-in">
+              <ModernCard variant="luxury" padding="xl">
+                <ModernCardHeader>
+                  <ModernCardTitle className="text-4xl flex items-center gap-4">
+                    <Mic className="w-10 h-10 text-[hsl(var(--primary))]" />
+                    حديث شريف
+                  </ModernCardTitle>
+                </ModernCardHeader>
+                <ModernCardContent>
+                  <div className="bg-gradient-to-r from-[hsl(var(--secondary))]/30 to-[hsl(var(--accent))]/20 rounded-3xl p-10 border-r-8 border-[hsl(var(--primary))] shadow-inner">
+                    <p className="text-2xl font-body leading-loose text-foreground">
+                      {currentTopic.content.hadith?.text || 'لا يوجد حديث متاح حالياً'}
+                    </p>
+                    {currentTopic.content.hadith?.reference && (
+                      <p className="text-lg text-[hsl(var(--primary))] font-semibold text-center mt-6">
+                        {currentTopic.content.hadith.reference}
+                      </p>
+                    )}
+                  </div>
+                </ModernCardContent>
+              </ModernCard>
+            </TabsContent>
+
+            <TabsContent value="morningWord" className="fade-in">
+              <ModernCard variant="luxury" padding="xl">
+                <ModernCardHeader>
+                  <ModernCardTitle className="text-4xl flex items-center gap-4">
+                    <Sparkles className="w-10 h-10 text-[hsl(var(--primary))]" />
+                    كلمة الصباح المميزة
+                  </ModernCardTitle>
+                </ModernCardHeader>
+                <ModernCardContent>
+                  <div className="bg-gradient-to-br from-[hsl(var(--primary))]/10 to-[hsl(var(--accent))]/10 rounded-3xl p-10 border-2 border-[hsl(var(--primary))]/30 shadow-inner">
+                    <div className="mb-6 text-sm text-[hsl(var(--primary))] font-medium bg-[hsl(var(--primary))]/10 rounded-full py-2 px-4 inline-block">
+                      طول النص: {getContentByLevel(currentTopic.content.morningWord).length} حرف
                     </div>
-                   </div>
-                 </TabsContent>
-               ))}
-             </div>
-          </Tabs>
-        </Card>
+                    <p className="text-xl font-body leading-relaxed text-foreground">
+                      {getContentByLevel(currentTopic.content.morningWord)}
+                    </p>
+                  </div>
+                </ModernCardContent>
+              </ModernCard>
+            </TabsContent>
+          </div>
+        </Tabs>
       </div>
     </div>
   );
