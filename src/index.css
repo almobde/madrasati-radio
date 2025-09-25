@@ -260,19 +260,27 @@
            transition-all duration-500 ease-out hover:scale-[1.01];
   }
   
-  /* 📑 تبويبات أنيقة - Elegant Tabs */
+  /* 📑 تبويبات أنيقة مع حل مشكلة التداخل */
   .tab-active {
     @apply bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--primary-dark))]
            text-white shadow-card font-semibold
            border-b-4 border-[hsl(var(--primary-light))]
-           transform scale-[1.05] z-20 relative;
+           transform scale-[1.05] z-50 relative;
   }
   
   .tab-inactive {
     @apply bg-white/60 backdrop-blur-sm text-[hsl(var(--primary))] 
            border-2 border-[hsl(var(--primary))]/20 font-medium
            hover:bg-[hsl(var(--secondary))]/80 hover:border-[hsl(var(--primary))]/40
-           hover:scale-[1.02] transition-all duration-300 ease-out z-10 relative;
+           hover:scale-[1.02] transition-all duration-300 ease-out z-40 relative;
+  }
+  
+  /* منع التداخل مع المحتوى */
+  .tabs-content {
+    position: relative;
+    z-index: 1;
+    margin-top: 3rem;
+    clear: both;
   }
   
   /* ✨ انتقالات متقدمة - Advanced Transitions */

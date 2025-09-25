@@ -235,15 +235,15 @@ const TopicViewer = () => {
               ))}
             </TabsList>
 
-            <div className="relative">
+            <div className="tabs-content">
               {tabs.map((tab) => (
                 <TabsContent key={tab.id} value={tab.id} className="mt-0">
                   <div className="fade-in">
-                    <div className="flex items-center gap-3 mb-8 p-6 bg-gradient-to-r from-primary/15 to-primary/5 rounded-xl border-r-4 border-primary shadow-md">
+                    <div className="flex items-center gap-3 mb-8 p-6 bg-gradient-to-r from-primary/15 to-primary/5 rounded-xl border-r-4 border-primary shadow-md relative z-10">
                       <tab.icon className="w-7 h-7 text-primary" />
                       <h2 className="text-3xl font-bold text-foreground">{tab.label}</h2>
                     </div>
-                    <div className="prose max-w-none relative mt-8">
+                    <div className="prose max-w-none relative z-10 mt-8 clear-both">
                     {typeof tab.content === 'string' ? (
                       <div className="bg-gradient-to-r from-white to-secondary/30 p-8 rounded-2xl border border-border content-box">
                         <p className="text-xl font-body leading-loose text-right" dir="rtl">
@@ -254,10 +254,10 @@ const TopicViewer = () => {
                       tab.content
                     )}
                     </div>
-                  </div>
-                </TabsContent>
-              ))}
-            </div>
+                   </div>
+                 </TabsContent>
+               ))}
+             </div>
           </Tabs>
         </Card>
       </div>
