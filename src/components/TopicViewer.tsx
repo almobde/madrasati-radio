@@ -227,14 +227,12 @@ const TopicViewer = () => {
                   </ModernCardTitle>
                 </ModernCardHeader>
                 <ModernCardContent>
-                  <div className="bg-gradient-to-br from-[hsl(var(--primary))]/10 to-[hsl(var(--accent))]/10 rounded-2xl p-6 border border-[hsl(var(--primary))]/30 shadow-inner">
-                    <div className="mb-4 text-xs text-[hsl(var(--primary))] font-medium bg-[hsl(var(--primary))]/10 rounded-full py-1 px-3 inline-block">
-                      طول النص: {getContentByLevel(currentTopic.content.morningWord).length} حرف
-                    </div>
-                    <p className="text-base font-body leading-relaxed text-foreground">
-                      {getContentByLevel(currentTopic.content.morningWord)}
-                    </p>
+                  <div className="mb-4 text-xs text-[hsl(var(--primary))] font-medium bg-[hsl(var(--primary))]/10 rounded-full py-1 px-3 inline-block">
+                    طول النص: {getContentByLevel(currentTopic.content.morningWord).length} حرف
                   </div>
+                  <p className="text-base font-body leading-relaxed text-foreground">
+                    {getContentByLevel(currentTopic.content.morningWord)}
+                  </p>
                 </ModernCardContent>
               </ModernCard>
             </TabsContent>
