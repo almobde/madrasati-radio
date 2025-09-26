@@ -79,7 +79,7 @@ const TopicsList = () => {
               <Sparkles className="w-4 h-4 ml-2" />
               {genderText}
             </Badge>
-            <Badge className="text-base font-body py-3 px-6 rounded-full bg-gradient-to-r from-[hsl(var(--primary))]/20 to-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] border-2 border-[hsl(var(--primary))]/30 shadow-lg">
+            <Badge className="text-base font-body py-3 px-6 rounded-full bg-gradient-to-r from-[hsl(var(--primary))]/20 to-[hsl(var(--primary))]/10 text-black border-2 border-[hsl(var(--primary))]/30 shadow-lg">
               <Book className="w-4 h-4 ml-2" />
               {levelText}
             </Badge>
