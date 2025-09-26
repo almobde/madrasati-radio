@@ -54,7 +54,7 @@ const TopicsList = () => {
               <div className="text-center md:text-right">
                 <div className="flex items-center justify-center md:justify-start gap-4 mb-4">
                   <Radio className="w-12 h-12 text-[hsl(var(--primary))]" />
-                  <h1 className="text-5xl md:text-6xl font-heading font-bold text-black">
+                  <h1 className="text-4xl md:text-5xl font-heading font-bold text-black">
                     مكتبة المواضيع الإذاعية
                   </h1>
                   <Globe className="w-12 h-12 text-[hsl(var(--primary))]" />
