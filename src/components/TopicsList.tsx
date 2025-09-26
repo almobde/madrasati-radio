@@ -1,174 +1,101 @@
-// مكون قائمة المواضيع الجديد - New Modern Topics List
+// قائمة المواضيع الإذاعية - Radio Topics List
 import { useState } from 'react';
-import { ModernCard } from '@/components/ui/modern-card';
-import { ModernButton } from '@/components/ui/modern-button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
+import { Search, Radio, Book, ArrowLeft } from 'lucide-react';
+import { ModernCard } from './ui/modern-card';
+import { Badge } from './ui/badge';
+import { Input } from './ui/input';
 import { useAppContext } from '../context/AppContext';
 import { topics } from '../data/topics';
-import { Search, Book, ArrowRight, Sparkles, Radio, Settings, Globe } from 'lucide-react';
 
 const TopicsList = () => {
-  const { preferences, setCurrentTopic, setPreferences } = useAppContext();
+  const { preferences, setCurrentTopic } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
 
-  // دالة للحصول على المحتوى حسب المرحلة التعليمية
-  const getContentByLevel = (content: any) => {
-    if (!preferences) return content.middle || content;
+  // تصفية المواضيع حسب البحث فقط
+  const filteredTopics = topics.filter(topic => {
+    const matchesSearch = !searchTerm || 
+      topic.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      topic.category.toLowerCase().includes(searchTerm.toLowerCase());
     
-    switch (preferences.educationLevel) {
-      case 'primary': return content.primary || content;
-      case 'middle': return content.middle || content;
-      case 'secondary': return content.secondary || content;
-      default: return content.middle || content;
-    }
-  };
+    return matchesSearch;
+  });
 
-  // المواضيع المتاحة
-  const availableTopics = topics;
-
-  const filteredTopics = availableTopics.filter(topic =>
-    topic.title.includes(searchTerm) || topic.category.includes(searchTerm)
-  );
-
-  const handleTopicSelect = (topic: typeof availableTopics[0]) => {
-    setCurrentTopic(topic);
-  };
-
-  const handleBackToPreferences = () => {
-    setPreferences(null as any);
-  };
-
-  const genderText = preferences?.gender === 'boys' ? 'بنين' : 'بنات';
-  const levelText = 
-    preferences?.educationLevel === 'primary' ? 'ابتدائي' :
-    preferences?.educationLevel === 'middle' ? 'متوسط' : 'ثانوي';
+  const genderText = preferences?.gender === 'girls' ? 'طالبات' : 'طلاب';
+  const levelText = preferences?.educationLevel === 'elementary' ? 'ابتدائي' : 
+                   preferences?.educationLevel === 'middle' ? 'متوسط' : 'ثانوي';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--background))] via-[hsl(var(--secondary))]/40 to-[hsl(var(--accent))]/20 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* رأس الصفحة الفاخر */}
-        <div className="mb-12 fade-in">
-          <ModernCard variant="glass" padding="lg" className="mb-8">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-              <div className="text-center md:text-right">
-                <div className="flex items-center justify-center md:justify-start gap-4 mb-4">
-                  <Radio className="w-12 h-12 text-[hsl(var(--primary))]" />
-                  <h1 className="text-3xl md:text-4xl font-heading font-bold text-black">
-                    مكتبة المواضيع الإذاعية
-                  </h1>
-                  <Globe className="w-12 h-12 text-[hsl(var(--primary))]" />
-                </div>
-                <p className="text-xl text-muted-foreground font-body">
-                  اختر من مجموعة متنوعة من المواضيع المتخصصة والمعدة بعناية
-                </p>
-              </div>
-              <ModernButton 
-                variant="glass" 
-                onClick={handleBackToPreferences}
-                className="font-body"
-              >
-                <Settings className="w-5 h-5" />
-                تغيير التفضيلات
-              </ModernButton>
-            </div>
-          </ModernCard>
-          
-          <div className="flex justify-center gap-4 mb-8">
-            <Badge className="text-base font-body py-3 px-6 rounded-full bg-gradient-to-r from-[hsl(var(--primary))]/20 to-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] border-2 border-[hsl(var(--primary))]/30 shadow-lg">
-              <Sparkles className="w-4 h-4 ml-2" />
-              {genderText}
-            </Badge>
-            <Badge className="text-base font-body py-3 px-6 rounded-full bg-gradient-to-r from-[hsl(var(--primary))]/20 to-[hsl(var(--primary))]/10 text-black border-2 border-[hsl(var(--primary))]/30 shadow-lg">
-              <Book className="w-4 h-4 ml-2" />
-              {levelText}
-            </Badge>
-          </div>
-
-          {/* شريط البحث الفاخر */}
-          <ModernCard variant="glass" padding="default" className="max-w-2xl mx-auto">
-            <div className="relative">
-              <Search className="absolute right-6 top-1/2 transform -translate-y-1/2 text-[hsl(var(--primary))] w-6 h-6" />
-              <Input
-                type="text"
-                placeholder="🔍 ابحث في مكتبة المواضيع المتنوعة..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pr-16 py-4 text-xl font-body rounded-2xl border-2 border-[hsl(var(--primary))]/30 focus:border-[hsl(var(--primary))] bg-white/90 backdrop-blur-sm shadow-lg"
-              />
-            </div>
-          </ModernCard>
-        </div>
-
-        {/* قائمة المواضيع الفاخرة */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 slide-up">
-          {filteredTopics.map((topic, index) => (
-            <ModernCard 
-              key={topic.id} 
-              variant="luxury" 
-              padding="lg"
-              className="cursor-pointer group hover:shadow-2xl transition-all duration-500 hover:scale-[1.03] hover:-translate-y-2"
-            >
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--primary-dark))] flex items-center justify-center shadow-lg">
-                      <span className="text-blue-600 font-bold text-lg">{index + 1}</span>
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-heading font-bold text-foreground group-hover:text-[hsl(var(--primary))] transition-colors leading-tight">
-                        {topic.title}
-                      </h3>
-                      <Badge className="mt-2 text-sm font-body py-1 px-4 rounded-full bg-gradient-to-r from-[hsl(var(--primary))]/20 to-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30">
-                        {topic.category}
-                      </Badge>
-                    </div>
-                  </div>
-                </div>
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[hsl(var(--primary))]/20 to-[hsl(var(--accent))]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <Book className="w-8 h-8 text-[hsl(var(--primary))] group-hover:text-[hsl(var(--primary-dark))]" />
-                </div>
-              </div>
-              
-              <p className="text-muted-foreground text-base font-body mb-8 line-clamp-3 leading-relaxed">
-                {getContentByLevel(topic.content.introduction)}
-              </p>
-              
-              <ModernButton 
-                onClick={() => handleTopicSelect(topic)}
-                variant="premium"
-                className="w-full group-hover:shadow-[0_0_30px_hsl(var(--primary))/40] transition-all duration-300 font-body"
-              >
-                <Sparkles className="w-5 h-5" />
-                <span>اختر هذا الموضوع</span>
-                <ArrowRight className="w-5 h-5" />
-              </ModernButton>
-            </ModernCard>
-          ))}
-        </div>
-
-        {/* حالة عدم وجود نتائج */}
-        {filteredTopics.length === 0 && (
-          <ModernCard variant="glass" padding="xl" className="text-center max-w-2xl mx-auto">
-            <div className="text-8xl mb-6">🔍</div>
-            <h3 className="text-3xl font-heading font-bold text-foreground mb-4">
-              لم نعثر على نتائج مطابقة
-            </h3>
-            <p className="text-xl text-muted-foreground font-body leading-relaxed mb-6">
-              جرب البحث بكلمات مختلفة أو تصفح جميع المواضيع المتاحة
-            </p>
-            <ModernButton 
-              variant="glass"
-              onClick={() => setSearchTerm('')}
-              className="font-body"
-            >
-              <Globe className="w-5 h-5" />
-              عرض جميع المواضيع
-            </ModernButton>
-          </ModernCard>
-        )}
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      
+      {/* العنوان الرئيسي البسيط */}
+      <div className="text-center mb-12">
+        <h1 className="text-3xl md:text-4xl font-heading font-bold text-radio-dark mb-4">
+          مكتبة المواضيع الإذاعية
+        </h1>
+        <p className="text-gray-600 font-body max-w-2xl mx-auto">
+          اختر من مجموعة متنوعة من المواضيع المتخصصة والمعدة بعناية لطلاب {genderText} - المرحلة {levelText}
+        </p>
       </div>
-    </div>
+
+      {/* شريط البحث */}
+      <div className="max-w-md mx-auto mb-8">
+        <div className="relative">
+          <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <Input
+            type="text"
+            placeholder="ابحث في المواضيع..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pr-10 rounded-lg border-gray-300 focus:ring-radio-gold focus:border-radio-gold"
+          />
+        </div>
+      </div>
+
+      {/* شبكة المواضيع */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {filteredTopics.map((topic, index) => (
+          <ModernCard
+            key={topic.id}
+            variant="luxury"
+            padding="none"
+            className="group cursor-pointer hover:shadow-lg transition-all duration-300 overflow-hidden"
+            onClick={() => setCurrentTopic(topic)}
+          >
+            {/* صورة الموضوع */}
+            <div className="aspect-[4/3] bg-gradient-to-br from-radio-gold/10 to-radio-gold/5 relative overflow-hidden">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-16 h-16 bg-radio-gold rounded-full flex items-center justify-center shadow-lg">
+                  <Radio className="w-8 h-8 text-white" />
+                </div>
+              </div>
+              <div className="absolute top-3 right-3">
+                <Badge className="bg-white/90 text-radio-dark text-xs px-2 py-1 font-medium">
+                  {topic.category}
+                </Badge>
+              </div>
+            </div>
+
+            {/* محتوى الكارت */}
+            <div className="p-4">
+              <h3 className="font-heading font-bold text-radio-dark text-lg mb-2 line-clamp-2">
+                {topic.title}
+              </h3>
+              
+              {/* تفاصيل إضافية */}
+              <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                <div className="flex items-center gap-2">
+                  <Book className="w-4 h-4 text-gray-400" />
+                  <span className="text-xs text-gray-500 font-body">
+                    موضوع تعليمي
+                  </span>
+                </div>
+                <ArrowLeft className="w-4 h-4 text-radio-gold opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+              </div>
+            </div>
+          </ModernCard>
+        ))}
+      </div>
+    </main>
   );
 };
 

@@ -57,12 +57,12 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // 🎨 ألوان الإذاعة الكونية - Cosmic Radio Colors
+        // 🏆 ألوان الإذاعة الفاخرة - Luxury Radio Colors
         radio: {
-          coral: "hsl(var(--radio-coral))",    /* وردي كهربائي */
-          mint: "hsl(var(--radio-mint))",      /* أخضر نيون */
-          gold: "hsl(var(--radio-gold))",      /* أصفر نيون */
-          navy: "hsl(var(--radio-navy))",      /* أزرق ليلي */
+          gold: "hsl(var(--radio-gold))",      /* ذهبي أساسي */
+          dark: "hsl(var(--radio-dark))",      /* رمادي داكن */
+          light: "hsl(var(--radio-light))",    /* رمادي فاتح */
+          accent: "hsl(var(--radio-accent))",  /* كحلي أنيق */
         },
         boys: {
           primary: "hsl(var(--boys-primary))",
@@ -93,21 +93,21 @@ export default {
         'body': ['Noto Sans Arabic', 'Cairo', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
-        'gradient-sunrise': 'var(--gradient-sunrise)',
-        'gradient-ocean': 'var(--gradient-ocean)',
-        'gradient-warm': 'var(--gradient-warm)',
+        'gradient-primary': 'var(--gradient-primary)',
+        'gradient-dark': 'var(--gradient-dark)',
+        'gradient-light': 'var(--gradient-light)',
         'gradient-subtle': 'var(--gradient-subtle)',
         'gradient-hero': 'var(--gradient-hero)',
         'boys-gradient': 'var(--boys-gradient)',
         'girls-gradient': 'var(--girls-gradient)',
       },
       boxShadow: {
-        'elegant': '0 15px 50px -10px rgba(0, 0, 0, 0.12)',
-        'glow': '0 0 40px rgba(var(--primary-rgb), 0.4)',
-        'card': '0 8px 30px -5px rgba(0, 0, 0, 0.1)',
-        'radio': '0 20px 60px -10px rgba(147, 51, 234, 0.25)',     /* أرجواني */
-        'coral': '0 15px 40px -5px rgba(236, 72, 153, 0.3)',       /* وردي كهربائي */
-        'gold': '0 10px 35px -5px rgba(250, 204, 21, 0.4)',        /* أصفر نيون */
+        'elegant': '0 4px 12px -2px rgba(0, 0, 0, 0.08)',
+        'glow': '0 0 20px rgba(var(--primary-rgb), 0.3)',
+        'card': '0 2px 8px -1px rgba(0, 0, 0, 0.06)',
+        'radio': '0 8px 25px -5px rgba(218, 165, 32, 0.25)',     /* ذهبي */
+        'luxury': '0 10px 30px -10px rgba(0, 0, 0, 0.1)',        /* أنيق */
+        'soft': '0 2px 4px -1px rgba(0, 0, 0, 0.06)',            /* ناعم */
       },
       borderRadius: {
         lg: "var(--radius)",

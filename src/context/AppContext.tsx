@@ -40,7 +40,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         themeClass,
       }}
     >
-      <div className={`min-h-screen ${themeClass}`}>
+      <div className={`min-h-screen bg-gray-50 ${themeClass}`}>
         {children}
       </div>
     </AppContext.Provider>
