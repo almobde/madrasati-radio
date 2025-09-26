@@ -167,6 +167,7 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-size: 0.9rem; /* تصغير الخط الأساسي قليلاً */
   }
   
   /* 📻 خطوط الإذاعة العربية الإبداعية - Creative Arabic Radio Fonts */
