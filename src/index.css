@@ -9,54 +9,54 @@
 
 @layer base {
   :root {
-    /* 🌅 ألوان الفجر والإشراق - Sunrise & Dawn Colors */
-    --background: 35 25% 98%;
-    --foreground: 25 35% 12%;
+    /* 🌟 ألوان المجرة الليلية - Galaxy Night Colors */
+    --background: 260 15% 96%;
+    --foreground: 260 25% 15%;
     
     /* 🏛️ كروت ومحتوى أنيق - Elegant Cards & Content */
-    --card: 45 40% 99%;
-    --card-foreground: 25 35% 12%;
+    --card: 270 30% 98%;
+    --card-foreground: 260 25% 15%;
     
     /* 💫 منبثقات ساحرة - Magical Popovers */
-    --popover: 45 40% 99%;
-    --popover-foreground: 25 35% 12%;
+    --popover: 270 30% 98%;
+    --popover-foreground: 260 25% 15%;
     
-    /* 🎨 لوحة الألوان الإبداعية الجديدة - New Creative Color Palette */
-    /* 🌊 تدرج الفيروز والذهبي - Teal & Gold Gradient Theme */
-    --primary: 185 85% 45%;           /* فيروز عميق - Deep Teal */
-    --primary-dark: 185 95% 35%;     /* فيروز أعمق - Deeper Teal */
-    --primary-light: 185 75% 55%;    /* فيروز فاتح - Light Teal */
+    /* 🎨 لوحة الألوان الكونية الجديدة - New Cosmic Color Palette */
+    /* 🌌 تدرج أرجواني ووردي نيون - Purple & Neon Pink Theme */
+    --primary: 280 85% 60%;           /* أرجواني كوني - Cosmic Purple */
+    --primary-dark: 280 95% 50%;     /* أرجواني عميق - Deep Purple */
+    --primary-light: 280 75% 70%;    /* أرجواني فاتح - Light Purple */
     --primary-foreground: 0 0% 100%;
-    --primary-rgb: 22 160 177;
+    --primary-rgb: 147 51 234;
     
-    --secondary: 45 90% 95%;          /* كريمي ذهبي - Creamy Gold */
-    --secondary-foreground: 25 35% 12%;
+    --secondary: 320 80% 95%;         /* وردي كريمي - Creamy Pink */
+    --secondary-foreground: 260 25% 15%;
     
-    --accent: 35 85% 88%;             /* برتقالي دافئ - Warm Orange */
-    --accent-foreground: 25 35% 12%;
+    --accent: 120 70% 88%;            /* أخضر نعناعي - Mint Green */
+    --accent-foreground: 260 25% 15%;
     
-    /* 🎵 ألوان الإذاعة المدرسية - School Radio Colors */
-    --radio-coral: 15 85% 65%;       /* مرجاني مشع - Radiant Coral */
-    --radio-mint: 165 65% 75%;       /* نعناعي منعش - Fresh Mint */
-    --radio-gold: 45 95% 70%;        /* ذهبي ملكي - Royal Gold */
-    --radio-navy: 210 85% 25%;       /* كحلي أنيق - Elegant Navy */
+    /* 🎵 ألوان الإذاعة الكونية - Cosmic Radio Colors */
+    --radio-coral: 340 85% 65%;      /* وردي كهربائي - Electric Pink */
+    --radio-mint: 160 70% 65%;       /* أخضر نيون - Neon Green */
+    --radio-gold: 60 95% 60%;        /* أصفر نيون - Neon Yellow */
+    --radio-navy: 220 90% 25%;       /* أزرق ليلي - Night Blue */
     
-    /* 🌈 تدرجات إبداعية - Creative Gradients */
-    --gradient-sunrise: linear-gradient(135deg, hsl(185 85% 45%) 0%, hsl(35 85% 65%) 50%, hsl(45 95% 70%) 100%);
-    --gradient-ocean: linear-gradient(135deg, hsl(185 85% 45%) 0%, hsl(165 65% 55%) 100%);
-    --gradient-warm: linear-gradient(135deg, hsl(15 85% 65%) 0%, hsl(35 85% 70%) 100%);
-    --gradient-subtle: linear-gradient(135deg, hsl(45 90% 98%) 0%, hsl(185 30% 97%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(185 85% 45%) 0%, hsl(15 85% 65%) 35%, hsl(45 95% 70%) 100%);
+    /* 🌈 تدرجات كونية إبداعية - Creative Cosmic Gradients */
+    --gradient-sunrise: linear-gradient(135deg, hsl(280 85% 60%) 0%, hsl(340 85% 65%) 50%, hsl(60 95% 60%) 100%);
+    --gradient-ocean: linear-gradient(135deg, hsl(280 85% 60%) 0%, hsl(220 90% 45%) 100%);
+    --gradient-warm: linear-gradient(135deg, hsl(340 85% 65%) 0%, hsl(320 80% 70%) 100%);
+    --gradient-subtle: linear-gradient(135deg, hsl(320 80% 98%) 0%, hsl(280 30% 97%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(280 85% 60%) 0%, hsl(340 85% 65%) 35%, hsl(160 70% 65%) 100%);
     
     /* 🎭 تصميمات متخصصة للأقسام - Specialized Section Themes */
-    --boys-primary: 185 85% 45%;
-    --boys-secondary: 210 60% 92%;
-    --boys-accent: 185 40% 90%;
+    --boys-primary: 280 85% 60%;
+    --boys-secondary: 220 70% 92%;
+    --boys-accent: 280 40% 90%;
     --boys-gradient: var(--gradient-ocean);
     
-    --girls-primary: 15 85% 65%;
-    --girls-secondary: 35 70% 92%;
-    --girls-accent: 15 45% 90%;
+    --girls-primary: 340 85% 65%;
+    --girls-secondary: 320 70% 92%;
+    --girls-accent: 340 45% 90%;
     --girls-gradient: var(--gradient-warm);
     
     /* ألوان مساعدة - Helper Colors */
@@ -135,17 +135,17 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   
-  /* 🎯 ثيم الطالبات - Girls Creative Theme */
+  /* 🎯 ثيم الطالبات - Girls Cosmic Theme */
   .girls-theme {
     --primary: var(--radio-coral);
-    --primary-dark: 15 95% 55%;
-    --primary-light: 15 75% 75%;
+    --primary-dark: 340 95% 55%;
+    --primary-light: 340 75% 75%;
     --secondary: var(--girls-secondary);
     --accent: var(--girls-accent);
     background: var(--gradient-warm);
   }
   
-  /* 🚀 ثيم الطلاب - Boys Creative Theme */
+  /* 🚀 ثيم الطلاب - Boys Cosmic Theme */
   .boys-theme {
     --primary: var(--primary);
     --primary-dark: var(--primary-dark);

@@ -57,12 +57,12 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // 🎨 ألوان الإذاعة الإبداعية - Creative Radio Colors
+        // 🎨 ألوان الإذاعة الكونية - Cosmic Radio Colors
         radio: {
-          coral: "hsl(var(--radio-coral))",
-          mint: "hsl(var(--radio-mint))",
-          gold: "hsl(var(--radio-gold))",
-          navy: "hsl(var(--radio-navy))",
+          coral: "hsl(var(--radio-coral))",    /* وردي كهربائي */
+          mint: "hsl(var(--radio-mint))",      /* أخضر نيون */
+          gold: "hsl(var(--radio-gold))",      /* أصفر نيون */
+          navy: "hsl(var(--radio-navy))",      /* أزرق ليلي */
         },
         boys: {
           primary: "hsl(var(--boys-primary))",
@@ -105,9 +105,9 @@ export default {
         'elegant': '0 15px 50px -10px rgba(0, 0, 0, 0.12)',
         'glow': '0 0 40px rgba(var(--primary-rgb), 0.4)',
         'card': '0 8px 30px -5px rgba(0, 0, 0, 0.1)',
-        'radio': '0 20px 60px -10px rgba(22, 160, 177, 0.25)',
-        'coral': '0 15px 40px -5px rgba(248, 113, 113, 0.3)',
-        'gold': '0 10px 35px -5px rgba(251, 191, 36, 0.4)',
+        'radio': '0 20px 60px -10px rgba(147, 51, 234, 0.25)',     /* أرجواني */
+        'coral': '0 15px 40px -5px rgba(236, 72, 153, 0.3)',       /* وردي كهربائي */
+        'gold': '0 10px 35px -5px rgba(250, 204, 21, 0.4)',        /* أصفر نيون */
       },
       borderRadius: {
         lg: "var(--radius)",
