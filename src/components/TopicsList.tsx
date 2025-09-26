@@ -113,7 +113,7 @@ const TopicsList = () => {
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--primary-dark))] flex items-center justify-center shadow-lg">
-                      <span className="text-white font-bold text-lg">{index + 1}</span>
+                      <span className="text-blue-600 font-bold text-lg">{index + 1}</span>
                     </div>
                     <div>
                       <h3 className="text-2xl font-heading font-bold text-foreground group-hover:text-[hsl(var(--primary))] transition-colors leading-tight">
