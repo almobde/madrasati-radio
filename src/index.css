@@ -2,66 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 🏆 هوية فاخرة مستوحاة من التصميم العصري - Luxury Identity Inspired by Modern Design
-   تصميم أنيق بخلفية داكنة مع لمسات ذهبية راقية
-   ألوان رمادية داكنة مع ذهبي - Dark gray with elegant gold accents
+/* 🎨 هوية عصرية جريئة - Modern Bold Identity
+   تصميم أنيق بألوان جريئة ومعاصرة
+   أزرق عميق مع برتقالي وتدرجات أنيقة
 */
 
 @layer base {
   :root {
-    /* 🌚 ألوان التصميم الفاخر - Luxury Design Colors */
-    --background: 220 15% 95%;
-    --foreground: 220 15% 10%;
+    /* 🌟 ألوان عصرية جريئة - Modern Bold Colors */
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
     
-    /* 🏛️ كروت ومحتوى أنيق - Elegant Cards & Content */
+    /* 🏛️ كروت ومحتوى */
     --card: 0 0% 100%;
-    --card-foreground: 220 15% 10%;
+    --card-foreground: 222 47% 11%;
     
-    /* 💫 منبثقات أنيقة - Elegant Popovers */
+    /* 💫 منبثقات */
     --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 10%;
+    --popover-foreground: 222 47% 11%;
     
-    /* 🎨 لوحة الألوان الفاخرة - Luxury Color Palette */
-    /* 🥇 ذهبي ورمادي داكن - Gold & Dark Gray Theme */
-    --primary: 45 95% 50%;            /* ذهبي أنيق - Elegant Gold */
-    --primary-dark: 45 100% 40%;      /* ذهبي غامق - Dark Gold */
-    --primary-light: 45 90% 60%;      /* ذهبي فاتح - Light Gold */
-    --primary-foreground: 220 20% 10%;
-    --primary-rgb: 218 165 32;
+    /* 🎨 لوحة الألوان الأساسية - Primary Color Palette */
+    --primary: 217 91% 60%;           /* أزرق حيوي - Vibrant Blue */
+    --primary-dark: 217 91% 45%;      /* أزرق داكن - Dark Blue */
+    --primary-light: 217 91% 70%;     /* أزرق فاتح - Light Blue */
+    --primary-foreground: 0 0% 100%;
+    --primary-rgb: 59 130 246;
     
-    --secondary: 220 15% 96%;         /* رمادي فاتح - Light Gray */
-    --secondary-foreground: 220 15% 10%;
+    --secondary: 25 95% 53%;          /* برتقالي نابض - Vibrant Orange */
+    --secondary-foreground: 0 0% 100%;
     
-    --accent: 220 10% 90%;            /* رمادي أفتح - Lighter Gray */
-    --accent-foreground: 220 15% 10%;
+    --accent: 142 76% 36%;            /* أخضر أنيق - Elegant Green */
+    --accent-foreground: 0 0% 100%;
     
-    /* 🎵 ألوان الإذاعة الفاخرة - Luxury Radio Colors */
-    --radio-gold: 45 95% 50%;         /* ذهبي أساسي - Primary Gold */
-    --radio-dark: 220 25% 15%;        /* رمادي داكن - Dark Gray */
-    --radio-light: 220 15% 85%;       /* رمادي فاتح - Light Gray */
-    --radio-accent: 200 15% 25%;      /* كحلي أنيق - Elegant Navy */
+    /* 🎵 ألوان مخصصة - Custom Colors */
+    --radio-gold: 25 95% 53%;         /* برتقالي دافئ */
+    --radio-dark: 222 47% 11%;        /* أزرق داكن جداً */
+    --radio-light: 210 20% 98%;       /* رمادي فاتح */
+    --radio-accent: 142 76% 36%;      /* أخضر */
     
-    /* 🌟 تدرجات فاخرة - Luxury Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(45 95% 50%) 0%, hsl(45 100% 40%) 100%);
-    --gradient-dark: linear-gradient(135deg, hsl(220 25% 15%) 0%, hsl(220 20% 20%) 100%);
-    --gradient-light: linear-gradient(135deg, hsl(220 15% 96%) 0%, hsl(0 0% 100%) 100%);
-    --gradient-subtle: linear-gradient(135deg, hsl(220 15% 98%) 0%, hsl(220 10% 95%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(220 25% 15%) 0%, hsl(220 20% 10%) 50%, hsl(45 95% 50%) 100%);
+    /* 🌟 تدرجات عصرية - Modern Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(217 91% 45%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(25 95% 53%) 0%, hsl(25 95% 43%) 100%);
+    --gradient-dark: linear-gradient(135deg, hsl(222 47% 11%) 0%, hsl(222 47% 20%) 100%);
+    --gradient-light: linear-gradient(135deg, hsl(210 20% 98%) 0%, hsl(0 0% 100%) 100%);
+    --gradient-subtle: linear-gradient(135deg, hsl(210 20% 98%) 0%, hsl(217 91% 97%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(222 47% 11%) 50%, hsl(25 95% 53%) 100%);
     
-    /* 🎭 تصميمات متخصصة للأقسام - Specialized Section Themes */
-    --boys-primary: 45 95% 50%;
-    --boys-secondary: 220 15% 96%;
-    --boys-accent: 220 10% 90%;
+    /* 🎭 تصميمات متخصصة */
+    --boys-primary: 217 91% 60%;
+    --boys-secondary: 25 95% 53%;
+    --boys-accent: 142 76% 36%;
     --boys-gradient: var(--gradient-primary);
     
-    --girls-primary: 45 95% 50%;
-    --girls-secondary: 220 15% 96%;
-    --girls-accent: 220 10% 90%;
-    --girls-gradient: var(--gradient-primary);
+    --girls-primary: 340 82% 52%;
+    --girls-secondary: 291 64% 42%;
+    --girls-accent: 45 93% 47%;
+    --girls-gradient: linear-gradient(135deg, hsl(340 82% 52%) 0%, hsl(291 64% 42%) 100%);
     
-    /* ألوان مساعدة - Helper Colors */
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* ألوان مساعدة */
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 16% 47%;
     
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
@@ -72,87 +72,77 @@
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
     
-    /* حدود وإدخال - Borders & Input */
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
+    /* حدود وإدخال */
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
     --ring: hsl(var(--primary));
     
-    /* نصف القطر - Border Radius */
+    /* نصف القطر */
     --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 20% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 217 91% 60%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 222 47% 11%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 222 47% 11%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 222 47% 11%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 25 95% 53%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 142 76% 36%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 217 91% 60%;
+    
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 217 91% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 217 33% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 17%;
+    --sidebar-ring: 217 91% 60%;
   }
   
-  /* 🎯 ثيم الطالبات - Girls Luxury Theme */
+  /* 🎯 ثيم الطالبات */
   .girls-theme {
-    --primary: var(--radio-gold);
-    --primary-dark: var(--primary-dark);
-    --primary-light: var(--primary-light);
+    --primary: var(--girls-primary);
     --secondary: var(--girls-secondary);
     --accent: var(--girls-accent);
-    background: var(--gradient-light);
+    background: var(--girls-gradient);
   }
   
-  /* 🚀 ثيم الطلاب - Boys Luxury Theme */
+  /* 🚀 ثيم الطلاب */
   .boys-theme {
-    --primary: var(--radio-gold);
-    --primary-dark: var(--primary-dark);
-    --primary-light: var(--primary-light);
+    --primary: var(--boys-primary);
     --secondary: var(--boys-secondary);
     --accent: var(--boys-accent);
-    background: var(--gradient-light);
+    background: var(--boys-gradient);
   }
 }
 
@@ -167,38 +157,36 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: 0.9rem; /* تصغير الخط الأساسي قليلاً */
   }
   
-  /* 📻 خطوط الإذاعة العربية الإبداعية - Creative Arabic Radio Fonts */
+  /* 📻 خطوط عصرية أنيقة - Modern Elegant Fonts */
   .font-arabic {
-    font-family: 'Cairo', 'Noto Sans Arabic', 'Tajawal', system-ui, sans-serif;
+    font-family: 'Tajawal', 'IBM Plex Sans Arabic', 'Almarai', system-ui, sans-serif;
     direction: rtl;
     text-align: right;
-    line-height: 1.9;
-    word-spacing: 0.15em;
+    line-height: 1.8;
+    letter-spacing: 0.01em;
     font-weight: 500;
   }
   
   .font-heading {
-    font-family: 'Amiri', 'Scheherazade New', 'Cairo', serif;
+    font-family: 'Tajawal', 'Almarai', 'IBM Plex Sans Arabic', sans-serif;
     direction: rtl;
     text-align: right;
-    line-height: 1.7;
-    font-weight: 700;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    line-height: 1.6;
+    font-weight: 800;
+    letter-spacing: -0.02em;
   }
   
   .font-body {
-    font-family: 'Noto Sans Arabic', 'Cairo', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+    font-family: 'IBM Plex Sans Arabic', 'Tajawal', 'Almarai', system-ui, sans-serif;
     direction: rtl;
     text-align: right;
     line-height: 1.8;
-    letter-spacing: 0.03em;
     font-weight: 400;
   }
 
-  /* 📝 تحسين النصوص العربية - Arabic Text Enhancement */
+  /* 📝 تحسين النصوص العربية */
   p, div, span {
     direction: rtl;
     text-align: right;
@@ -207,7 +195,6 @@
     overflow-wrap: break-word;
   }
 
-  /* 🎯 منع تداخل النصوص - Prevent Text Overlap */
   .content-box {
     display: block;
     width: 100%;
@@ -239,82 +226,50 @@
 }
 
 @layer components {
-  /* 🏆 أزرار الإذاعة الفاخرة - Luxury Radio Buttons */
+  /* 🏆 أزرار عصرية */
   .btn-premium {
     @apply relative overflow-hidden bg-[image:var(--gradient-primary)]
-           text-[hsl(var(--radio-dark))] font-bold py-4 px-8 rounded-lg shadow-lg
-           hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]
-           transition-all duration-300 ease-out border border-[hsl(var(--primary))]/20
-           before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/10 before:via-transparent before:to-white/10 
-           before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-500;
+           text-white font-bold py-4 px-8 rounded-xl shadow-lg
+           hover:shadow-xl hover:scale-105 active:scale-95
+           transition-all duration-300 ease-out;
   }
   
   .btn-glass {
-    @apply relative bg-white/80 backdrop-blur-sm text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30
-           font-semibold py-3 px-6 rounded-lg shadow-sm
-           hover:bg-white hover:shadow-md hover:border-[hsl(var(--primary))]/50
-           hover:scale-[1.01] transition-all duration-200 ease-out;
+    @apply relative bg-white/90 backdrop-blur-sm text-primary border-2 border-primary/30
+           font-semibold py-3 px-6 rounded-xl shadow-sm
+           hover:bg-white hover:shadow-lg hover:border-primary/50
+           hover:scale-105 transition-all duration-300 ease-out;
   }
   
   .btn-neon {
-    @apply relative bg-transparent text-[hsl(var(--primary))] border border-[hsl(var(--primary))]
-           font-semibold py-3 px-6 rounded-lg
-           hover:bg-[hsl(var(--primary))] hover:text-[hsl(var(--radio-dark))] hover:shadow-md
-           transition-all duration-200 ease-out;
+    @apply relative bg-transparent text-primary border-2 border-primary
+           font-bold py-3 px-6 rounded-xl
+           hover:bg-primary hover:text-white hover:shadow-lg
+           transition-all duration-300 ease-out;
   }
   
-  /* 🏆 كروت الإذاعة الفاخرة - Luxury Radio Cards */
+  /* 🏆 كروت عصرية */
   .card-luxury {
     @apply relative overflow-hidden bg-white
-           rounded-xl shadow-lg border border-gray-200
+           rounded-2xl shadow-lg border border-gray-200
            transition-all duration-300 ease-out hover:scale-[1.02]
-           hover:shadow-xl hover:border-[hsl(var(--primary))]/30;
+           hover:shadow-2xl hover:border-primary/30;
   }
   
   .card-glass {
-    @apply relative bg-white/90 backdrop-blur-sm border border-gray-200
-           rounded-xl shadow-sm hover:shadow-md
-           transition-all duration-200 ease-out hover:scale-[1.01];
+    @apply relative bg-white/95 backdrop-blur-sm border-2 border-gray-200
+           rounded-2xl shadow-md hover:shadow-xl
+           transition-all duration-300 ease-out hover:scale-[1.02];
   }
   
   .card-neon {
-    @apply relative bg-white border border-[hsl(var(--primary))]/20
-           rounded-xl shadow-sm
-           hover:border-[hsl(var(--primary))]/40 hover:shadow-md
-           transition-all duration-200 ease-out;
+    @apply relative bg-white border-2 border-primary/20
+           rounded-2xl shadow-md
+           hover:border-primary/40 hover:shadow-xl
+           transition-all duration-300 ease-out;
   }
   
-  /* 📻 تبويبات الإذاعة الفاخرة - Luxury Radio Tabs */
-  .tab-luxury-active {
-    @apply relative overflow-hidden bg-[image:var(--gradient-sunrise)]
-           text-white shadow-[0_15px_40px_-5px_hsl(var(--primary))/30] font-bold rounded-t-3xl px-10 py-5
-           border-t-4 border-[hsl(var(--radio-gold))]
-           before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/20 before:via-transparent before:to-transparent
-           after:absolute after:bottom-0 after:left-0 after:right-0 after:h-2 after:bg-gradient-to-r 
-           after:from-[hsl(var(--radio-coral))] after:via-[hsl(var(--radio-gold))] after:to-[hsl(var(--radio-mint))]
-           transform scale-[1.05] z-50 relative transition-all duration-700 hover:scale-[1.07];
-  }
-  
-  .tab-luxury-inactive {
-    @apply relative bg-white/85 backdrop-blur-lg text-[hsl(var(--primary))] 
-           border-2 border-[hsl(var(--primary))]/30 font-semibold rounded-t-3xl px-10 py-5
-           hover:bg-white/95 hover:border-[hsl(var(--radio-gold))]/50 hover:shadow-[0_10px_30px_-5px_rgba(0,0,0,0.1)]
-           hover:scale-[1.02] hover:text-[hsl(var(--radio-coral))] transition-all duration-500 ease-out z-40 relative;
-  }
-  
-  /* حل مشكلة التداخل مع المحتوى */
-  .tabs-content-safe {
-    position: relative;
-    z-index: 10;
-    margin-top: 4rem;
-    clear: both;
-    background: white;
-    border-radius: 2rem;
-    padding: 2rem;
-    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* ✨ انتقالات متقدمة - Advanced Transitions */
+  /* ✨ انتقالات متقدمة */
   .fade-in {
     @apply animate-in fade-in-0 slide-in-from-bottom-2 duration-700 ease-out;
   }
@@ -327,17 +282,16 @@
     @apply animate-in zoom-in-95 fade-in-0 duration-300 ease-out;
   }
   
-  /* 🎨 تأثيرات بصرية احترافية */
+  /* 🎨 تأثيرات بصرية */
   .glass-effect {
     @apply bg-white/10 backdrop-blur-md border border-white/20;
   }
   
   .glow-effect {
-    @apply shadow-glow;
+    @apply shadow-[0_0_30px_rgba(59,130,246,0.3)];
   }
   
   .text-gradient {
-    @apply bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--primary-dark))] 
-           bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
   }
 }

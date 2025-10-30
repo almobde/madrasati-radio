@@ -21,7 +21,7 @@ const TopicsList = () => {
   });
 
   const genderText = preferences?.gender === 'girls' ? 'طالبات' : 'طلاب';
-  const levelText = preferences?.educationLevel === 'elementary' ? 'ابتدائي' : 
+  const levelText = preferences?.educationLevel === 'primary' ? 'ابتدائي' : 
                    preferences?.educationLevel === 'middle' ? 'متوسط' : 'ثانوي';
 
   return (

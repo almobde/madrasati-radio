@@ -88,9 +88,9 @@ export default {
         },
       },
       fontFamily: {
-        'arabic': ['Cairo', 'Noto Sans Arabic', 'system-ui', 'sans-serif'],
-        'heading': ['Amiri', 'Cairo', 'serif'],
-        'body': ['Noto Sans Arabic', 'Cairo', 'system-ui', 'sans-serif'],
+        'arabic': ['Tajawal', 'IBM Plex Sans Arabic', 'Almarai', 'system-ui', 'sans-serif'],
+        'heading': ['Tajawal', 'Almarai', 'IBM Plex Sans Arabic', 'sans-serif'],
+        'body': ['IBM Plex Sans Arabic', 'Tajawal', 'Almarai', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
         'gradient-primary': 'var(--gradient-primary)',
