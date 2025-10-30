@@ -46,6 +46,7 @@ export type Database = {
           category: string
           content: Json
           created_at: string
+          display_order: number
           education_level: string
           gender: string
           id: string
@@ -55,6 +56,7 @@ export type Database = {
           category?: string
           content: Json
           created_at?: string
+          display_order: number
           education_level: string
           gender: string
           id?: string
@@ -64,6 +66,7 @@ export type Database = {
           category?: string
           content?: Json
           created_at?: string
+          display_order?: number
           education_level?: string
           gender?: string
           id?: string

@@ -146,6 +146,16 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
   const handleAddToList = async () => {
     if (generatedTopic && preferences) {
       try {
+        // Get the maximum display_order
+        const { data: maxOrderData } = await supabase
+          .from('custom_topics')
+          .select('display_order')
+          .order('display_order', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        const newOrder = (maxOrderData?.display_order || 0) + 1;
+
         const { error } = await supabase
           .from('custom_topics')
           .insert({
@@ -154,6 +164,7 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
             gender: preferences.gender,
             education_level: preferences.educationLevel,
             content: generatedTopic.content,
+            display_order: newOrder,
           });
 
         if (error) throw error;

@@ -5,7 +5,7 @@ import { ModernCard } from '@/components/ui/modern-card';
 import { ModernButton } from '@/components/ui/modern-button';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { LogOut, Trash2, Radio, Home, Edit, Filter, Image as ImageIcon, ExternalLink, ToggleLeft, ToggleRight } from 'lucide-react';
+import { LogOut, Trash2, Radio, Home, Edit, Filter, Image as ImageIcon, ExternalLink, ToggleLeft, ToggleRight, ChevronUp, ChevronDown } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,6 +20,7 @@ interface Topic {
   education_level: string;
   content: any;
   created_at: string;
+  display_order: number;
 }
 
 interface Banner {
@@ -90,7 +91,7 @@ const Admin = () => {
     const { data } = await supabase
       .from('custom_topics')
       .select('*')
-      .order('created_at', { ascending: false });
+      .order('display_order', { ascending: true });
     
     if (data) setTopics(data);
   };
@@ -331,6 +332,58 @@ const Admin = () => {
     }
   };
 
+  const handleMoveUp = async (topic: Topic, currentIndex: number) => {
+    if (currentIndex === 0) return;
+
+    const previousTopic = filteredTopics[currentIndex - 1];
+
+    const { error: error1 } = await supabase
+      .from('custom_topics')
+      .update({ display_order: previousTopic.display_order })
+      .eq('id', topic.id);
+
+    const { error: error2 } = await supabase
+      .from('custom_topics')
+      .update({ display_order: topic.display_order })
+      .eq('id', previousTopic.id);
+
+    if (error1 || error2) {
+      toast({
+        title: 'خطأ',
+        description: 'حدث خطأ أثناء إعادة الترتيب',
+        variant: 'destructive',
+      });
+    } else {
+      fetchTopics();
+    }
+  };
+
+  const handleMoveDown = async (topic: Topic, currentIndex: number) => {
+    if (currentIndex === filteredTopics.length - 1) return;
+
+    const nextTopic = filteredTopics[currentIndex + 1];
+
+    const { error: error1 } = await supabase
+      .from('custom_topics')
+      .update({ display_order: nextTopic.display_order })
+      .eq('id', topic.id);
+
+    const { error: error2 } = await supabase
+      .from('custom_topics')
+      .update({ display_order: topic.display_order })
+      .eq('id', nextTopic.id);
+
+    if (error1 || error2) {
+      toast({
+        title: 'خطأ',
+        description: 'حدث خطأ أثناء إعادة الترتيب',
+        variant: 'destructive',
+      });
+    } else {
+      fetchTopics();
+    }
+  };
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate('/');
@@ -431,7 +484,7 @@ const Admin = () => {
             </ModernCard>
 
             {/* قائمة المواضيع المفلترة */}
-            {filteredTopics.map((topic) => (
+            {filteredTopics.map((topic, index) => (
               <ModernCard key={topic.id} className="p-4">
                 <div className="flex flex-col gap-3">
                   <div className="flex items-start justify-between gap-2">
@@ -455,7 +508,25 @@ const Admin = () => {
                     </div>
                   </div>
                   
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
+                    <ModernButton
+                      size="sm"
+                      variant="glass"
+                      onClick={() => handleMoveUp(topic, index)}
+                      disabled={index === 0}
+                      title="رفع للأعلى"
+                    >
+                      <ChevronUp className="w-4 h-4" />
+                    </ModernButton>
+                    <ModernButton
+                      size="sm"
+                      variant="glass"
+                      onClick={() => handleMoveDown(topic, index)}
+                      disabled={index === filteredTopics.length - 1}
+                      title="خفض للأسفل"
+                    >
+                      <ChevronDown className="w-4 h-4" />
+                    </ModernButton>
                     <ModernButton
                       size="sm"
                       variant="glass"
