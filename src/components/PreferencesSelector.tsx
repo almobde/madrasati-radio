@@ -114,14 +114,14 @@ const PreferencesSelector = () => {
               {levelOptions.map((option) => (
                 <div
                   key={option.value}
-                  className={`cursor-pointer text-center transition-all duration-300 hover:scale-105 p-8 rounded-2xl ${
+                  className={`cursor-pointer text-center transition-all duration-300 hover:scale-105 p-8 rounded-2xl min-w-[120px] ${
                     selectedLevel === option.value
                       ? `bg-gradient-to-r ${option.color} shadow-xl scale-105`
                       : 'bg-white/50 hover:bg-white/70 shadow-md'
                   }`}
                   onClick={() => setSelectedLevel(option.value)}
                 >
-                  <h3 className={`text-xl font-body font-bold ${
+                  <h3 className={`text-xl font-body font-bold whitespace-nowrap ${
                     selectedLevel === option.value ? 'text-white' : 'text-foreground'
                   }`}>
                     {option.label}
