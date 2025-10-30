@@ -139,6 +139,11 @@ ${sections.join('\n\n')}
     : 'اجعل كلمة الصباح للمستوى primary قصيرة (50-70 كلمة)، middle متوسطة (100-120 كلمة)، secondary طويلة جداً (180-220 كلمة)'}
 - ${selectedSections.conclusion ? `اجعل الخاتمة ${contentLength === 'short' ? 'موجزة' : 'مفصلة وشاملة'} مع دعاء جميل` : ''}
 
+**مهم جداً للتنسيق:**
+- أرجع JSON صحيح بدون أي أسطر جديدة داخل النصوص
+- لا تضع تعليقات أو شروحات إضافية داخل نصوص الأحاديث
+- اجعل كل نص في سطر واحد متصل
+
 أرجع الناتج كـ JSON بهذا الشكل:
 \`\`\`json
 {
@@ -260,13 +265,22 @@ ${sections.join('\n\n')}
     let topicContent;
     try {
       // Try to find JSON in code blocks
+      let jsonText = "";
       const jsonMatch = content.match(/```json\n([\s\S]*?)\n```/);
       if (jsonMatch) {
-        topicContent = JSON.parse(jsonMatch[1]);
+        jsonText = jsonMatch[1];
       } else {
-        // Try to parse directly
-        topicContent = JSON.parse(content);
+        jsonText = content;
       }
+      
+      // Clean the JSON text to remove control characters and fix common issues
+      // Replace literal newlines within strings with escaped newlines
+      jsonText = jsonText
+        .replace(/\r\n/g, '\n') // Normalize line endings
+        .replace(/\t/g, ' '); // Replace tabs with spaces
+      
+      // Try to parse the cleaned JSON
+      topicContent = JSON.parse(jsonText);
       
       // Validate required fields
       if (!topicContent.introduction || !topicContent.quranVerses || !topicContent.hadiths) {
