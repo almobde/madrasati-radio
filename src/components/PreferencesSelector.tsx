@@ -59,8 +59,8 @@ const PreferencesSelector = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--background))] via-[hsl(var(--secondary))]/50 to-[hsl(var(--accent))]/30 flex items-center justify-center p-6">
-      <ModernCard variant="luxury" padding="xl" className="w-full max-w-6xl shadow-2xl">
+    <div className="min-h-screen bg-background flex items-center justify-center">
+      <ModernCard variant="luxury" padding="xl" className="w-full h-full min-h-screen rounded-none">
         <div className="text-center mb-12 fade-in">
           <div className="flex items-center justify-center gap-4 mb-6">
             <Sparkles className="w-12 h-12 text-[hsl(var(--primary))]" />
