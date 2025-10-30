@@ -52,10 +52,18 @@ const PreferencesSelector = () => {
     icon: Users,
     color: 'from-purple-400 to-purple-600'
   }];
-  return <div className="min-h-screen bg-gradient-to-t from-sky-200 to-blue-500 flex items-center justify-center p-8">
+  return <div className={`min-h-screen flex items-center justify-center p-8 transition-all duration-700 ${
+      selectedGender === 'boys' 
+        ? 'bg-gradient-to-br from-[hsl(220,70%,25%)] via-[hsl(210,80%,35%)] to-[hsl(200,90%,45%)]'
+        : selectedGender === 'girls'
+        ? 'bg-gradient-to-br from-[hsl(330,70%,30%)] via-[hsl(320,80%,40%)] to-[hsl(310,90%,50%)]'
+        : 'bg-gradient-to-t from-sky-200 to-blue-500'
+    }`}>
       <div className="w-full max-w-5xl">
         <div className="text-center mb-12 fade-in">
-          <h1 className="text-4xl md:text-5xl font-joyel font-bold text-gradient leading-tight mb-6 text-slate-50">
+          <h1 className={`text-4xl md:text-5xl font-joyel font-bold leading-tight mb-6 transition-colors duration-700 ${
+            selectedGender ? 'text-white' : 'text-slate-50'
+          }`}>
             الإذاعة المدرسية
           </h1>
         </div>
@@ -63,7 +71,9 @@ const PreferencesSelector = () => {
         <div className="space-y-10 slide-up max-w-4xl mx-auto">
           {/* اختيار نوع المدرسة */}
           <div>
-            <h2 className="text-3xl font-heading font-bold mb-6 text-center text-gradient text-slate-50">نوع المدرسة</h2>
+            <h2 className={`text-3xl font-heading font-bold mb-6 text-center transition-colors duration-700 ${
+              selectedGender ? 'text-white' : 'text-slate-50'
+            }`}>نوع المدرسة</h2>
             <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto">
               {genderOptions.map(option => <ModernCard key={option.value} variant="glass" padding="sm" className={`cursor-pointer transition-all duration-500 hover:scale-[1.02] ${selectedGender === option.value ? option.value === 'boys' ? 'border-3 border-boys-primary shadow-[0_0_30px_hsl(var(--boys-primary))/25] scale-[1.01]' : 'border-3 border-girls-primary shadow-[0_0_30px_hsl(var(--girls-primary))/25] scale-[1.01]' : 'border-2 border-[hsl(var(--primary))]/20 hover:border-[hsl(var(--primary))]/40'}`} onClick={() => setSelectedGender(option.value)}>
                   <div className="flex flex-col items-center justify-center h-full">
@@ -78,7 +88,9 @@ const PreferencesSelector = () => {
 
           {/* اختيار المرحلة الدراسية */}
           <div>
-            <h2 className="text-3xl font-heading font-bold mb-6 text-center text-gradient text-blue-700">المرحلة الدراسية</h2>
+            <h2 className={`text-3xl font-heading font-bold mb-6 text-center transition-colors duration-700 ${
+              selectedGender ? 'text-white' : 'text-blue-700'
+            }`}>المرحلة الدراسية</h2>
             <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
               {levelOptions.map(option => <div key={option.value} className={`cursor-pointer text-center transition-all duration-300 hover:scale-105 p-5 rounded-xl ${selectedLevel === option.value ? `bg-gradient-to-r ${option.color} shadow-lg scale-105` : 'bg-white/70 hover:bg-white/90 shadow-md'}`} onClick={() => setSelectedLevel(option.value)}>
                   <div className="flex items-center justify-center h-full">
@@ -97,7 +109,9 @@ const PreferencesSelector = () => {
               ابدأ الرحلة الإعلامية
               <Sparkles className="w-6 h-6" />
             </ModernButton>
-            {selectedGender && selectedLevel && <p className="mt-4 text-sm text-muted-foreground animate-pulse">
+            {selectedGender && selectedLevel && <p className={`mt-4 text-sm animate-pulse transition-colors duration-700 ${
+                selectedGender ? 'text-white/80' : 'text-muted-foreground'
+              }`}>
                 ✨ جاهز للانطلاق نحو تجربة إذاعية مميزة!
               </p>}
           </div>
