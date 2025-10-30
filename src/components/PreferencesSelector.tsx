@@ -64,7 +64,7 @@ const PreferencesSelector = () => {
         <div className="text-center mb-12 fade-in">
           <div className="flex items-center justify-center gap-4 mb-6">
             <Sparkles className="w-12 h-12 text-[hsl(var(--primary))]" />
-            <h1 className="text-6xl md:text-7xl font-heading font-bold text-gradient leading-tight">
+            <h1 className="text-4xl md:text-5xl font-heading font-bold text-gradient leading-tight">
               الإذاعة المدرسية الذكية
             </h1>
             <Sparkles className="w-12 h-12 text-[hsl(var(--primary))]" />
