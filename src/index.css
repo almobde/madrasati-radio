@@ -228,23 +228,23 @@
 @layer components {
   /* 🏆 أزرار عصرية */
   .btn-premium {
-    @apply relative overflow-hidden bg-[image:var(--gradient-primary)]
-           text-white font-bold py-4 px-8 rounded-xl shadow-lg
-           hover:shadow-xl hover:scale-105 active:scale-95
+    @apply relative overflow-hidden bg-white hover:bg-gray-50 text-radio-dark
+           font-bold py-4 px-8 rounded-xl shadow-lg
+           hover:shadow-xl hover:scale-105 active:bg-gray-100 active:scale-95
            transition-all duration-300 ease-out;
   }
   
   .btn-glass {
-    @apply relative bg-white/90 backdrop-blur-sm text-primary border-2 border-primary/30
-           font-semibold py-3 px-6 rounded-xl shadow-sm
-           hover:bg-white hover:shadow-lg hover:border-primary/50
-           hover:scale-105 transition-all duration-300 ease-out;
+    @apply relative bg-white hover:bg-gray-50 text-radio-dark border-2 border-white/30
+           font-semibold py-3 px-6 rounded-xl shadow-md
+           hover:shadow-lg hover:scale-105 active:bg-gray-100 active:scale-95
+           transition-all duration-300 ease-out;
   }
   
   .btn-neon {
-    @apply relative bg-transparent text-primary border-2 border-primary
-           font-bold py-3 px-6 rounded-xl
-           hover:bg-primary hover:text-white hover:shadow-lg
+    @apply relative bg-white hover:bg-gray-50 text-radio-dark border-2 border-white/30
+           font-bold py-3 px-6 rounded-xl shadow-md
+           hover:shadow-lg hover:scale-105 active:bg-gray-100 active:scale-95
            transition-all duration-300 ease-out;
   }
   
