@@ -3,6 +3,7 @@ import { useAppContext } from '../context/AppContext';
 import PreferencesSelector from '../components/PreferencesSelector';
 import TopicsList from '../components/TopicsList';
 import TopicViewer from '../components/TopicViewer';
+import TestimonialsSection from '../components/TestimonialsSection';
 
 const Index = () => {
   const { preferences, currentTopic } = useAppContext();
@@ -17,8 +18,13 @@ const Index = () => {
     return <TopicViewer />;
   }
 
-  // عرض قائمة المواضيع
-  return <TopicsList />;
+  // عرض قائمة المواضيع + آراء الزوار
+  return (
+    <>
+      <TopicsList />
+      <TestimonialsSection />
+    </>
+  );
 };
 
 export default Index;
