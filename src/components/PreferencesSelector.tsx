@@ -81,7 +81,7 @@ const PreferencesSelector = () => {
           {/* اختيار نوع المدرسة */}
           <div>
             <h2 className="text-4xl font-heading font-bold mb-8 text-center text-gradient">نوع المدرسة</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-2 gap-6">
               {genderOptions.map((option) => (
                 <ModernCard
                   key={option.value}
@@ -100,8 +100,7 @@ const PreferencesSelector = () => {
                     <div className={`w-20 h-20 mx-auto mb-6 rounded-full ${option.gradient} flex items-center justify-center shadow-lg`}>
                       <option.icon className="w-10 h-10 text-white" />
                     </div>
-                    <h3 className="text-2xl font-body font-bold mb-3 text-foreground">{option.label}</h3>
-                    <p className="text-base text-muted-foreground">{option.description}</p>
+                    <h3 className="text-2xl font-body font-bold text-foreground">{option.label}</h3>
                   </div>
                 </ModernCard>
               ))}
@@ -111,7 +110,7 @@ const PreferencesSelector = () => {
           {/* اختيار المرحلة الدراسية */}
           <div>
             <h2 className="text-4xl font-heading font-bold mb-8 text-center text-gradient">المرحلة الدراسية</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-3 gap-4">
               {levelOptions.map((option) => (
                 <ModernCard
                   key={option.value}
@@ -124,11 +123,10 @@ const PreferencesSelector = () => {
                   }`}
                   onClick={() => setSelectedLevel(option.value)}
                 >
-                  <div className={`w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r ${option.color} flex items-center justify-center shadow-lg`}>
+                  <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r ${option.color} flex items-center justify-center shadow-lg`}>
                     <option.icon className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-body font-bold mb-3 text-foreground">{option.label}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{option.description}</p>
+                  <h3 className="text-lg font-body font-bold text-foreground">{option.label}</h3>
                 </ModernCard>
               ))}
             </div>
