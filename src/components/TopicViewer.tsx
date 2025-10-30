@@ -6,8 +6,6 @@ import { ModernCard, ModernCardHeader, ModernCardTitle, ModernCardContent } from
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Home, BookOpen, Mic, Heart, Sparkles, Radio, Crown, Lightbulb, Quote, HelpCircle, MessageCircle, Download, Share2, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import Footer from './Footer';
-import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
 import { useToast } from '@/hooks/use-toast';
 
 const TopicViewer = () => {
@@ -20,126 +18,11 @@ const TopicViewer = () => {
     setCurrentTopic(null);
   };
 
-  const handleExportToPDF = async () => {
-    try {
-      toast({
-        title: "جارِ التصدير...",
-        description: "يرجى الانتظار قليلاً",
-      });
-
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      
-      // إنشاء div مؤقت
-      const container = document.createElement('div');
-      container.style.position = 'absolute';
-      container.style.right = '-9999px';
-      container.style.width = '800px';
-      container.style.background = 'white';
-      container.style.padding = '40px';
-      document.body.appendChild(container);
-
-      // العنوان
-      const title = document.createElement('h1');
-      title.textContent = currentTopic.title;
-      title.style.textAlign = 'center';
-      title.style.color = preferences?.gender === 'girls' ? '#e91e63' : '#2196f3';
-      title.style.fontSize = '32px';
-      title.style.marginBottom = '30px';
-      container.appendChild(title);
-
-      // إضافة الأقسام
-      const addSection = (titleText: string, content: string, color: string) => {
-        const section = document.createElement('div');
-        section.style.marginBottom = '25px';
-        
-        const header = document.createElement('div');
-        header.textContent = titleText;
-        header.style.background = color;
-        header.style.color = 'white';
-        header.style.padding = '12px 20px';
-        header.style.fontSize = '20px';
-        header.style.fontWeight = 'bold';
-        header.style.textAlign = 'right';
-        header.style.borderRadius = '8px 8px 0 0';
-        
-        const body = document.createElement('div');
-        body.innerHTML = content;
-        body.style.padding = '20px';
-        body.style.border = `2px solid ${color}`;
-        body.style.borderTop = 'none';
-        body.style.borderRadius = '0 0 8px 8px';
-        body.style.textAlign = 'right';
-        body.style.lineHeight = '1.8';
-        body.style.fontSize = '16px';
-        
-        section.appendChild(header);
-        section.appendChild(body);
-        container.appendChild(section);
-      };
-
-      addSection('المقدمة', getContentByLevel(currentTopic.content.introduction), '#2196f3');
-      
-      const verses = currentTopic.content.quranVerses.map(v => 
-        `<p style="font-size: 18px; margin: 15px 0;">${v.text}</p><p style="color: #666; font-size: 14px;">${v.reference}</p>`
-      ).join('<hr style="margin: 20px 0;">');
-      addSection('الآيات القرآنية', verses, '#4caf50');
-      
-      const hadiths = currentTopic.content.hadiths.map(h => 
-        `<p style="font-size: 16px; margin: 15px 0;">${h.text}</p><p style="color: #666; font-size: 14px;">${h.reference}</p>`
-      ).join('<hr style="margin: 20px 0;">');
-      addSection('الأحاديث النبوية', hadiths, '#ff9800');
-      
-      const facts = getContentByLevel(currentTopic.content.didYouKnow).map((f: string, i: number) => 
-        `<p style="margin: 10px 0;"><strong>${i + 1}.</strong> ${f}</p>`
-      ).join('');
-      addSection('هل تعلم', facts, '#ffc107');
-      
-      addSection('كلمة الصباح', getContentByLevel(currentTopic.content.morningWord), '#9c27b0');
-      
-      addSection('الخاتمة', currentTopic.content.radioEnding, '#f44336');
-
-      // التقاط الصورة
-      const canvas = await html2canvas(container, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: '#ffffff',
-      });
-
-      document.body.removeChild(container);
-
-      // إضافة إلى PDF
-      const imgData = canvas.toDataURL('image/png');
-      const imgWidth = pageWidth - 20;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
-      let position = 0;
-
-      pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
-      heightLeft -= pageHeight - 20;
-
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 10, position + 10, imgWidth, imgHeight);
-        heightLeft -= pageHeight - 20;
-      }
-
-      pdf.save(`${currentTopic.title}.pdf`);
-      
-      toast({
-        title: "تم التصدير بنجاح! ✅",
-        description: "تم حفظ الملف",
-      });
-    } catch (error) {
-      console.error('Error:', error);
-      toast({
-        title: "خطأ في التصدير",
-        description: "حاول مرة أخرى",
-        variant: "destructive",
-      });
-    }
+  const handleExportToPDF = () => {
+    toast({
+      title: "تصدير PDF",
+      description: "جارٍ العمل على تحسين هذه الميزة قريباً",
+    });
   };
 
   const handleShare = () => {
