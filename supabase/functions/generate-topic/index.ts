@@ -217,6 +217,86 @@ ${sections.join('\n\n')}
 }`;
 
 
+    // Define the structure we want using tools/functions
+    const tools = [{
+      type: "function",
+      function: {
+        name: "create_radio_content",
+        description: "Create structured radio content",
+        parameters: {
+          type: "object",
+          properties: {
+            introduction: {
+              type: "object",
+              properties: {
+                primary: { type: "string" },
+                middle: { type: "string" },
+                secondary: { type: "string" }
+              },
+              required: ["primary", "middle", "secondary"]
+            },
+            quranVerses: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  text: { type: "string" },
+                  reference: { type: "string" }
+                },
+                required: ["text", "reference"]
+              }
+            },
+            hadiths: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  text: { type: "string" },
+                  reference: { type: "string" }
+                },
+                required: ["text", "reference"]
+              }
+            },
+            didYouKnow: {
+              type: "object",
+              properties: {
+                primary: { type: "array", items: { type: "string" } },
+                middle: { type: "array", items: { type: "string" } },
+                secondary: { type: "array", items: { type: "string" } }
+              }
+            },
+            morningWord: {
+              type: "object",
+              properties: {
+                primary: { type: "string" },
+                middle: { type: "string" },
+                secondary: { type: "string" }
+              }
+            },
+            miscellaneous: {
+              type: "object",
+              properties: {
+                primary: { type: "array", items: { type: "object" } },
+                middle: { type: "array", items: { type: "object" } },
+                secondary: { type: "array", items: { type: "object" } }
+              }
+            },
+            questions: {
+              type: "object",
+              properties: {
+                primary: { type: "array", items: { type: "object" } },
+                middle: { type: "array", items: { type: "object" } },
+                secondary: { type: "array", items: { type: "object" } }
+              }
+            },
+            conclusion: { type: "string" },
+            radioEnding: { type: "string" }
+          },
+          required: ["introduction", "quranVerses", "hadiths"]
+        }
+      }
+    }];
+
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -229,6 +309,8 @@ ${sections.join('\n\n')}
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt }
         ],
+        tools: tools,
+        tool_choice: { type: "function", function: { name: "create_radio_content" } },
         max_tokens: 16000,
         temperature: 0.7,
       }),
@@ -257,104 +339,24 @@ ${sections.join('\n\n')}
     }
 
     const data = await response.json();
-    const content = data.choices[0].message.content;
-    
-    console.log("AI Response:", content);
+    console.log("AI Response:", JSON.stringify(data, null, 2));
 
-    // Extract JSON from response
+    // Extract structured output from tool call
     let topicContent;
     try {
-      console.log("Raw AI Response length:", content.length);
-      console.log("First 300 chars:", content.substring(0, 300));
-      console.log("Last 300 chars:", content.substring(content.length - 300));
-
-      // More aggressive JSON extraction
-      let jsonText = content.trim();
+      const toolCall = data.choices[0].message.tool_calls?.[0];
       
-      console.log("Cleaning response...");
-      
-      // Remove markdown code blocks completely
-      jsonText = jsonText
-        .replace(/^```json\s*/i, '')
-        .replace(/^```\s*/, '')
-        .replace(/\s*```$/, '');
-      
-      console.log("After removing code blocks, length:", jsonText.length);
-      
-      // If still not starting with {, find the first {
-      if (!jsonText.startsWith('{')) {
-        const firstBrace = jsonText.indexOf('{');
-        if (firstBrace !== -1) {
-          jsonText = jsonText.substring(firstBrace);
-          console.log("Found opening brace at position:", firstBrace);
-        }
-      }
-      
-      // If not ending with }, find the last }
-      if (!jsonText.endsWith('}')) {
-        const lastBrace = jsonText.lastIndexOf('}');
-        if (lastBrace !== -1) {
-          jsonText = jsonText.substring(0, lastBrace + 1);
-          console.log("Found closing brace at position:", lastBrace);
-        }
+      if (!toolCall || !toolCall.function || !toolCall.function.arguments) {
+        console.error("No tool call found in response");
+        return new Response(JSON.stringify({ error: "فشل في الحصول على البيانات المنظمة من النموذج" }), {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
       }
 
-      // Clean the JSON text thoroughly
-      jsonText = jsonText
-        .trim()                           // Remove extra whitespace
-        .replace(/^\`+|\`+$/g, '')        // Remove backticks at start/end
-        .replace(/^json\s*/i, '')         // Remove "json" prefix
-        .replace(/\r\n/g, '\n')           // Normalize line endings
-        .replace(/\t/g, ' ')              // Replace tabs with spaces
-        .replace(/[\u0000-\u001F]/g, ''); // Remove control characters
-
-      console.log("Extracted JSON length:", jsonText.length);
-      console.log("JSON first 200 chars:", jsonText.substring(0, 200));
-      console.log("JSON last 200 chars:", jsonText.substring(jsonText.length - 200));
-
-      // Try multiple parsing strategies
-      const parsingStrategies = [
-        // Strategy 1: Parse directly
-        () => {
-          console.log("Strategy 1: Direct parse");
-          return JSON.parse(jsonText);
-        },
-        
-        // Strategy 2: Remove all newlines and try
-        () => {
-          console.log("Strategy 2: Removing newlines");
-          const cleaned = jsonText.replace(/\n/g, ' ').replace(/\r/g, '');
-          return JSON.parse(cleaned);
-        },
-        
-        // Strategy 3: More aggressive cleaning
-        () => {
-          console.log("Strategy 3: Aggressive cleaning");
-          const cleaned = jsonText
-            .replace(/[\u0000-\u001F\u007F-\u009F]/g, ' ')  // Remove all control chars
-            .replace(/\s+/g, ' ')  // Normalize whitespace
-            .trim();
-          return JSON.parse(cleaned);
-        }
-      ];
-
-      let parseError: Error | undefined;
-      for (const strategy of parsingStrategies) {
-        try {
-          topicContent = strategy();
-          console.log("Successfully parsed JSON");
-          break;
-        } catch (e) {
-          parseError = e instanceof Error ? e : new Error(String(e));
-          console.log("Parsing strategy failed:", parseError.message);
-          continue;
-        }
-      }
-
-      if (!topicContent) {
-        console.error("All parsing strategies failed");
-        throw parseError || new Error('All parsing strategies failed');
-      }
+      // Parse the arguments (they come as a string)
+      topicContent = JSON.parse(toolCall.function.arguments);
+      console.log("Successfully extracted structured content");
       
       // Validate required fields
       if (!topicContent.introduction || !topicContent.quranVerses || !topicContent.hadiths) {
@@ -365,8 +367,7 @@ ${sections.join('\n\n')}
         });
       }
     } catch (parseError) {
-      console.error("Failed to parse AI response:", parseError);
-      console.error("Content preview:", content.substring(0, 500));
+      console.error("Failed to extract structured output:", parseError);
       return new Response(JSON.stringify({ error: "فشل في تحليل النتيجة. الرجاء المحاولة مرة أخرى." }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
