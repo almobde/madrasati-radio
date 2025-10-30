@@ -224,7 +224,7 @@ ${sections.join('\n\n')}
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: "google/gemini-2.5-pro",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt }
@@ -268,50 +268,35 @@ ${sections.join('\n\n')}
       console.log("First 300 chars:", content.substring(0, 300));
       console.log("Last 300 chars:", content.substring(content.length - 300));
 
-      // More flexible JSON extraction
-      let jsonText = "";
+      // More aggressive JSON extraction
+      let jsonText = content.trim();
       
-      // Try to find ```json marker
-      if (content.includes('```json')) {
-        console.log("Found ```json marker");
-        const startMarker = content.indexOf('```json');
-        const afterMarker = content.substring(startMarker + 7).trim();
-        
-        // Find the last closing brace
-        const lastBrace = afterMarker.lastIndexOf('}');
-        if (lastBrace !== -1) {
-          // Extract everything from start to last }
-          jsonText = afterMarker.substring(0, lastBrace + 1);
-          console.log("Extracted JSON after ```json marker");
-        } else {
-          jsonText = afterMarker.replace(/```/g, '');
-        }
-      } 
-      // Try to find ``` marker without json
-      else if (content.includes('```')) {
-        console.log("Found ``` marker");
-        const startMarker = content.indexOf('```');
-        const afterMarker = content.substring(startMarker + 3).trim();
-        
-        const lastBrace = afterMarker.lastIndexOf('}');
-        if (lastBrace !== -1) {
-          jsonText = afterMarker.substring(0, lastBrace + 1);
-          console.log("Extracted JSON after ``` marker");
-        } else {
-          jsonText = afterMarker.replace(/```/g, '');
+      console.log("Cleaning response...");
+      
+      // Remove markdown code blocks completely
+      jsonText = jsonText
+        .replace(/^```json\s*/i, '')
+        .replace(/^```\s*/, '')
+        .replace(/\s*```$/, '');
+      
+      console.log("After removing code blocks, length:", jsonText.length);
+      
+      // If still not starting with {, find the first {
+      if (!jsonText.startsWith('{')) {
+        const firstBrace = jsonText.indexOf('{');
+        if (firstBrace !== -1) {
+          jsonText = jsonText.substring(firstBrace);
+          console.log("Found opening brace at position:", firstBrace);
         }
       }
-      // Try direct extraction by finding { and last }
-      else if (content.includes('{') && content.includes('}')) {
-        console.log("Trying to extract JSON by braces");
-        const firstBrace = content.indexOf('{');
-        const lastBrace = content.lastIndexOf('}');
-        jsonText = content.substring(firstBrace, lastBrace + 1);
-      }
-      // Last resort: use content as is
-      else {
-        console.log("Using content as-is");
-        jsonText = content;
+      
+      // If not ending with }, find the last }
+      if (!jsonText.endsWith('}')) {
+        const lastBrace = jsonText.lastIndexOf('}');
+        if (lastBrace !== -1) {
+          jsonText = jsonText.substring(0, lastBrace + 1);
+          console.log("Found closing brace at position:", lastBrace);
+        }
       }
 
       // Clean the JSON text thoroughly
@@ -331,27 +316,25 @@ ${sections.join('\n\n')}
       const parsingStrategies = [
         // Strategy 1: Parse directly
         () => {
-          console.log("Trying direct parse...");
+          console.log("Strategy 1: Direct parse");
           return JSON.parse(jsonText);
         },
         
-        // Strategy 2: Try to fix common issues
+        // Strategy 2: Remove all newlines and try
         () => {
-          console.log("Trying with newline replacement...");
-          return JSON.parse(jsonText.replace(/\n/g, ' '));
+          console.log("Strategy 2: Removing newlines");
+          const cleaned = jsonText.replace(/\n/g, ' ').replace(/\r/g, '');
+          return JSON.parse(cleaned);
         },
         
-        // Strategy 3: Find JSON object boundaries
+        // Strategy 3: More aggressive cleaning
         () => {
-          console.log("Trying to find JSON boundaries...");
-          const start = jsonText.indexOf('{');
-          const end = jsonText.lastIndexOf('}') + 1;
-          if (start >= 0 && end > start) {
-            const extracted = jsonText.substring(start, end);
-            console.log("Extracted JSON from boundaries, length:", extracted.length);
-            return JSON.parse(extracted);
-          }
-          throw new Error('No JSON object found');
+          console.log("Strategy 3: Aggressive cleaning");
+          const cleaned = jsonText
+            .replace(/[\u0000-\u001F\u007F-\u009F]/g, ' ')  // Remove all control chars
+            .replace(/\s+/g, ' ')  // Normalize whitespace
+            .trim();
+          return JSON.parse(cleaned);
         }
       ];
 
