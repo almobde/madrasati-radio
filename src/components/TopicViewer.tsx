@@ -805,7 +805,7 @@ const TopicViewer = () => {
           </TabsList>
 
           {/* محتوى التبويبات */}
-          <div className="tabs-content-safe">
+          <div className={`tabs-content-safe ${fontSize === 'small' ? '[&_p]:!text-sm [&_.text-xl]:!text-lg [&_.text-2xl]:!text-xl' : fontSize === 'large' ? '[&_p]:!text-xl [&_.text-xl]:!text-2xl [&_.text-2xl]:!text-3xl' : ''}`}>
             {/* المقدمة */}
             <TabsContent value="introduction" className="fade-in">
               <ModernCard variant="luxury" padding="lg">
