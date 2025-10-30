@@ -10,12 +10,7 @@ const Index = () => {
 
   // إذا لم يتم اختيار التفضيلات بعد
   if (!preferences) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <PreferencesSelector />
-      </div>
-    );
+    return <PreferencesSelector />;
   }
 
   // إذا تم اختيار موضوع للعرض

@@ -62,19 +62,9 @@ const PreferencesSelector = () => {
     <div className="min-h-screen bg-background flex items-center justify-center">
       <ModernCard variant="luxury" padding="xl" className="w-full h-full min-h-screen rounded-none">
         <div className="text-center mb-12 fade-in">
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <Sparkles className="w-12 h-12 text-[hsl(var(--primary))]" />
-            <h1 className="text-4xl md:text-5xl font-heading font-bold text-gradient leading-tight">
-              الإذاعة المدرسية الذكية
-            </h1>
-            <Sparkles className="w-12 h-12 text-[hsl(var(--primary))]" />
-          </div>
-          <p className="text-2xl md:text-3xl text-muted-foreground font-body leading-relaxed mb-4">
-            منصة احترافية لإنتاج محتوى إذاعي متميز
-          </p>
-          <p className="text-lg text-muted-foreground/80 font-body">
-            اختر تفضيلاتك للحصول على محتوى مخصص وأنيق
-          </p>
+          <h1 className="text-4xl md:text-5xl font-joyel font-bold text-gradient leading-tight mb-6">
+            الإذاعة المدرسية
+          </h1>
         </div>
 
         <div className="space-y-10 slide-up max-w-4xl mx-auto">
