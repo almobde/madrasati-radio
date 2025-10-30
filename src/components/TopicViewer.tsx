@@ -545,7 +545,7 @@ const TopicViewer = () => {
                   variant="glass" 
                   size="sm"
                   onClick={handleBackToTopics}
-                  className="font-body"
+                  className={`font-body ${preferences?.gender === 'girls' ? 'bg-[#e91e63] hover:bg-[#c2185b]' : 'bg-[#3b82f6] hover:bg-[#2563eb]'} text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300`}
                   title="الرئيسية"
                 >
                   <Home className="w-5 h-5" />
@@ -554,7 +554,7 @@ const TopicViewer = () => {
                   variant="glass" 
                   size="sm"
                   onClick={handleExportToPDF}
-                  className="font-body"
+                  className={`font-body ${preferences?.gender === 'girls' ? 'bg-[#e91e63] hover:bg-[#c2185b]' : 'bg-[#3b82f6] hover:bg-[#2563eb]'} text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300`}
                   title="تصدير"
                 >
                   <Download className="w-5 h-5" />
@@ -563,7 +563,7 @@ const TopicViewer = () => {
                   variant="glass" 
                   size="sm"
                   onClick={handleShare}
-                  className="font-body"
+                  className={`font-body ${preferences?.gender === 'girls' ? 'bg-[#e91e63] hover:bg-[#c2185b]' : 'bg-[#3b82f6] hover:bg-[#2563eb]'} text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300`}
                   title="مشاركة"
                 >
                   <Share2 className="w-5 h-5" />
@@ -575,7 +575,7 @@ const TopicViewer = () => {
                     <ModernButton 
                       variant="glass" 
                       size="sm"
-                      className="font-body"
+                      className={`font-body ${preferences?.gender === 'girls' ? 'bg-[#e91e63] hover:bg-[#c2185b]' : 'bg-[#3b82f6] hover:bg-[#2563eb]'} text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300`}
                       title="الإدارة"
                     >
                       <Settings className="w-5 h-5" />
