@@ -264,23 +264,93 @@ ${sections.join('\n\n')}
     // Extract JSON from response
     let topicContent;
     try {
-      // Try to find JSON in code blocks
+      console.log("Raw AI Response length:", content.length);
+      console.log("First 300 chars:", content.substring(0, 300));
+      console.log("Last 300 chars:", content.substring(content.length - 300));
+
+      // Try multiple patterns to extract JSON from code blocks
+      const codeBlockPatterns = [
+        /```json\s*\n([\s\S]*?)\n```/,  // ```json ... ```
+        /```\s*\n([\s\S]*?)\n```/,      // ``` ... ```
+        /`json\s*\n([\s\S]*?)\n`/,      // `json ... `
+      ];
+
       let jsonText = "";
-      const jsonMatch = content.match(/```json\n([\s\S]*?)\n```/);
-      if (jsonMatch) {
-        jsonText = jsonMatch[1];
-      } else {
+      let found = false;
+
+      for (const pattern of codeBlockPatterns) {
+        const match = content.match(pattern);
+        if (match) {
+          jsonText = match[1];
+          found = true;
+          console.log("Found JSON using pattern:", pattern.source);
+          break;
+        }
+      }
+
+      if (!found) {
+        console.log("No code block found, trying direct parse");
         jsonText = content;
       }
-      
-      // Clean the JSON text to remove control characters and fix common issues
-      // Replace literal newlines within strings with escaped newlines
+
+      // Clean the JSON text thoroughly
       jsonText = jsonText
-        .replace(/\r\n/g, '\n') // Normalize line endings
-        .replace(/\t/g, ' '); // Replace tabs with spaces
-      
-      // Try to parse the cleaned JSON
-      topicContent = JSON.parse(jsonText);
+        .trim()                           // Remove extra whitespace
+        .replace(/^\`+|\`+$/g, '')        // Remove backticks at start/end
+        .replace(/^json\s*/i, '')         // Remove "json" prefix
+        .replace(/\r\n/g, '\n')           // Normalize line endings
+        .replace(/\t/g, ' ')              // Replace tabs with spaces
+        .replace(/[\u0000-\u001F]/g, ''); // Remove control characters
+
+      console.log("Extracted JSON length:", jsonText.length);
+      console.log("JSON first 200 chars:", jsonText.substring(0, 200));
+      console.log("JSON last 200 chars:", jsonText.substring(jsonText.length - 200));
+
+      // Try multiple parsing strategies
+      const parsingStrategies = [
+        // Strategy 1: Parse directly
+        () => {
+          console.log("Trying direct parse...");
+          return JSON.parse(jsonText);
+        },
+        
+        // Strategy 2: Try to fix common issues
+        () => {
+          console.log("Trying with newline replacement...");
+          return JSON.parse(jsonText.replace(/\n/g, ' '));
+        },
+        
+        // Strategy 3: Find JSON object boundaries
+        () => {
+          console.log("Trying to find JSON boundaries...");
+          const start = jsonText.indexOf('{');
+          const end = jsonText.lastIndexOf('}') + 1;
+          if (start >= 0 && end > start) {
+            const extracted = jsonText.substring(start, end);
+            console.log("Extracted JSON from boundaries, length:", extracted.length);
+            return JSON.parse(extracted);
+          }
+          throw new Error('No JSON object found');
+        }
+      ];
+
+      let parseError: Error | undefined;
+      for (const strategy of parsingStrategies) {
+        try {
+          topicContent = strategy();
+          console.log("Successfully parsed JSON");
+          break;
+        } catch (e) {
+          parseError = e instanceof Error ? e : new Error(String(e));
+          console.log("Parsing strategy failed:", parseError.message);
+          continue;
+        }
+      }
+
+      if (!topicContent) {
+        console.error("All parsing strategies failed");
+        throw parseError || new Error('All parsing strategies failed');
+      }
       
       // Validate required fields
       if (!topicContent.introduction || !topicContent.quranVerses || !topicContent.hadiths) {
