@@ -4,10 +4,13 @@ import { UserPreferences, Topic } from '../types';
 
 interface AppContextType {
   preferences: UserPreferences | null;
-  setPreferences: (preferences: UserPreferences) => void;
+  setPreferences: (preferences: UserPreferences | null) => void;
   currentTopic: Topic | null;
   setCurrentTopic: (topic: Topic | null) => void;
   themeClass: string;
+  favorites: string[];
+  toggleFavorite: (topicId: string) => void;
+  isFavorite: (topicId: string) => boolean;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -35,6 +38,16 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     }
   });
   const [currentTopic, setCurrentTopic] = useState<Topic | null>(null);
+  
+  // Load favorites from localStorage
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('favoritTopics');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
 
   // Custom setPreferences that also saves to localStorage
   const setPreferencesWithStorage = (prefs: UserPreferences | null) => {
@@ -48,6 +61,19 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
   const themeClass = preferences?.gender === 'girls' ? 'girls-theme' : 'boys-theme';
 
+  // Favorites management
+  const toggleFavorite = (topicId: string) => {
+    setFavorites(prev => {
+      const newFavorites = prev.includes(topicId)
+        ? prev.filter(id => id !== topicId)
+        : [...prev, topicId];
+      localStorage.setItem('favoritTopics', JSON.stringify(newFavorites));
+      return newFavorites;
+    });
+  };
+
+  const isFavorite = (topicId: string) => favorites.includes(topicId);
+
   return (
     <AppContext.Provider
       value={{
@@ -56,6 +82,9 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         currentTopic,
         setCurrentTopic,
         themeClass,
+        favorites,
+        toggleFavorite,
+        isFavorite,
       }}
     >
       <div className={`min-h-screen bg-gray-50 ${themeClass}`}>

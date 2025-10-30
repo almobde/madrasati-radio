@@ -6,7 +6,7 @@ import { ModernButton } from '@/components/ui/modern-button';
 import { ModernCard, ModernCardHeader, ModernCardTitle, ModernCardContent } from '@/components/ui/modern-card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { ArrowRight, Home, BookOpen, Mic, Heart, Sparkles, Radio, Crown, Lightbulb, Quote, HelpCircle, MessageCircle, Download, Share2, Settings, Trash2, Edit } from 'lucide-react';
+import { ArrowRight, Home, BookOpen, Mic, Heart, Sparkles, Radio, Crown, Lightbulb, Quote, HelpCircle, MessageCircle, Download, Share2, Settings, Trash2, Edit, Copy } from 'lucide-react';
 import Footer from './Footer';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -61,6 +61,100 @@ const TopicViewer = () => {
       title: "قريباً",
       description: "خاصية التعديل قيد التطوير",
     });
+  };
+
+  const handleCopyContent = async () => {
+    // بناء المحتوى بشكل آمن
+    let content = `📻 إذاعة مدرسية - ${currentTopic.title}\n\n`;
+
+    // المقدمة
+    const intro = getContentByLevel(currentTopic.content.introduction);
+    if (intro) {
+      content += `📖 المقدمة:\n${intro}\n\n`;
+    }
+
+    // الآيات القرآنية
+    if (currentTopic.content.quranVerses && currentTopic.content.quranVerses.length > 0) {
+      content += `📿 الآيات القرآنية:\n`;
+      currentTopic.content.quranVerses.forEach((v, i) => {
+        if (v.text) {
+          content += `${i + 1}. ${v.text}\n`;
+          if (v.reference) content += `   (${v.reference})\n`;
+        }
+      });
+      content += '\n';
+    }
+
+    // الأحاديث النبوية
+    if (currentTopic.content.hadiths && currentTopic.content.hadiths.length > 0) {
+      content += `💬 الأحاديث النبوية:\n`;
+      currentTopic.content.hadiths.forEach((h, i) => {
+        if (h.text) {
+          content += `${i + 1}. ${h.text}\n`;
+          if (h.reference) content += `   (${h.reference})\n`;
+        }
+      });
+      content += '\n';
+    }
+
+    // معلومات
+    const facts = getContentByLevel(currentTopic.content.didYouKnow);
+    if (facts && Array.isArray(facts) && facts.length > 0) {
+      content += `💡 معلومات:\n`;
+      facts.forEach((fact: string, i: number) => {
+        if (fact) content += `${i + 1}. ${fact}\n`;
+      });
+      content += '\n';
+    }
+
+    // كلمة
+    const morningWord = getContentByLevel(currentTopic.content.morningWord);
+    if (morningWord) {
+      content += `🎤 كلمة:\n${morningWord}\n\n`;
+    }
+
+    // منوعات
+    const misc = currentTopic.content.miscellaneous ? getContentByLevel(currentTopic.content.miscellaneous) : null;
+    if (misc && Array.isArray(misc) && misc.length > 0) {
+      content += `✨ منوعات:\n`;
+      misc.forEach((item: any, i: number) => {
+        if (item && item.title && item.content) {
+          content += `${i + 1}. ${item.title}\n   ${item.content}\n`;
+        }
+      });
+      content += '\n';
+    }
+
+    // أسئلة
+    const questions = currentTopic.content.questions ? getContentByLevel(currentTopic.content.questions) : null;
+    if (questions && Array.isArray(questions) && questions.length > 0) {
+      content += `❓ أسئلة:\n`;
+      questions.forEach((q: any, i: number) => {
+        if (q && q.question && q.answer) {
+          content += `${i + 1}. س: ${q.question}\n   ج: ${q.answer}\n`;
+        }
+      });
+      content += '\n';
+    }
+
+    // الخاتمة
+    if (currentTopic.content.radioEnding) {
+      content += `🌟 الخاتمة:\n${currentTopic.content.radioEnding}`;
+    }
+
+    try {
+      await navigator.clipboard.writeText(content);
+      toast({
+        title: "تم النسخ! 📋",
+        description: "تم نسخ المحتوى بنجاح",
+      });
+    } catch (error) {
+      toast({
+        title: "خطأ",
+        description: "فشل في نسخ المحتوى",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleExportToPDF = () => {
@@ -560,6 +654,15 @@ const TopicViewer = () => {
                   title="تصدير"
                 >
                   <Download className="w-5 h-5" />
+                </ModernButton>
+                <ModernButton 
+                  variant="glass" 
+                  size="sm"
+                  onClick={handleCopyContent}
+                  className={`font-body ${preferences?.gender === 'girls' ? 'bg-[#e91e63] hover:bg-[#c2185b]' : 'bg-[#3b82f6] hover:bg-[#2563eb]'} text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300`}
+                  title="نسخ"
+                >
+                  <Copy className="w-5 h-5" />
                 </ModernButton>
                 {isMobile && (
                   <ModernButton 

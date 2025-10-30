@@ -9,6 +9,7 @@ export interface Topic {
   category: string;
   gender?: Gender;
   educationLevel?: EducationLevel;
+  created_at?: string;
   content: {
     introduction: {
       primary: string;

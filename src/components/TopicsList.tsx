@@ -1,6 +1,6 @@
 // قائمة المواضيع الإذاعية - Radio Topics List
 import { useState, useEffect } from 'react';
-import { Search, Radio, ArrowLeft, Sparkles } from 'lucide-react';
+import { Search, Radio, ArrowLeft, Sparkles, Star } from 'lucide-react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { useAppContext } from '../context/AppContext';
@@ -9,12 +9,15 @@ import { TopicGenerator } from './TopicGenerator';
 import { Topic, Gender, EducationLevel } from '../types';
 import { supabase } from '@/integrations/supabase/client';
 import Footer from './Footer';
+import { formatDistanceToNow } from 'date-fns';
+import { ar } from 'date-fns/locale';
 
 const TopicsList = () => {
-  const { preferences, setPreferences, setCurrentTopic } = useAppContext();
+  const { preferences, setPreferences, setCurrentTopic, isFavorite, toggleFavorite } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [showGenerator, setShowGenerator] = useState(false);
   const [allTopics, setAllTopics] = useState<Topic[]>(staticTopics);
+  const [activeTab, setActiveTab] = useState<'all' | 'favorites'>('all');
 
   // Load custom topics from database and filter by current preferences
   useEffect(() => {
@@ -41,6 +44,7 @@ const TopicsList = () => {
           gender: item.gender as Gender,
           educationLevel: item.education_level as EducationLevel,
           content: item.content,
+          created_at: item.created_at,
         }));
 
         setAllTopics([...customTopics, ...staticTopics]);
@@ -53,13 +57,15 @@ const TopicsList = () => {
     loadCustomTopics();
   }, [showGenerator, preferences?.gender, preferences?.educationLevel]);
 
-  // تصفية المواضيع حسب البحث فقط
+  // تصفية المواضيع حسب البحث والتبويب
   const filteredTopics = allTopics.filter(topic => {
     const matchesSearch = !searchTerm || 
       topic.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       topic.category.toLowerCase().includes(searchTerm.toLowerCase());
     
-    return matchesSearch;
+    const matchesTab = activeTab === 'all' || (activeTab === 'favorites' && isFavorite(topic.id));
+    
+    return matchesSearch && matchesTab;
   });
 
   const genderText = preferences?.gender === 'girls' ? 'طالبات' : 'طلاب';
@@ -122,20 +128,73 @@ const TopicsList = () => {
           </div>
         </div>
 
+        {/* تبويب الكل / المفضلة */}
+        <div className="max-w-md mx-auto mb-6 flex gap-2 justify-center">
+          <button
+            onClick={() => setActiveTab('all')}
+            className={`flex-1 py-3 px-6 rounded-xl font-heading font-bold transition-all duration-300 ${
+              activeTab === 'all'
+                ? preferences?.gender === 'girls'
+                  ? 'bg-white text-[hsl(330,70%,40%)] shadow-lg scale-105'
+                  : 'bg-white text-[hsl(220,70%,35%)] shadow-lg scale-105'
+                : 'bg-white/50 text-white hover:bg-white/70 hover:scale-102'
+            }`}
+          >
+            جميع المواضيع ({allTopics.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('favorites')}
+            className={`flex-1 py-3 px-6 rounded-xl font-heading font-bold transition-all duration-300 flex items-center justify-center gap-2 ${
+              activeTab === 'favorites'
+                ? preferences?.gender === 'girls'
+                  ? 'bg-white text-[hsl(330,70%,40%)] shadow-lg scale-105'
+                  : 'bg-white text-[hsl(220,70%,35%)] shadow-lg scale-105'
+                : 'bg-white/50 text-white hover:bg-white/70 hover:scale-102'
+            }`}
+          >
+            <Star className="w-5 h-5" fill={activeTab === 'favorites' ? 'currentColor' : 'none'} />
+            المفضلة ({allTopics.filter(t => isFavorite(t.id)).length})
+          </button>
+        </div>
+
         {/* شبكة المواضيع - 3 في الصف على الجوال */}
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-3 sm:gap-4">
           {filteredTopics.map((topic) => (
             <div
               key={topic.id}
-              className="group cursor-pointer"
-              onClick={() => setCurrentTopic(topic)}
+              className="group relative"
             >
+              {/* زر المفضلة */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleFavorite(topic.id);
+                }}
+                className="absolute top-1 left-1 z-10 p-1.5 bg-white/90 backdrop-blur-sm rounded-lg shadow-md hover:scale-110 transition-all duration-200"
+              >
+                <Star 
+                  className="w-4 h-4 sm:w-5 sm:h-5" 
+                  fill={isFavorite(topic.id) ? '#fbbf24' : 'none'}
+                  stroke={isFavorite(topic.id) ? '#fbbf24' : '#94a3b8'}
+                />
+              </button>
+
               {/* مربع الموضوع */}
-              <div className="bg-white/90 backdrop-blur-sm rounded-xl p-3 sm:p-4 hover:shadow-lg transition-all duration-300 hover:scale-105 border border-white/50">
+              <div
+                className="bg-white/90 backdrop-blur-sm rounded-xl p-3 sm:p-4 hover:shadow-lg transition-all duration-300 hover:scale-105 border border-white/50 cursor-pointer"
+                onClick={() => setCurrentTopic(topic)}
+              >
                 {/* عنوان الموضوع */}
                 <h3 className="font-heading font-bold text-radio-dark text-xs sm:text-sm text-center line-clamp-2 min-h-[2.5rem] sm:min-h-[3rem] flex items-center justify-center">
                   {topic.title}
                 </h3>
+                
+                {/* تاريخ الإنشاء للمواضيع المولدة */}
+                {topic.created_at && (
+                  <p className="text-[10px] sm:text-xs text-gray-500 text-center mt-2 border-t border-gray-200 pt-2">
+                    {formatDistanceToNow(new Date(topic.created_at), { addSuffix: true, locale: ar })}
+                  </p>
+                )}
               </div>
             </div>
           ))}
