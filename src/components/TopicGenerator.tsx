@@ -257,7 +257,7 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
                     checked={selectedSections.didYouKnow}
                     onCheckedChange={() => toggleSection('didYouKnow')}
                   />
-                  <Label htmlFor="didYouKnow" className="font-body cursor-pointer">هل تعلم</Label>
+                  <Label htmlFor="didYouKnow" className="font-body cursor-pointer">معلومات</Label>
                 </div>
                 <div className="flex items-center space-x-2 space-x-reverse">
                   <Checkbox 
@@ -358,7 +358,7 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
               </div>
 
               <div>
-                <h3 className="font-heading font-bold text-radio-dark mb-2">كلمة الصباح</h3>
+                <h3 className="font-heading font-bold text-radio-dark mb-2">كلمة</h3>
                 <p className="text-gray-700 font-body leading-relaxed">
                   {generatedTopic.content.morningWord.middle}
                 </p>

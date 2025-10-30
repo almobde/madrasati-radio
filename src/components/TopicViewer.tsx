@@ -152,10 +152,10 @@ const TopicViewer = () => {
     });
     html += `</div></div>`;
 
-    // هل تعلم
+    // معلومات
     html += `
       <div class="section">
-        <div class="section-title">💡 هل تعلم</div>
+        <div class="section-title">💡 معلومات</div>
         <div class="section-content">
     `;
     getContentByLevel(currentTopic.content.didYouKnow).forEach((fact: string, i: number) => {
@@ -163,10 +163,10 @@ const TopicViewer = () => {
     });
     html += `</div></div>`;
 
-    // كلمة الصباح
+    // كلمة
     html += `
       <div class="section">
-        <div class="section-title">🎤 كلمة الصباح</div>
+        <div class="section-title">🎤 كلمة</div>
         <div class="section-content">
           <p>${getContentByLevel(currentTopic.content.morningWord)}</p>
         </div>
@@ -191,11 +191,11 @@ const TopicViewer = () => {
       html += `</div></div>`;
     }
 
-    // أسئلة وألغاز
+    // أسئلة
     if (currentTopic.content.questions && getContentByLevel(currentTopic.content.questions).length > 0) {
       html += `
         <div class="section">
-          <div class="section-title">❓ أسئلة وألغاز</div>
+          <div class="section-title">❓ أسئلة</div>
           <div class="section-content">
       `;
       getContentByLevel(currentTopic.content.questions).forEach((q: any) => {
@@ -254,10 +254,10 @@ ${currentTopic.content.quranVerses.map(v => `${v.text}\n(${v.reference})`).join(
 الأحاديث النبوية:
 ${currentTopic.content.hadiths.map(h => `${h.text}\n(${h.reference})`).join('\n\n')}
 
-هل تعلم:
+معلومات:
 ${getContentByLevel(currentTopic.content.didYouKnow).join('\n')}
 
-كلمة الصباح:
+كلمة:
 ${getContentByLevel(currentTopic.content.morningWord)}
 
 الخاتمة:
@@ -411,14 +411,14 @@ ${currentTopic.content.radioEnding}
               className="bg-white hover:bg-gray-50 text-radio-dark data-[state=active]:bg-gray-100 data-[state=active]:scale-105 text-sm font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 p-3 rounded-lg shadow-md"
             >
               <Lightbulb className="w-4 h-4 mb-1" />
-              <span className="text-xs">هل تعلم</span>
+              <span className="text-xs">معلومات</span>
             </TabsTrigger>
             <TabsTrigger 
               value="morningWord" 
               className="bg-white hover:bg-gray-50 text-radio-dark data-[state=active]:bg-gray-100 data-[state=active]:scale-105 text-sm font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 p-3 rounded-lg shadow-md"
             >
               <Mic className="w-4 h-4 mb-1" />
-              <span className="text-xs">كلمة الصباح</span>
+              <span className="text-xs">كلمة</span>
             </TabsTrigger>
             <TabsTrigger 
               value="miscellaneous" 
@@ -432,7 +432,7 @@ ${currentTopic.content.radioEnding}
               className="bg-white hover:bg-gray-50 text-radio-dark data-[state=active]:bg-gray-100 data-[state=active]:scale-105 text-sm font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 p-3 rounded-lg shadow-md"
             >
               <HelpCircle className="w-4 h-4 mb-1" />
-              <span className="text-xs">أسئلة وألغاز</span>
+              <span className="text-xs">أسئلة</span>
             </TabsTrigger>
             <TabsTrigger 
               value="conclusion" 
@@ -514,13 +514,13 @@ ${currentTopic.content.radioEnding}
               </ModernCard>
             </TabsContent>
 
-            {/* هل تعلم */}
+            {/* معلومات */}
             <TabsContent value="didYouKnow" className="fade-in">
               <ModernCard variant="luxury" padding="lg">
                 <ModernCardHeader>
                   <ModernCardTitle className="text-2xl flex items-center gap-3">
                     <Lightbulb className="w-6 h-6 text-[hsl(var(--primary))]" />
-                    هل تعلم؟
+                    معلومات
                   </ModernCardTitle>
                 </ModernCardHeader>
                 <ModernCardContent>
@@ -546,7 +546,7 @@ ${currentTopic.content.radioEnding}
                 <ModernCardHeader>
                   <ModernCardTitle className="text-2xl flex items-center gap-3">
                     <Mic className="w-6 h-6 text-[hsl(var(--primary))]" />
-                    كلمة الصباح
+                    كلمة
                   </ModernCardTitle>
                 </ModernCardHeader>
                 <ModernCardContent>
@@ -591,13 +591,13 @@ ${currentTopic.content.radioEnding}
               </ModernCard>
             </TabsContent>
 
-            {/* أسئلة وألغاز */}
+            {/* أسئلة */}
             <TabsContent value="questions" className="fade-in">
               <ModernCard variant="luxury" padding="lg">
                 <ModernCardHeader>
                   <ModernCardTitle className="text-2xl flex items-center gap-3">
                     <HelpCircle className="w-6 h-6 text-[hsl(var(--primary))]" />
-                    أسئلة وألغاز
+                    أسئلة
                   </ModernCardTitle>
                 </ModernCardHeader>
                 <ModernCardContent>
