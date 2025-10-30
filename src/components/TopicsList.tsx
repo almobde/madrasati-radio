@@ -50,7 +50,7 @@ const TopicsList = () => {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[hsl(200,100%,90%)] via-[hsl(210,100%,85%)] to-[hsl(220,100%,80%)]">
+    <main className={`min-h-screen ${preferences?.gender === 'girls' ? 'bg-gradient-to-br from-pink-200 via-pink-300 to-purple-400' : 'bg-gradient-to-br from-[hsl(200,100%,90%)] via-[hsl(210,100%,85%)] to-[hsl(220,100%,80%)]'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
         {/* زر الرجوع */}

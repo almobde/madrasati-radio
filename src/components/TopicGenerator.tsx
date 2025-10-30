@@ -93,7 +93,7 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[hsl(200,100%,90%)] via-[hsl(210,100%,85%)] to-[hsl(220,100%,80%)] p-6">
+    <div className={`min-h-screen p-6 ${preferences?.gender === 'girls' ? 'bg-gradient-to-br from-pink-200 via-pink-300 to-purple-400' : 'bg-gradient-to-br from-[hsl(200,100%,90%)] via-[hsl(210,100%,85%)] to-[hsl(220,100%,80%)]'}`}>
       <div className="max-w-4xl mx-auto">
         {/* زر الرجوع */}
         <button
