@@ -96,11 +96,11 @@ const PreferencesSelector = () => {
                   }`}
                   onClick={() => setSelectedGender(option.value)}
                 >
-                  <div className="text-center">
+                  <div className="flex flex-col items-center justify-center h-full">
                     <div className={`w-14 h-14 mx-auto mb-3 rounded-full ${option.gradient} flex items-center justify-center shadow-lg`}>
                       <option.icon className="w-7 h-7 text-white" />
                     </div>
-                    <h3 className="text-xl font-body font-bold text-foreground">{option.label}</h3>
+                    <h3 className="text-xl font-joyel font-bold text-foreground">{option.label}</h3>
                   </div>
                 </ModernCard>
               ))}
@@ -121,11 +121,13 @@ const PreferencesSelector = () => {
                   }`}
                   onClick={() => setSelectedLevel(option.value)}
                 >
-                  <h3 className={`text-lg font-body font-bold whitespace-nowrap ${
-                    selectedLevel === option.value ? 'text-white' : 'text-foreground'
-                  }`}>
-                    {option.label}
-                  </h3>
+                  <div className="flex items-center justify-center h-full">
+                    <h3 className={`text-lg font-joyel font-bold whitespace-nowrap ${
+                      selectedLevel === option.value ? 'text-white' : 'text-foreground'
+                    }`}>
+                      {option.label}
+                    </h3>
+                  </div>
                 </div>
               ))}
             </div>

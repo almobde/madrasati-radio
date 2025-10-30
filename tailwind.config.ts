@@ -91,6 +91,7 @@ export default {
         'arabic': ['Tajawal', 'IBM Plex Sans Arabic', 'Almarai', 'system-ui', 'sans-serif'],
         'heading': ['Tajawal', 'Almarai', 'IBM Plex Sans Arabic', 'sans-serif'],
         'body': ['IBM Plex Sans Arabic', 'Tajawal', 'Almarai', 'system-ui', 'sans-serif'],
+        'joyel': ['Cairo', 'Tajawal', 'IBM Plex Sans Arabic', 'sans-serif'],
       },
       backgroundImage: {
         'gradient-primary': 'var(--gradient-primary)',
