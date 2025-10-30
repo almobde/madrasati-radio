@@ -1,9 +1,13 @@
 // مكون التذييل - Footer Component
 import { ExternalLink } from 'lucide-react';
+import AdvertisementBanner from './AdvertisementBanner';
 
 const Footer = () => {
   return (
     <footer className="w-full py-8 px-4 mt-12">
+      {/* البنر الإعلاني */}
+      <AdvertisementBanner />
+      
       <div className="max-w-7xl mx-auto text-center">
         <div className="flex flex-col items-center gap-1">
           <p className="text-white font-body font-semibold text-sm">

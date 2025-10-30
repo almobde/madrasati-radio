@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      advertisement_banner: {
+        Row: {
+          created_at: string | null
+          id: string
+          image_url: string
+          is_active: boolean | null
+          link_url: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          image_url: string
+          is_active?: boolean | null
+          link_url: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          image_url?: string
+          is_active?: boolean | null
+          link_url?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       custom_topics: {
         Row: {
           category: string
