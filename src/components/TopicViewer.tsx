@@ -24,178 +24,119 @@ const TopicViewer = () => {
     try {
       toast({
         title: "جارِ التصدير...",
-        description: "يرجى الانتظار حتى يتم إنشاء ملف PDF",
+        description: "يرجى الانتظار قليلاً",
       });
 
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
-      const margin = 10;
+      
+      // إنشاء div مؤقت
+      const container = document.createElement('div');
+      container.style.position = 'absolute';
+      container.style.right = '-9999px';
+      container.style.width = '800px';
+      container.style.background = 'white';
+      container.style.padding = '40px';
+      document.body.appendChild(container);
 
-      // إنشاء عنصر مؤقت للمحتوى
-      const tempContainer = document.createElement('div');
-      tempContainer.style.position = 'absolute';
-      tempContainer.style.right = '-9999px';
-      tempContainer.style.width = '794px'; // A4 width in pixels at 96 DPI
-      tempContainer.style.backgroundColor = '#ffffff';
-      tempContainer.style.padding = '40px';
-      tempContainer.style.fontFamily = 'Arial, sans-serif';
-      document.body.appendChild(tempContainer);
+      // العنوان
+      const title = document.createElement('h1');
+      title.textContent = currentTopic.title;
+      title.style.textAlign = 'center';
+      title.style.color = preferences?.gender === 'girls' ? '#e91e63' : '#2196f3';
+      title.style.fontSize = '32px';
+      title.style.marginBottom = '30px';
+      container.appendChild(title);
 
-      // إضافة العنوان الرئيسي
-      const titleDiv = document.createElement('div');
-      titleDiv.style.cssText = `
-        text-align: center;
-        padding: 30px 20px;
-        background: linear-gradient(135deg, ${preferences?.gender === 'girls' ? '#e91e63, #9c27b0' : '#2196f3, #1976d2'});
-        color: white;
-        border-radius: 12px;
-        margin-bottom: 30px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      `;
-      titleDiv.innerHTML = `<h1 style="font-size: 32px; margin: 0; font-weight: bold;">${currentTopic.title}</h1>`;
-      tempContainer.appendChild(titleDiv);
-
-      // تجهيز الأقسام
-      const sections = [
-        { 
-          title: 'المقدمة', 
-          icon: '📖',
-          content: getContentByLevel(currentTopic.content.introduction),
-          color: preferences?.gender === 'girls' ? '#e91e63' : '#2196f3'
-        },
-        { 
-          title: 'الآيات القرآنية', 
-          icon: '📿',
-          content: currentTopic.content.quranVerses.map(v => `<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f5f5f5; border-radius: 8px;"><p style="font-size: 20px; line-height: 2; margin-bottom: 10px;">${v.text}</p><p style="color: #666; font-size: 14px;">${v.reference}</p></div>`).join(''),
-          color: '#4caf50'
-        },
-        { 
-          title: 'الأحاديث النبوية', 
-          icon: '💬',
-          content: currentTopic.content.hadiths.map(h => `<div style="margin: 20px 0; padding: 20px; background: #f5f5f5; border-radius: 8px;"><p style="font-size: 18px; line-height: 1.8; margin-bottom: 10px;">${h.text}</p><p style="color: #666; font-size: 14px; text-align: center;">${h.reference}</p></div>`).join(''),
-          color: '#ff9800'
-        },
-        { 
-          title: 'هل تعلم', 
-          icon: '💡',
-          content: getContentByLevel(currentTopic.content.didYouKnow).map((f: string, i: number) => `<div style="margin: 15px 0; padding: 15px; background: #fff3cd; border-right: 4px solid #ffc107; border-radius: 8px;"><span style="font-weight: bold; color: #ff9800;">${i + 1}.</span> ${f}</div>`).join(''),
-          color: '#ffc107'
-        },
-        { 
-          title: 'كلمة الصباح', 
-          icon: '🎤',
-          content: getContentByLevel(currentTopic.content.morningWord),
-          color: '#9c27b0'
-        },
-        { 
-          title: 'منوعات', 
-          icon: '✨',
-          content: getContentByLevel(currentTopic.content.miscellaneous).map((m: any) => `<div style="margin: 20px 0; padding: 20px; background: #e3f2fd; border-radius: 8px;"><h3 style="color: #1976d2; margin-bottom: 10px;">${m.title}</h3><p style="line-height: 1.8;">${m.content}</p></div>`).join(''),
-          color: '#03a9f4'
-        },
-        { 
-          title: 'أسئلة وألغاز', 
-          icon: '❓',
-          content: getContentByLevel(currentTopic.content.questions).map((q: any) => `<div style="margin: 20px 0; padding: 20px; background: #f3e5f5; border-radius: 8px;"><p style="font-weight: bold; color: #7b1fa2; margin-bottom: 8px;">س: ${q.question}</p><p style="color: #4a148c;">ج: ${q.answer}</p></div>`).join(''),
-          color: '#9c27b0'
-        },
-        { 
-          title: 'الخاتمة', 
-          icon: '🌟',
-          content: `${currentTopic.content.conclusion || ''}<br><br>${currentTopic.content.radioEnding}`,
-          color: '#f44336'
-        },
-      ];
-
-      let yOffset = 0;
-
-      // إضافة كل قسم كصورة
-      for (let i = 0; i < sections.length; i++) {
-        const section = sections[i];
+      // إضافة الأقسام
+      const addSection = (titleText: string, content: string, color: string) => {
+        const section = document.createElement('div');
+        section.style.marginBottom = '25px';
         
-        // إنشاء div للقسم
-        const sectionDiv = document.createElement('div');
-        sectionDiv.style.cssText = `
-          margin-bottom: 30px;
-          page-break-inside: avoid;
-        `;
+        const header = document.createElement('div');
+        header.textContent = titleText;
+        header.style.background = color;
+        header.style.color = 'white';
+        header.style.padding = '12px 20px';
+        header.style.fontSize = '20px';
+        header.style.fontWeight = 'bold';
+        header.style.textAlign = 'right';
+        header.style.borderRadius = '8px 8px 0 0';
         
-        sectionDiv.innerHTML = `
-          <div style="
-            background: ${section.color};
-            color: white;
-            padding: 15px 20px;
-            border-radius: 8px 8px 0 0;
-            font-size: 24px;
-            font-weight: bold;
-            text-align: right;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-          ">
-            ${section.icon} ${section.title}
-          </div>
-          <div style="
-            background: white;
-            padding: 25px;
-            border: 2px solid ${section.color};
-            border-top: none;
-            border-radius: 0 0 8px 8px;
-            text-align: right;
-            line-height: 1.8;
-            font-size: 16px;
-            color: #333;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-          ">
-            ${section.content}
-          </div>
-        `;
+        const body = document.createElement('div');
+        body.innerHTML = content;
+        body.style.padding = '20px';
+        body.style.border = `2px solid ${color}`;
+        body.style.borderTop = 'none';
+        body.style.borderRadius = '0 0 8px 8px';
+        body.style.textAlign = 'right';
+        body.style.lineHeight = '1.8';
+        body.style.fontSize = '16px';
         
-        tempContainer.appendChild(sectionDiv);
-      }
+        section.appendChild(header);
+        section.appendChild(body);
+        container.appendChild(section);
+      };
 
-      // التقاط صورة للمحتوى الكامل
-      const canvas = await html2canvas(tempContainer, {
+      addSection('المقدمة', getContentByLevel(currentTopic.content.introduction), '#2196f3');
+      
+      const verses = currentTopic.content.quranVerses.map(v => 
+        `<p style="font-size: 18px; margin: 15px 0;">${v.text}</p><p style="color: #666; font-size: 14px;">${v.reference}</p>`
+      ).join('<hr style="margin: 20px 0;">');
+      addSection('الآيات القرآنية', verses, '#4caf50');
+      
+      const hadiths = currentTopic.content.hadiths.map(h => 
+        `<p style="font-size: 16px; margin: 15px 0;">${h.text}</p><p style="color: #666; font-size: 14px;">${h.reference}</p>`
+      ).join('<hr style="margin: 20px 0;">');
+      addSection('الأحاديث النبوية', hadiths, '#ff9800');
+      
+      const facts = getContentByLevel(currentTopic.content.didYouKnow).map((f: string, i: number) => 
+        `<p style="margin: 10px 0;"><strong>${i + 1}.</strong> ${f}</p>`
+      ).join('');
+      addSection('هل تعلم', facts, '#ffc107');
+      
+      addSection('كلمة الصباح', getContentByLevel(currentTopic.content.morningWord), '#9c27b0');
+      
+      addSection('الخاتمة', currentTopic.content.radioEnding, '#f44336');
+
+      // التقاط الصورة
+      const canvas = await html2canvas(container, {
         scale: 2,
         useCORS: true,
         backgroundColor: '#ffffff',
-        logging: false,
       });
 
-      // حذف العنصر المؤقت
-      document.body.removeChild(tempContainer);
+      document.body.removeChild(container);
 
-      // حساب الأبعاد
-      const imgWidth = pageWidth - 2 * margin;
+      // إضافة إلى PDF
+      const imgData = canvas.toDataURL('image/png');
+      const imgWidth = pageWidth - 20;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      
-      // إضافة الصورة إلى PDF مع تقسيمها على صفحات متعددة إذا لزم الأمر
       let heightLeft = imgHeight;
       let position = 0;
 
-      // إضافة الصفحة الأولى
-      const imgData = canvas.toDataURL('image/png');
-      pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight, undefined, 'FAST');
-      heightLeft -= pageHeight - 2 * margin;
+      pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+      heightLeft -= pageHeight - 20;
 
-      // إضافة صفحات إضافية إذا كان المحتوى أطول من صفحة واحدة
       while (heightLeft > 0) {
         position = heightLeft - imgHeight;
         pdf.addPage();
-        pdf.addImage(imgData, 'PNG', margin, position + margin, imgWidth, imgHeight, undefined, 'FAST');
-        heightLeft -= pageHeight - 2 * margin;
+        pdf.addImage(imgData, 'PNG', 10, position + 10, imgWidth, imgHeight);
+        heightLeft -= pageHeight - 20;
       }
 
       pdf.save(`${currentTopic.title}.pdf`);
       
       toast({
         title: "تم التصدير بنجاح! ✅",
-        description: "تم حفظ الملف على جهازك",
+        description: "تم حفظ الملف",
       });
     } catch (error) {
-      console.error('Error exporting PDF:', error);
+      console.error('Error:', error);
       toast({
         title: "خطأ في التصدير",
-        description: "حدث خطأ أثناء إنشاء ملف PDF",
+        description: "حاول مرة أخرى",
         variant: "destructive",
       });
     }
