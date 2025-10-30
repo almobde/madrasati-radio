@@ -7,6 +7,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAppContext } from '../context/AppContext';
 import { Topic } from '../types';
 import Footer from './Footer';
+import { RadioGroup, RadioGroupItem } from './ui/radio-group';
+import { Checkbox } from './ui/checkbox';
+import { Label } from './ui/label';
 
 interface TopicGeneratorProps {
   onBack: () => void;
@@ -16,8 +19,24 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
   const [title, setTitle] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedTopic, setGeneratedTopic] = useState<Topic | null>(null);
+  const [addressStyle, setAddressStyle] = useState<'masculine' | 'feminine'>('masculine');
+  const [contentLength, setContentLength] = useState<'long' | 'short'>('long');
+  const [selectedSections, setSelectedSections] = useState({
+    introduction: true,
+    quranVerses: true,
+    hadiths: true,
+    didYouKnow: true,
+    morningWord: true,
+    miscellaneous: true,
+    questions: true,
+    conclusion: true,
+  });
   const { toast } = useToast();
   const { preferences } = useAppContext();
+
+  const toggleSection = (section: keyof typeof selectedSections) => {
+    setSelectedSections(prev => ({ ...prev, [section]: !prev[section] }));
+  };
 
   const handleGenerate = async () => {
     if (!title.trim()) {
@@ -35,7 +54,10 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
         body: {
           title: title.trim(),
           gender: preferences?.gender || 'boys',
-          educationLevel: preferences?.educationLevel || 'middle'
+          educationLevel: preferences?.educationLevel || 'middle',
+          addressStyle,
+          contentLength,
+          selectedSections
         }
       });
 
@@ -127,7 +149,7 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
 
         {/* نموذج الإدخال */}
         <div className="bg-white/90 backdrop-blur-sm rounded-xl p-6 shadow-lg mb-6">
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div>
               <label className="block text-radio-dark font-heading font-bold mb-2">
                 عنوان الموضوع
@@ -140,6 +162,113 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
                 className="text-lg"
                 disabled={isGenerating}
               />
+            </div>
+
+            {/* الخطاب */}
+            <div>
+              <label className="block text-radio-dark font-heading font-bold mb-3">
+                أسلوب الخطاب
+              </label>
+              <RadioGroup value={addressStyle} onValueChange={(value: 'masculine' | 'feminine') => setAddressStyle(value)} className="flex gap-6">
+                <div className="flex items-center space-x-2 space-x-reverse">
+                  <RadioGroupItem value="masculine" id="masculine" />
+                  <Label htmlFor="masculine" className="font-body cursor-pointer">مذكر</Label>
+                </div>
+                <div className="flex items-center space-x-2 space-x-reverse">
+                  <RadioGroupItem value="feminine" id="feminine" />
+                  <Label htmlFor="feminine" className="font-body cursor-pointer">مؤنث</Label>
+                </div>
+              </RadioGroup>
+            </div>
+
+            {/* الطول */}
+            <div>
+              <label className="block text-radio-dark font-heading font-bold mb-3">
+                طول المحتوى
+              </label>
+              <RadioGroup value={contentLength} onValueChange={(value: 'long' | 'short') => setContentLength(value)} className="flex gap-6">
+                <div className="flex items-center space-x-2 space-x-reverse">
+                  <RadioGroupItem value="long" id="long" />
+                  <Label htmlFor="long" className="font-body cursor-pointer">طويل</Label>
+                </div>
+                <div className="flex items-center space-x-2 space-x-reverse">
+                  <RadioGroupItem value="short" id="short" />
+                  <Label htmlFor="short" className="font-body cursor-pointer">قصير</Label>
+                </div>
+              </RadioGroup>
+            </div>
+
+            {/* الأقسام */}
+            <div>
+              <label className="block text-radio-dark font-heading font-bold mb-3">
+                الأقسام المطلوبة
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex items-center space-x-2 space-x-reverse">
+                  <Checkbox 
+                    id="introduction" 
+                    checked={selectedSections.introduction}
+                    onCheckedChange={() => toggleSection('introduction')}
+                  />
+                  <Label htmlFor="introduction" className="font-body cursor-pointer">المقدمة</Label>
+                </div>
+                <div className="flex items-center space-x-2 space-x-reverse">
+                  <Checkbox 
+                    id="quranVerses" 
+                    checked={selectedSections.quranVerses}
+                    onCheckedChange={() => toggleSection('quranVerses')}
+                  />
+                  <Label htmlFor="quranVerses" className="font-body cursor-pointer">الآيات</Label>
+                </div>
+                <div className="flex items-center space-x-2 space-x-reverse">
+                  <Checkbox 
+                    id="hadiths" 
+                    checked={selectedSections.hadiths}
+                    onCheckedChange={() => toggleSection('hadiths')}
+                  />
+                  <Label htmlFor="hadiths" className="font-body cursor-pointer">الأحاديث</Label>
+                </div>
+                <div className="flex items-center space-x-2 space-x-reverse">
+                  <Checkbox 
+                    id="didYouKnow" 
+                    checked={selectedSections.didYouKnow}
+                    onCheckedChange={() => toggleSection('didYouKnow')}
+                  />
+                  <Label htmlFor="didYouKnow" className="font-body cursor-pointer">هل تعلم</Label>
+                </div>
+                <div className="flex items-center space-x-2 space-x-reverse">
+                  <Checkbox 
+                    id="morningWord" 
+                    checked={selectedSections.morningWord}
+                    onCheckedChange={() => toggleSection('morningWord')}
+                  />
+                  <Label htmlFor="morningWord" className="font-body cursor-pointer">كلمة</Label>
+                </div>
+                <div className="flex items-center space-x-2 space-x-reverse">
+                  <Checkbox 
+                    id="miscellaneous" 
+                    checked={selectedSections.miscellaneous}
+                    onCheckedChange={() => toggleSection('miscellaneous')}
+                  />
+                  <Label htmlFor="miscellaneous" className="font-body cursor-pointer">منوعات</Label>
+                </div>
+                <div className="flex items-center space-x-2 space-x-reverse">
+                  <Checkbox 
+                    id="questions" 
+                    checked={selectedSections.questions}
+                    onCheckedChange={() => toggleSection('questions')}
+                  />
+                  <Label htmlFor="questions" className="font-body cursor-pointer">أسئلة</Label>
+                </div>
+                <div className="flex items-center space-x-2 space-x-reverse">
+                  <Checkbox 
+                    id="conclusion" 
+                    checked={selectedSections.conclusion}
+                    onCheckedChange={() => toggleSection('conclusion')}
+                  />
+                  <Label htmlFor="conclusion" className="font-body cursor-pointer">خاتمة</Label>
+                </div>
+              </div>
             </div>
 
             <Button

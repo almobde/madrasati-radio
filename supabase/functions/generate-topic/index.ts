@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { title, gender, educationLevel } = await req.json();
+    const { title, gender, educationLevel, addressStyle, contentLength, selectedSections } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 
     if (!LOVABLE_API_KEY) {
@@ -25,12 +25,22 @@ serve(async (req) => {
     const levelText = educationLevel === 'primary' ? 'الابْتِدَائِيّ' : 
                       educationLevel === 'middle' ? 'المُتَوَسِّط' : 'الثَّانَوِيّ';
     
+    // أسلوب الخطاب
+    const addressPronouns = addressStyle === 'feminine' 
+      ? { plural: 'أنتن', object: 'عليكن، لكن', possessive: 'كن' }
+      : { plural: 'أنتم', object: 'عليكم، لكم', possessive: 'كم' };
+    
     // تخصيص مستوى اللغة حسب المرحلة
     const languageGuidelines = educationLevel === 'primary' 
       ? 'استخدم لغة بسيطة جداً وسهلة الفهم مع جمل قصيرة ومباشرة. أمثلة من حياة الأطفال اليومية. تجنب المفردات المعقدة.'
       : educationLevel === 'middle'
       ? 'استخدم لغة متوسطة الصعوبة مع جمل متوسطة الطول. مفردات واضحة ومعاني مباشرة مع بعض التعابير الأدبية البسيطة.'
       : 'استخدم لغة عربية فصحى راقية وأدبية مع جمل طويلة ومركبة. مفردات ثرية وتعابير بلاغية وأسلوب أدبي رفيع.';
+    
+    // طول المحتوى
+    const contentLengthGuidelines = contentLength === 'short'
+      ? 'اجعل المحتوى مختصراً وموجزاً. المقدمة قصيرة (3-4 جمل)، آيتين بدلاً من ثلاث، حديثين بدلاً من ثلاثة، 3 معلومات هل تعلم بدلاً من 6، كلمة الصباح قصيرة (40-60 كلمة)، 3 أسئلة بدلاً من 6.'
+      : 'اجعل المحتوى مفصلاً وشاملاً. المقدمة طويلة ومفصلة، ثلاث آيات، ثلاثة أحاديث، 6 معلومات هل تعلم، كلمة صباح طويلة، 6 أسئلة.';
 
     const systemPrompt = `أنت خبير في إعداد الإذاعات المدرسية باللغة العربية الفصحى المُشَكَّلة تشكيلاً كاملاً. 
 مهمتك إنشاء محتوى إذاعي متكامل وشامل عن موضوع معين يتناسب مع المرحلة التعليمية ونوع ${genderText}.
@@ -46,41 +56,81 @@ serve(async (req) => {
 ${languageGuidelines}
 
 **خطاب الجمهور:**
-خاطب ${genderPronoun} في المحتوى بضمير الجمع المناسب للجنس (أنتن للبنات، أنتم للبنين).`;
+خاطب ${genderPronoun} في المحتوى بضمير الجمع: ${addressPronouns.plural}، ${addressPronouns.object}.
 
+**طول المحتوى:**
+${contentLengthGuidelines}`;
+
+    // بناء محتوى الأقسام المطلوبة
+    const sections = [];
+    let sectionNumber = 1;
+    
+    if (selectedSections.introduction) {
+      sections.push(`${sectionNumber}. **${contentLength === 'short' ? 'مقدمة قصيرة' : 'ثلاث مقدمات مختلفة'}** (primary, middle, secondary) - ${contentLength === 'short' ? 'موجزة ومباشرة' : 'كل واحدة أطول وأكثر تفصيلاً من الأخرى'}، تبدأ بالبسملة والسلام`);
+      sectionNumber++;
+    }
+    
+    if (selectedSections.quranVerses) {
+      const versesCount = contentLength === 'short' ? 'آيتين' : 'ثلاث آيات';
+      sections.push(`${sectionNumber}. **${versesCount} قرآنية** مرتبطة بالموضوع مع ذكر اسم السورة ورقم الآية`);
+      sectionNumber++;
+    }
+    
+    if (selectedSections.hadiths) {
+      const hadithsCount = contentLength === 'short' ? 'حديثين' : 'ثلاثة أحاديث';
+      sections.push(`${sectionNumber}. **${hadithsCount} نبوية** مرتبطة بالموضوع مع ذكر المصدر`);
+      sectionNumber++;
+    }
+    
+    if (selectedSections.didYouKnow) {
+      const infoCount = contentLength === 'short' ? '3 معلومات' : '6 معلومات';
+      sections.push(`${sectionNumber}. **هل تعلم** - ${infoCount} لكل مستوى (primary, middle, secondary)`);
+      sectionNumber++;
+    }
+    
+    if (selectedSections.morningWord) {
+      sections.push(`${sectionNumber}. **كلمة الصباح** - ثلاث نسخ (primary, middle, secondary) - ${contentLength === 'short' ? 'موجزة' : 'كل واحدة أطول من الأخرى بكثير'}`);
+      sectionNumber++;
+    }
+    
+    if (selectedSections.miscellaneous) {
+      sections.push(`${sectionNumber}. **فقرات متنوعة** (miscellaneous) لكل مستوى:
+   - قصة متعلقة بالموضوع
+   - دعاء أو موضوع إضافي`);
+      sectionNumber++;
+    }
+    
+    if (selectedSections.questions) {
+      const questionsCount = contentLength === 'short' ? 'ثلاثة أسئلة' : 'ستة أسئلة';
+      sections.push(`${sectionNumber}. **${questionsCount} وأجوبة** لكل مستوى (primary, middle, secondary)`);
+      sectionNumber++;
+    }
+    
+    if (selectedSections.conclusion) {
+      sections.push(`${sectionNumber}. **خاتمة ${contentLength === 'short' ? 'موجزة' : 'طويلة ومفصلة'}** مع دعاء`);
+      sectionNumber++;
+    }
+    
+    sections.push(`${sectionNumber}. **نهاية الإذاعة** مع السلام`);
+    
     const userPrompt = `أنشئ محتوى إذاعة مدرسية متكاملة عن موضوع: "${title}"
 
-يجب أن يتضمن المحتوى:
+يجب أن يتضمن المحتوى الأقسام التالية فقط:
 
-1. **ثلاث مقدمات مختلفة** (primary, middle, secondary) - كل واحدة أطول وأكثر تفصيلاً من الأخرى، تبدأ بالبسملة والسلام
-
-2. **ثلاث آيات قرآنية** مرتبطة بالموضوع مع ذكر اسم السورة ورقم الآية
-
-3. **ثلاثة أحاديث نبوية** مرتبطة بالموضوع مع ذكر المصدر
-
-4. **هل تعلم** - 6 معلومات لكل مستوى (primary, middle, secondary) - مجموع 18 معلومة
-
-5. **كلمة الصباح** - ثلاث نسخ (primary, middle, secondary) - كل واحدة أطول من الأخرى بكثير
-
-6. **فقرات متنوعة** (miscellaneous) لكل مستوى:
-   - قصة متعلقة بالموضوع
-   - دعاء أو موضوع إضافي
-
-7. **ستة أسئلة وأجوبة** لكل مستوى (primary, middle, secondary) - مجموع 18 سؤال
-
-8. **خاتمة طويلة ومفصلة** مع دعاء
-
-9. **نهاية الإذاعة** مع السلام
+${sections.join('\n\n')}
 
 **ملاحظات مهمة جداً:**
 - ${languageGuidelines}
+- ${contentLengthGuidelines}
 - **شكّل جميع الكلمات تشكيلاً نحوياً كاملاً** (الفتحة، الضمة، الكسرة، السكون، التنوين، الشدة) على كل حرف
 - **اهتم بإعراب أواخر الكلمات** حسب موقعها في الجملة
-- خاطب ${genderPronoun} بضمير الجمع المناسب (${gender === 'girls' ? 'أنتن، عليكن، لكن' : 'أنتم، عليكم، لكم'})
-- اجعل المحتوى ثرياً ومفصلاً ومتوافقاً مع عمر وفهم طلاب المرحلة ${levelText}
+- خاطب ${genderPronoun} بضمير الجمع: ${addressPronouns.plural}، ${addressPronouns.object}
+- اجعل المحتوى ${contentLength === 'short' ? 'مختصراً ومباشراً' : 'ثرياً ومفصلاً'} ومتوافقاً مع عمر وفهم طلاب المرحلة ${levelText}
 - تأكد من ارتباط كل الآيات والأحاديث بالموضوع
-- اجعل كلمة الصباح للمستوى primary قصيرة (50-70 كلمة)، middle متوسطة (100-120 كلمة)، secondary طويلة جداً (180-220 كلمة)
-- اجعل الخاتمة مفصلة وشاملة مع دعاء جميل
+- ${contentLength === 'short' 
+    ? 'اجعل كلمة الصباح قصيرة جداً (40-60 كلمة) للجميع'
+    : 'اجعل كلمة الصباح للمستوى primary قصيرة (50-70 كلمة)، middle متوسطة (100-120 كلمة)، secondary طويلة جداً (180-220 كلمة)'}
+- ${selectedSections.conclusion ? `اجعل الخاتمة ${contentLength === 'short' ? 'موجزة' : 'مفصلة وشاملة'} مع دعاء جميل` : ''}
 
 أرجع الناتج كـ JSON بهذا الشكل:
 \`\`\`json
