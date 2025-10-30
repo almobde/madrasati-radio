@@ -140,12 +140,12 @@ ${sections.join('\n\n')}
 - ${selectedSections.conclusion ? `اجعل الخاتمة ${contentLength === 'short' ? 'موجزة' : 'مفصلة وشاملة'} مع دعاء جميل` : ''}
 
 **مهم جداً للتنسيق:**
-- أرجع JSON صحيح بدون أي أسطر جديدة داخل النصوص
-- لا تضع تعليقات أو شروحات إضافية داخل نصوص الأحاديث
-- اجعل كل نص في سطر واحد متصل
+- أرجع JSON صحيح فقط بدون code blocks (لا تستخدم \`\`\`json)
+- ابدأ مباشرة بقوس مفتوح وانتهي بقوس مغلق
+- لا تضع أي نص قبل أو بعد JSON
+- اجعل كل نص في سطر واحد متصل بدون أسطر جديدة داخل النصوص
 
-أرجع الناتج كـ JSON بهذا الشكل:
-\`\`\`json
+أرجع الناتج كـ JSON مباشرة:
 {
   "introduction": {
     "primary": "نص المقدمة البسيطة...",
@@ -214,8 +214,8 @@ ${sections.join('\n\n')}
   },
   "conclusion": "خاتمة طويلة ومفصلة...",
   "radioEnding": "نهاية الإذاعة..."
-}
-\`\`\``;
+}`;
+
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -229,7 +229,7 @@ ${sections.join('\n\n')}
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt }
         ],
-        max_tokens: 8000,
+        max_tokens: 16000,
         temperature: 0.7,
       }),
     });
@@ -268,28 +268,49 @@ ${sections.join('\n\n')}
       console.log("First 300 chars:", content.substring(0, 300));
       console.log("Last 300 chars:", content.substring(content.length - 300));
 
-      // Try multiple patterns to extract JSON from code blocks
-      const codeBlockPatterns = [
-        /```json\s*\n([\s\S]*?)\n```/,  // ```json ... ```
-        /```\s*\n([\s\S]*?)\n```/,      // ``` ... ```
-        /`json\s*\n([\s\S]*?)\n`/,      // `json ... `
-      ];
-
+      // More flexible JSON extraction
       let jsonText = "";
-      let found = false;
-
-      for (const pattern of codeBlockPatterns) {
-        const match = content.match(pattern);
-        if (match) {
-          jsonText = match[1];
-          found = true;
-          console.log("Found JSON using pattern:", pattern.source);
-          break;
+      
+      // Try to find ```json marker
+      if (content.includes('```json')) {
+        console.log("Found ```json marker");
+        const startMarker = content.indexOf('```json');
+        const afterMarker = content.substring(startMarker + 7).trim();
+        
+        // Find the last closing brace
+        const lastBrace = afterMarker.lastIndexOf('}');
+        if (lastBrace !== -1) {
+          // Extract everything from start to last }
+          jsonText = afterMarker.substring(0, lastBrace + 1);
+          console.log("Extracted JSON after ```json marker");
+        } else {
+          jsonText = afterMarker.replace(/```/g, '');
+        }
+      } 
+      // Try to find ``` marker without json
+      else if (content.includes('```')) {
+        console.log("Found ``` marker");
+        const startMarker = content.indexOf('```');
+        const afterMarker = content.substring(startMarker + 3).trim();
+        
+        const lastBrace = afterMarker.lastIndexOf('}');
+        if (lastBrace !== -1) {
+          jsonText = afterMarker.substring(0, lastBrace + 1);
+          console.log("Extracted JSON after ``` marker");
+        } else {
+          jsonText = afterMarker.replace(/```/g, '');
         }
       }
-
-      if (!found) {
-        console.log("No code block found, trying direct parse");
+      // Try direct extraction by finding { and last }
+      else if (content.includes('{') && content.includes('}')) {
+        console.log("Trying to extract JSON by braces");
+        const firstBrace = content.indexOf('{');
+        const lastBrace = content.lastIndexOf('}');
+        jsonText = content.substring(firstBrace, lastBrace + 1);
+      }
+      // Last resort: use content as is
+      else {
+        console.log("Using content as-is");
         jsonText = content;
       }
 
