@@ -20,9 +20,10 @@ const TopicViewer = () => {
 
   const handleExportToPDF = () => {
     toast({
-      title: "تصدير PDF",
-      description: "جارٍ العمل على تحسين هذه الميزة قريباً",
+      title: "طباعة المحتوى",
+      description: "يمكنك حفظ الصفحة كـ PDF من خيارات الطباعة",
     });
+    window.print();
   };
 
   const handleShare = () => {
