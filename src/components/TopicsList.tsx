@@ -130,7 +130,7 @@ const TopicsList = () => {
         <div className="max-w-md mx-auto mb-6 flex gap-2 justify-center">
           <button
             onClick={() => setActiveTab('all')}
-            className={`flex-1 py-3 px-6 rounded-xl font-heading font-bold transition-all duration-300 ${
+            className={`flex-1 py-3 px-6 rounded-xl font-heading font-bold text-sm transition-all duration-300 ${
               activeTab === 'all'
                 ? preferences?.gender === 'girls'
                   ? 'bg-white text-[hsl(330,70%,40%)] shadow-lg scale-105'
@@ -142,7 +142,7 @@ const TopicsList = () => {
           </button>
           <button
             onClick={() => setActiveTab('favorites')}
-            className={`flex-1 py-3 px-6 rounded-xl font-heading font-bold transition-all duration-300 flex items-center justify-center gap-2 ${
+            className={`flex-1 py-3 px-6 rounded-xl font-heading font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
               activeTab === 'favorites'
                 ? preferences?.gender === 'girls'
                   ? 'bg-white text-[hsl(330,70%,40%)] shadow-lg scale-105'
