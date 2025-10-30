@@ -59,7 +59,7 @@ const PreferencesSelector = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-t from-sky-200 to-blue-500 flex items-center justify-center">
       <ModernCard variant="luxury" padding="xl" className="w-full h-full min-h-screen rounded-none">
         <div className="text-center mb-12 fade-in">
           <h1 className="text-4xl md:text-5xl font-joyel font-bold text-gradient leading-tight mb-6">
