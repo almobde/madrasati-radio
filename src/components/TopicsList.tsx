@@ -164,21 +164,6 @@ const TopicsList = () => {
               key={topic.id}
               className="group relative"
             >
-              {/* زر المفضلة */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleFavorite(topic.id);
-                }}
-                className="absolute top-1 left-1 z-10 p-1.5 bg-white/90 backdrop-blur-sm rounded-lg shadow-md hover:scale-110 transition-all duration-200"
-              >
-                <Star 
-                  className="w-4 h-4 sm:w-5 sm:h-5" 
-                  fill={isFavorite(topic.id) ? '#fbbf24' : 'none'}
-                  stroke={isFavorite(topic.id) ? '#fbbf24' : '#94a3b8'}
-                />
-              </button>
-
               {/* مربع الموضوع */}
               <div
                 className="bg-white/90 backdrop-blur-sm rounded-xl p-3 sm:p-4 hover:shadow-lg transition-all duration-300 hover:scale-105 border border-white/50 cursor-pointer"
@@ -196,6 +181,22 @@ const TopicsList = () => {
                   </p>
                 )}
               </div>
+
+              {/* زر المفضلة - أسفل الكارت */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleFavorite(topic.id);
+                }}
+                className="absolute -bottom-1 left-1/2 -translate-x-1/2 z-10 hover:scale-125 transition-all duration-200"
+              >
+                <Star 
+                  className="w-3 h-3 sm:w-3.5 sm:h-3.5 drop-shadow-md" 
+                  fill={isFavorite(topic.id) ? '#fbbf24' : 'none'}
+                  stroke={isFavorite(topic.id) ? '#fbbf24' : '#94a3b8'}
+                  strokeWidth={2}
+                />
+              </button>
             </div>
           ))}
         </div>
