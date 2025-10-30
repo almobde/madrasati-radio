@@ -15,22 +15,30 @@ const TopicsList = () => {
   const [showGenerator, setShowGenerator] = useState(false);
   const [allTopics, setAllTopics] = useState<Topic[]>(staticTopics);
 
-  // Load custom topics from localStorage
+  // Load custom topics from localStorage and filter by current preferences
   useEffect(() => {
     const loadCustomTopics = () => {
       try {
         const customTopicsJson = localStorage.getItem('customTopics');
         if (customTopicsJson) {
           const customTopics = JSON.parse(customTopicsJson);
-          setAllTopics([...customTopics, ...staticTopics]);
+          // Filter custom topics by gender and education level
+          const filteredCustomTopics = customTopics.filter((topic: Topic) => 
+            topic.gender === preferences?.gender && 
+            topic.educationLevel === preferences?.educationLevel
+          );
+          setAllTopics([...filteredCustomTopics, ...staticTopics]);
+        } else {
+          setAllTopics(staticTopics);
         }
       } catch (error) {
         console.error('Error loading custom topics:', error);
+        setAllTopics(staticTopics);
       }
     };
 
     loadCustomTopics();
-  }, [showGenerator]); // Reload when returning from generator
+  }, [showGenerator, preferences?.gender, preferences?.educationLevel]); // Reload when returning from generator or preferences change
 
   // تصفية المواضيع حسب البحث فقط
   const filteredTopics = allTopics.filter(topic => {

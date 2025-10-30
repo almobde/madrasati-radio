@@ -7,6 +7,8 @@ export interface Topic {
   id: string;
   title: string;
   category: string;
+  gender?: Gender;
+  educationLevel?: EducationLevel;
   content: {
     introduction: {
       primary: string;

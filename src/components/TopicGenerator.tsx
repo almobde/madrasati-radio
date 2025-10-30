@@ -77,15 +77,23 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
   };
 
   const handleAddToList = () => {
-    if (generatedTopic) {
-      // هنا يمكن إضافة المنطق لحفظ الموضوع في localStorage أو قاعدة بيانات
+    if (generatedTopic && preferences) {
       const existingTopics = JSON.parse(localStorage.getItem('customTopics') || '[]');
-      existingTopics.push(generatedTopic);
+      const newTopic = {
+        ...generatedTopic,
+        gender: preferences.gender,
+        educationLevel: preferences.educationLevel,
+      };
+      existingTopics.push(newTopic);
       localStorage.setItem('customTopics', JSON.stringify(existingTopics));
 
+      const levelName = preferences.educationLevel === 'primary' ? 'ابتدائي' : 
+                        preferences.educationLevel === 'middle' ? 'متوسط' : 'ثانوي';
+      const genderName = preferences.gender === 'girls' ? 'البنات' : 'البنين';
+
       toast({
-        title: "تم!",
-        description: "تمت إضافة الموضوع للقائمة",
+        title: "✅ تم الإضافة",
+        description: `تم إضافة الموضوع إلى قائمة ${genderName} - ${levelName}`,
       });
 
       onBack();
