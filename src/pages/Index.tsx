@@ -24,12 +24,7 @@ const Index = () => {
   }
 
   // عرض قائمة المواضيع
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
-      <TopicsList />
-    </div>
-  );
+  return <TopicsList />;
 };
 
 export default Index;

@@ -69,11 +69,6 @@ const TopicsList = () => {
             >
               {/* مربع الموضوع */}
               <div className="bg-white/90 backdrop-blur-sm rounded-xl p-3 sm:p-4 hover:shadow-lg transition-all duration-300 hover:scale-105 border border-white/50">
-                {/* أيقونة الموضوع */}
-                <div className="aspect-square bg-gradient-to-br from-radio-gold/20 to-radio-gold/10 rounded-lg flex items-center justify-center mb-2 sm:mb-3">
-                  <Radio className="w-6 h-6 sm:w-8 sm:h-8 text-radio-gold" />
-                </div>
-                
                 {/* عنوان الموضوع */}
                 <h3 className="font-heading font-bold text-radio-dark text-xs sm:text-sm text-center line-clamp-2 min-h-[2.5rem] sm:min-h-[3rem] flex items-center justify-center">
                   {topic.title}
