@@ -43,7 +43,7 @@ const AdvertisementBanner = () => {
 
   return (
     <div className="w-full py-6 px-4">
-      <div className="max-w-full md:max-w-3xl mx-auto">
+      <div className="max-w-full md:max-w-xl mx-auto">
         <a
           href={banner.link_url}
           target="_blank"
