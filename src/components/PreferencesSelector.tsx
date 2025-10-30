@@ -103,7 +103,7 @@ const PreferencesSelector = () => {
           </div>
 
           {/* زر البدء الفاخر */}
-          <div className="text-center pt-12">
+          <div className="flex items-center justify-center pt-12">
             <ModernButton onClick={handleSubmit} disabled={!selectedGender || !selectedLevel} variant="premium" size="xl" className="disabled:opacity-50 disabled:cursor-not-allowed font-body scale-in shadow-2xl">
               <Sparkles className="w-6 h-6" />
               ابدأ الرحلة الإعلامية
