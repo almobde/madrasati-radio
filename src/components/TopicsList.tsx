@@ -55,10 +55,10 @@ const TopicsList = () => {
         {/* زر الرجوع */}
         <button
           onClick={() => setPreferences(null)}
-          className="mb-6 flex items-center gap-2 px-4 py-2 bg-white/90 hover:bg-white rounded-lg transition-colors shadow-sm hover:shadow-md"
+          className="mb-6 flex items-center gap-2 px-5 py-3 bg-radio-dark hover:bg-radio-dark/90 text-white rounded-xl transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
         >
-          <ArrowLeft className="w-5 h-5 text-radio-dark" />
-          <span className="font-body text-radio-dark">رجوع للصفحة الرئيسية</span>
+          <ArrowLeft className="w-5 h-5" />
+          <span className="font-body font-semibold">رجوع للصفحة الرئيسية</span>
         </button>
 
         {/* العنوان الرئيسي البسيط */}
@@ -75,7 +75,7 @@ const TopicsList = () => {
         <div className="max-w-md mx-auto mb-6">
           <Button
             onClick={() => setShowGenerator(true)}
-            className="w-full bg-gradient-to-r from-radio-gold to-yellow-500 hover:from-radio-gold/90 hover:to-yellow-500/90 text-white py-6 text-lg font-heading"
+            className="w-full bg-gradient-to-r from-secondary to-secondary/90 hover:from-secondary/90 hover:to-secondary/80 text-white py-6 text-lg font-heading shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
           >
             <Sparkles className="w-6 h-6 ml-2" />
             توليد موضوع جديد بالذكاء الاصطناعي
