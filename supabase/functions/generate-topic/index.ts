@@ -281,11 +281,10 @@ ${sections.join('\n\n')}
                   items: { 
                     type: "object",
                     properties: {
-                      type: { type: "string", enum: ["story", "dua", "medical", "topic"] },
+                      type: { type: "string" },
                       title: { type: "string" },
                       content: { type: "string" }
-                    },
-                    required: ["type", "title", "content"]
+                    }
                   } 
                 },
                 middle: { 
@@ -293,11 +292,10 @@ ${sections.join('\n\n')}
                   items: { 
                     type: "object",
                     properties: {
-                      type: { type: "string", enum: ["story", "dua", "medical", "topic"] },
+                      type: { type: "string" },
                       title: { type: "string" },
                       content: { type: "string" }
-                    },
-                    required: ["type", "title", "content"]
+                    }
                   } 
                 },
                 secondary: { 
@@ -305,11 +303,10 @@ ${sections.join('\n\n')}
                   items: { 
                     type: "object",
                     properties: {
-                      type: { type: "string", enum: ["story", "dua", "medical", "topic"] },
+                      type: { type: "string" },
                       title: { type: "string" },
                       content: { type: "string" }
-                    },
-                    required: ["type", "title", "content"]
+                    }
                   } 
                 }
               }
@@ -324,8 +321,7 @@ ${sections.join('\n\n')}
                     properties: {
                       question: { type: "string" },
                       answer: { type: "string" }
-                    },
-                    required: ["question", "answer"]
+                    }
                   } 
                 },
                 middle: { 
@@ -335,8 +331,7 @@ ${sections.join('\n\n')}
                     properties: {
                       question: { type: "string" },
                       answer: { type: "string" }
-                    },
-                    required: ["question", "answer"]
+                    }
                   } 
                 },
                 secondary: { 
@@ -346,8 +341,7 @@ ${sections.join('\n\n')}
                     properties: {
                       question: { type: "string" },
                       answer: { type: "string" }
-                    },
-                    required: ["question", "answer"]
+                    }
                   } 
                 }
               }
