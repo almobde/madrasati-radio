@@ -276,17 +276,80 @@ ${sections.join('\n\n')}
             miscellaneous: {
               type: "object",
               properties: {
-                primary: { type: "array", items: { type: "object" } },
-                middle: { type: "array", items: { type: "object" } },
-                secondary: { type: "array", items: { type: "object" } }
+                primary: { 
+                  type: "array", 
+                  items: { 
+                    type: "object",
+                    properties: {
+                      type: { type: "string", enum: ["story", "dua", "medical", "topic"] },
+                      title: { type: "string" },
+                      content: { type: "string" }
+                    },
+                    required: ["type", "title", "content"]
+                  } 
+                },
+                middle: { 
+                  type: "array", 
+                  items: { 
+                    type: "object",
+                    properties: {
+                      type: { type: "string", enum: ["story", "dua", "medical", "topic"] },
+                      title: { type: "string" },
+                      content: { type: "string" }
+                    },
+                    required: ["type", "title", "content"]
+                  } 
+                },
+                secondary: { 
+                  type: "array", 
+                  items: { 
+                    type: "object",
+                    properties: {
+                      type: { type: "string", enum: ["story", "dua", "medical", "topic"] },
+                      title: { type: "string" },
+                      content: { type: "string" }
+                    },
+                    required: ["type", "title", "content"]
+                  } 
+                }
               }
             },
             questions: {
               type: "object",
               properties: {
-                primary: { type: "array", items: { type: "object" } },
-                middle: { type: "array", items: { type: "object" } },
-                secondary: { type: "array", items: { type: "object" } }
+                primary: { 
+                  type: "array", 
+                  items: { 
+                    type: "object",
+                    properties: {
+                      question: { type: "string" },
+                      answer: { type: "string" }
+                    },
+                    required: ["question", "answer"]
+                  } 
+                },
+                middle: { 
+                  type: "array", 
+                  items: { 
+                    type: "object",
+                    properties: {
+                      question: { type: "string" },
+                      answer: { type: "string" }
+                    },
+                    required: ["question", "answer"]
+                  } 
+                },
+                secondary: { 
+                  type: "array", 
+                  items: { 
+                    type: "object",
+                    properties: {
+                      question: { type: "string" },
+                      answer: { type: "string" }
+                    },
+                    required: ["question", "answer"]
+                  } 
+                }
               }
             },
             conclusion: { type: "string" },
