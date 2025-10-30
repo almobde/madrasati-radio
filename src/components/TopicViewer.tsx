@@ -72,6 +72,7 @@ const TopicViewer = () => {
     if (!printWindow) return;
 
     const themeColor = preferences?.gender === 'girls' ? '#e91e63' : '#2196f3';
+    const lightTheme = preferences?.gender === 'girls' ? '#fce4ec' : '#e3f2fd';
     
     // بناء HTML الكامل
     let html = `
@@ -81,68 +82,164 @@ const TopicViewer = () => {
         <meta charset="UTF-8">
         <title>${currentTopic.title}</title>
         <style>
-          * { box-sizing: border-box; }
+          * { box-sizing: border-box; margin: 0; padding: 0; }
           body { 
-            font-family: Arial, sans-serif; 
-            padding: 40px; 
-            background: white;
-            color: #333;
-            font-size: 18px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            padding: 30px; 
+            background: linear-gradient(135deg, ${lightTheme} 0%, white 100%);
+            color: #2c3e50;
+            font-size: 16px;
+            line-height: 1.8;
           }
           .header {
             text-align: center;
             margin-bottom: 40px;
-            padding: 30px;
-            background: ${themeColor};
+            padding: 40px 30px;
+            background: linear-gradient(135deg, ${themeColor} 0%, ${themeColor}dd 100%);
             color: white;
-            border-radius: 12px;
-            border: 3px solid ${themeColor};
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
           }
-          .header h1 { margin: 0; font-size: 38px; }
-          .header p { margin: 10px 0 0 0; font-size: 20px; }
+          .header h1 { 
+            margin: 0 0 15px 0; 
+            font-size: 42px; 
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+          }
+          .header p { 
+            margin: 0; 
+            font-size: 20px; 
+            opacity: 0.95;
+            font-weight: 300;
+          }
           .section {
-            margin-bottom: 30px;
+            margin-bottom: 35px;
             page-break-inside: avoid;
-            border: 3px solid ${themeColor};
-            border-radius: 12px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border: 1px solid #e0e0e0;
           }
           .section-title {
-            background: ${themeColor};
+            background: linear-gradient(135deg, ${themeColor} 0%, ${themeColor}cc 100%);
             color: white;
-            padding: 18px 25px;
-            font-size: 26px;
-            font-weight: bold;
-            border-radius: 9px 9px 0 0;
+            padding: 20px 30px;
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
           }
           .section-content {
-            padding: 30px;
+            padding: 35px;
             background: white;
-            border-radius: 0 0 9px 9px;
             line-height: 2;
-            font-size: 19px;
+            font-size: 17px;
           }
           .verse, .hadith {
-            background: #f5f5f5;
-            padding: 25px;
-            margin: 20px 0;
-            border-radius: 10px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            padding: 30px;
+            margin: 25px 0;
+            border-radius: 12px;
             text-align: center;
-            border: 2px solid #e0e0e0;
+            border: 2px solid ${themeColor}40;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
           }
-          .verse-text { font-size: 24px; line-height: 2.2; margin-bottom: 15px; font-weight: 500; }
-          .reference { color: #666; font-size: 17px; margin-top: 12px; font-weight: 600; }
+          .verse-text { 
+            font-size: 22px; 
+            line-height: 2.3; 
+            margin-bottom: 18px; 
+            font-weight: 600;
+            color: #1a237e;
+          }
+          .reference { 
+            color: ${themeColor}; 
+            font-size: 16px; 
+            margin-top: 15px; 
+            font-weight: 700;
+            padding: 8px 16px;
+            background: ${themeColor}15;
+            border-radius: 20px;
+            display: inline-block;
+          }
           .fact { 
-            margin: 18px 0; 
-            padding: 20px; 
-            background: #fff3cd; 
-            border-right: 5px solid #ffc107;
-            border-radius: 10px;
+            margin: 20px 0; 
+            padding: 22px 25px; 
+            background: linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%); 
+            border-right: 6px solid #ffc107;
+            border-radius: 12px;
+            font-size: 17px;
+            box-shadow: 0 2px 8px rgba(255,193,7,0.15);
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+          }
+          .fact strong {
+            color: #f57c00;
+            font-size: 20px;
+            min-width: 30px;
+          }
+          .misc-item {
+            margin: 25px 0;
+            padding: 25px;
+            background: linear-gradient(135deg, ${lightTheme} 0%, white 100%);
+            border-radius: 12px;
+            border-right: 5px solid ${themeColor};
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+          }
+          .misc-item h3 {
+            color: ${themeColor};
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: 700;
+          }
+          .misc-item p {
+            color: #424242;
+            line-height: 1.9;
+          }
+          .question-item {
+            margin: 25px 0;
+            padding: 25px;
+            background: linear-gradient(135deg, #f3e5f5 0%, #fce4ec 100%);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(123,31,162,0.1);
+          }
+          .question-text {
+            font-weight: 700;
+            color: #7b1fa2;
             font-size: 18px;
-            border: 2px solid #ffc107;
+            margin-bottom: 12px;
+            padding-right: 25px;
+            position: relative;
+          }
+          .question-text::before {
+            content: 'س:';
+            position: absolute;
+            right: 0;
+            font-weight: 900;
+          }
+          .answer-text {
+            color: #4a148c;
+            font-size: 17px;
+            line-height: 1.9;
+            padding: 18px;
+            background: white;
+            border-radius: 8px;
+            border-right: 4px solid #9c27b0;
           }
           @media print {
-            body { padding: 20px; }
-            .section { page-break-inside: avoid; }
+            body { 
+              padding: 15px; 
+              background: white;
+            }
+            .section { 
+              page-break-inside: avoid;
+              box-shadow: none;
+            }
+            .header {
+              box-shadow: none;
+            }
           }
         </style>
       </head>
@@ -154,100 +251,121 @@ const TopicViewer = () => {
     `;
 
     // المقدمة
-    html += `
-      <div class="section">
-        <div class="section-title">📖 المقدمة</div>
-        <div class="section-content">
-          <p>${getContentByLevel(currentTopic.content.introduction)}</p>
-        </div>
-      </div>
-    `;
-
-    // الآيات القرآنية
-    html += `
-      <div class="section">
-        <div class="section-title">📿 الآيات القرآنية</div>
-        <div class="section-content">
-    `;
-    currentTopic.content.quranVerses.forEach(verse => {
-      html += `
-        <div class="verse">
-          <div class="verse-text">${verse.text}</div>
-          <div class="reference">${verse.reference}</div>
-        </div>
-      `;
-    });
-    html += `</div></div>`;
-
-    // الأحاديث
-    html += `
-      <div class="section">
-        <div class="section-title">💬 الأحاديث النبوية</div>
-        <div class="section-content">
-    `;
-    currentTopic.content.hadiths.forEach(hadith => {
-      html += `
-        <div class="hadith">
-          <p>${hadith.text}</p>
-          <div class="reference">${hadith.reference}</div>
-        </div>
-      `;
-    });
-    html += `</div></div>`;
-
-    // معلومات
-    html += `
-      <div class="section">
-        <div class="section-title">💡 معلومات</div>
-        <div class="section-content">
-    `;
-    getContentByLevel(currentTopic.content.didYouKnow).forEach((fact: string, i: number) => {
-      html += `<div class="fact"><strong>${i + 1}.</strong> ${fact}</div>`;
-    });
-    html += `</div></div>`;
-
-    // كلمة
-    html += `
-      <div class="section">
-        <div class="section-title">🎤 كلمة</div>
-        <div class="section-content">
-          <p>${getContentByLevel(currentTopic.content.morningWord)}</p>
-        </div>
-      </div>
-    `;
-
-    // منوعات
-    if (currentTopic.content.miscellaneous && getContentByLevel(currentTopic.content.miscellaneous).length > 0) {
+    const introContent = getContentByLevel(currentTopic.content.introduction);
+    if (introContent) {
       html += `
         <div class="section">
-          <div class="section-title">✨ منوعات</div>
+          <div class="section-title">📖 المقدمة</div>
+          <div class="section-content">
+            <p>${introContent}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    // الآيات القرآنية
+    if (currentTopic.content.quranVerses && currentTopic.content.quranVerses.length > 0) {
+      html += `
+        <div class="section">
+          <div class="section-title">📿 الآيات القرآنية</div>
           <div class="section-content">
       `;
-      getContentByLevel(currentTopic.content.miscellaneous).forEach((item: any) => {
+      currentTopic.content.quranVerses.forEach(verse => {
         html += `
-          <div style="margin: 20px 0;">
-            <h3 style="color: ${themeColor};">${item.title}</h3>
-            <p>${item.content}</p>
+          <div class="verse">
+            <div class="verse-text">${verse.text || ''}</div>
+            <div class="reference">${verse.reference || ''}</div>
           </div>
         `;
       });
       html += `</div></div>`;
     }
 
+    // الأحاديث
+    if (currentTopic.content.hadiths && currentTopic.content.hadiths.length > 0) {
+      html += `
+        <div class="section">
+          <div class="section-title">💬 الأحاديث النبوية</div>
+          <div class="section-content">
+      `;
+      currentTopic.content.hadiths.forEach(hadith => {
+        html += `
+          <div class="hadith">
+            <p>${hadith.text || ''}</p>
+            <div class="reference">${hadith.reference || ''}</div>
+          </div>
+        `;
+      });
+      html += `</div></div>`;
+    }
+
+    // معلومات
+    const facts = getContentByLevel(currentTopic.content.didYouKnow);
+    if (facts && Array.isArray(facts) && facts.length > 0) {
+      html += `
+        <div class="section">
+          <div class="section-title">💡 معلومات</div>
+          <div class="section-content">
+      `;
+      facts.forEach((fact: string, i: number) => {
+        if (fact) {
+          html += `<div class="fact"><strong>${i + 1}.</strong><span>${fact}</span></div>`;
+        }
+      });
+      html += `</div></div>`;
+    }
+
+    // كلمة
+    const morningWord = getContentByLevel(currentTopic.content.morningWord);
+    if (morningWord) {
+      html += `
+        <div class="section">
+          <div class="section-title">🎤 كلمة</div>
+          <div class="section-content">
+            <p>${morningWord}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    // منوعات
+    const miscellaneous = currentTopic.content.miscellaneous ? getContentByLevel(currentTopic.content.miscellaneous) : null;
+    if (miscellaneous && Array.isArray(miscellaneous) && miscellaneous.length > 0) {
+      html += `
+        <div class="section">
+          <div class="section-title">✨ منوعات</div>
+          <div class="section-content">
+      `;
+      miscellaneous.forEach((item: any) => {
+        if (item && item.title && item.content) {
+          html += `
+            <div class="misc-item">
+              <h3>${item.title}</h3>
+              <p>${item.content}</p>
+            </div>
+          `;
+        }
+      });
+      html += `</div></div>`;
+    }
+
     // أسئلة
-    if (currentTopic.content.questions && getContentByLevel(currentTopic.content.questions).length > 0) {
+    const questions = currentTopic.content.questions ? getContentByLevel(currentTopic.content.questions) : null;
+    if (questions && Array.isArray(questions) && questions.length > 0) {
       html += `
         <div class="section">
           <div class="section-title">❓ أسئلة</div>
           <div class="section-content">
       `;
-      getContentByLevel(currentTopic.content.questions).forEach((q: any) => {
-        html += `
-          <div style="margin: 20px 0; padding: 20px; background: #f3e5f5; border-radius: 8px;">
-            <p style="font-weight: bold; color: #7b1fa2;">س: ${q.question}</p>
-            <p style="color: #4a148c; margin-top: 10px;">ج: ${q.answer}</p>
-          </div>
-        `;
+      questions.forEach((q: any) => {
+        if (q && q.question && q.answer) {
+          html += `
+            <div class="question-item">
+              <p class="question-text">${q.question}</p>
+              <p class="answer-text">${q.answer}</p>
+            </div>
+          `;
+        }
       });
       html += `</div></div>`;
     }
@@ -257,8 +375,8 @@ const TopicViewer = () => {
       <div class="section">
         <div class="section-title">🌟 الخاتمة</div>
         <div class="section-content">
-          <p>${currentTopic.content.conclusion || ''}</p>
-          <p style="margin-top: 20px;">${currentTopic.content.radioEnding}</p>
+          ${currentTopic.content.conclusion ? `<p style="margin-bottom: 20px;">${currentTopic.content.conclusion}</p>` : ''}
+          <p>${currentTopic.content.radioEnding || ''}</p>
         </div>
       </div>
     `;
@@ -285,43 +403,136 @@ const TopicViewer = () => {
   };
 
   const handleShare = () => {
-    const content = `
-إذاعة مدرسية - ${currentTopic.title}
+    // بناء المحتوى بشكل آمن
+    let content = `📻 إذاعة مدرسية - ${currentTopic.title}\n\n`;
 
-المقدمة:
-${getContentByLevel(currentTopic.content.introduction)}
+    // المقدمة
+    const intro = getContentByLevel(currentTopic.content.introduction);
+    if (intro) {
+      content += `📖 المقدمة:\n${intro}\n\n`;
+    }
 
-الآيات القرآنية:
-${currentTopic.content.quranVerses.map(v => `${v.text}\n(${v.reference})`).join('\n\n')}
+    // الآيات القرآنية
+    if (currentTopic.content.quranVerses && currentTopic.content.quranVerses.length > 0) {
+      content += `📿 الآيات القرآنية:\n`;
+      currentTopic.content.quranVerses.forEach((v, i) => {
+        if (v.text) {
+          content += `${i + 1}. ${v.text}\n`;
+          if (v.reference) content += `   (${v.reference})\n`;
+        }
+      });
+      content += '\n';
+    }
 
-الأحاديث النبوية:
-${currentTopic.content.hadiths.map(h => `${h.text}\n(${h.reference})`).join('\n\n')}
+    // الأحاديث النبوية
+    if (currentTopic.content.hadiths && currentTopic.content.hadiths.length > 0) {
+      content += `💬 الأحاديث النبوية:\n`;
+      currentTopic.content.hadiths.forEach((h, i) => {
+        if (h.text) {
+          content += `${i + 1}. ${h.text}\n`;
+          if (h.reference) content += `   (${h.reference})\n`;
+        }
+      });
+      content += '\n';
+    }
 
-معلومات:
-${getContentByLevel(currentTopic.content.didYouKnow).join('\n')}
+    // معلومات
+    const facts = getContentByLevel(currentTopic.content.didYouKnow);
+    if (facts && Array.isArray(facts) && facts.length > 0) {
+      content += `💡 معلومات:\n`;
+      facts.forEach((fact: string, i: number) => {
+        if (fact) content += `${i + 1}. ${fact}\n`;
+      });
+      content += '\n';
+    }
 
-كلمة:
-${getContentByLevel(currentTopic.content.morningWord)}
+    // كلمة
+    const morningWord = getContentByLevel(currentTopic.content.morningWord);
+    if (morningWord) {
+      content += `🎤 كلمة:\n${morningWord}\n\n`;
+    }
 
-الخاتمة:
-${currentTopic.content.radioEnding}
-    `.trim();
+    // منوعات
+    const misc = currentTopic.content.miscellaneous ? getContentByLevel(currentTopic.content.miscellaneous) : null;
+    if (misc && Array.isArray(misc) && misc.length > 0) {
+      content += `✨ منوعات:\n`;
+      misc.forEach((item: any, i: number) => {
+        if (item && item.title && item.content) {
+          content += `${i + 1}. ${item.title}\n   ${item.content}\n`;
+        }
+      });
+      content += '\n';
+    }
 
+    // أسئلة
+    const questions = currentTopic.content.questions ? getContentByLevel(currentTopic.content.questions) : null;
+    if (questions && Array.isArray(questions) && questions.length > 0) {
+      content += `❓ أسئلة:\n`;
+      questions.forEach((q: any, i: number) => {
+        if (q && q.question && q.answer) {
+          content += `${i + 1}. س: ${q.question}\n   ج: ${q.answer}\n`;
+        }
+      });
+      content += '\n';
+    }
+
+    // الخاتمة
+    if (currentTopic.content.radioEnding) {
+      content += `🌟 الخاتمة:\n${currentTopic.content.radioEnding}`;
+    }
+
+    // استخدام Web Share API إذا كان متاحاً
+    if (navigator.share) {
+      navigator.share({
+        title: `إذاعة مدرسية - ${currentTopic.title}`,
+        text: content,
+      }).then(() => {
+        toast({
+          title: "تمت المشاركة بنجاح! ✅",
+          description: "تم مشاركة المحتوى",
+        });
+      }).catch((error) => {
+        // إذا ألغى المستخدم المشاركة
+        if (error.name !== 'AbortError') {
+          console.error('Error sharing:', error);
+          fallbackShare(content);
+        }
+      });
+    } else {
+      // استخدام الطريقة البديلة
+      fallbackShare(content);
+    }
+  };
+
+  const fallbackShare = (content: string) => {
     // مشاركة عبر واتساب
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(content)}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(content)}`;
     
     // مشاركة عبر البريد الإلكتروني
     const emailSubject = encodeURIComponent(`إذاعة مدرسية - ${currentTopic.title}`);
     const emailBody = encodeURIComponent(content);
     const emailUrl = `mailto:?subject=${emailSubject}&body=${emailBody}`;
 
-    // عرض خيارات المشاركة
-    const shareOption = confirm("اختر طريقة المشاركة:\nموافق = واتساب\nإلغاء = البريد الإلكتروني");
-    
-    if (shareOption) {
-      window.open(whatsappUrl, '_blank');
+    // نسخ إلى الحافظة كخيار إضافي
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(content).then(() => {
+        const choice = confirm("تم نسخ المحتوى!\n\nاختر طريقة المشاركة:\nموافق = واتساب\nإلغاء = البريد الإلكتروني");
+        
+        if (choice) {
+          window.open(whatsappUrl, '_blank');
+        } else {
+          window.open(emailUrl, '_blank');
+        }
+      });
     } else {
-      window.location.href = emailUrl;
+      // عرض خيارات المشاركة
+      const shareOption = confirm("اختر طريقة المشاركة:\nموافق = واتساب\nإلغاء = البريد الإلكتروني");
+      
+      if (shareOption) {
+        window.open(whatsappUrl, '_blank');
+      } else {
+        window.open(emailUrl, '_blank');
+      }
     }
   };
 
