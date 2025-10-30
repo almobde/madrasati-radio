@@ -47,15 +47,18 @@ const Header = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-14">
           
-          {/* الشعار في الزاوية اليسرى */}
-          <div className="flex items-center">
+          {/* الشعار والاسم في الزاوية اليسرى */}
+          <div className="flex items-center gap-2">
             <img 
               src={logo} 
               alt="شعار الإذاعة المدرسية" 
-              className="w-12 h-12 object-contain"
+              className="w-10 h-10 object-contain"
             />
+            <span className="font-arabic text-sm font-semibold text-primary">
+              إذاعتنا
+            </span>
           </div>
           
           {/* زر الإدارة في الزاوية اليمنى */}
@@ -64,7 +67,7 @@ const Header = () => {
             className="p-2 bg-white/90 backdrop-blur-sm hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 group"
             title={isAdmin ? "لوحة التحكم" : "تسجيل الدخول"}
           >
-            <Shield className="w-5 h-5 text-primary group-hover:text-primary-dark transition-colors" />
+            <Shield className="w-4 h-4 text-primary group-hover:text-primary-dark transition-colors" />
           </button>
         </div>
       </div>

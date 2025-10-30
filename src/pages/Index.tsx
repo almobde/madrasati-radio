@@ -11,7 +11,7 @@ const Index = () => {
   return (
     <>
       <Header />
-      <div className="pt-16">
+      <div className="pt-14">
         {!preferences ? (
           <PreferencesSelector />
         ) : currentTopic ? (
