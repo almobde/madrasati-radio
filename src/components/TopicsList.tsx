@@ -9,8 +9,6 @@ import { TopicGenerator } from './TopicGenerator';
 import { Topic, Gender, EducationLevel } from '../types';
 import { supabase } from '@/integrations/supabase/client';
 import Footer from './Footer';
-import { formatDistanceToNow } from 'date-fns';
-import { ar } from 'date-fns/locale';
 
 const TopicsList = () => {
   const { preferences, setPreferences, setCurrentTopic, isFavorite, toggleFavorite } = useAppContext();
@@ -164,6 +162,22 @@ const TopicsList = () => {
               key={topic.id}
               className="group relative"
             >
+              {/* زر المفضلة - في الزاوية */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleFavorite(topic.id);
+                }}
+                className="absolute top-1 left-1 z-10 hover:scale-125 transition-all duration-200"
+              >
+                <Star 
+                  className="w-3 h-3 sm:w-3.5 sm:h-3.5 drop-shadow-md" 
+                  fill={isFavorite(topic.id) ? '#fbbf24' : 'none'}
+                  stroke={isFavorite(topic.id) ? '#fbbf24' : '#94a3b8'}
+                  strokeWidth={2}
+                />
+              </button>
+
               {/* مربع الموضوع */}
               <div
                 className="bg-white/90 backdrop-blur-sm rounded-xl p-3 sm:p-4 hover:shadow-lg transition-all duration-300 hover:scale-105 border border-white/50 cursor-pointer"
@@ -173,30 +187,7 @@ const TopicsList = () => {
                 <h3 className="font-heading font-bold text-radio-dark text-xs sm:text-sm text-center line-clamp-2 min-h-[2.5rem] sm:min-h-[3rem] flex items-center justify-center">
                   {topic.title}
                 </h3>
-                
-                {/* تاريخ الإنشاء للمواضيع المولدة */}
-                {topic.created_at && (
-                  <p className="text-[10px] sm:text-xs text-gray-500 text-center mt-2 border-t border-gray-200 pt-2">
-                    {formatDistanceToNow(new Date(topic.created_at), { addSuffix: true, locale: ar })}
-                  </p>
-                )}
               </div>
-
-              {/* زر المفضلة - أسفل الكارت */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleFavorite(topic.id);
-                }}
-                className="absolute -bottom-1 left-1/2 -translate-x-1/2 z-10 hover:scale-125 transition-all duration-200"
-              >
-                <Star 
-                  className="w-3 h-3 sm:w-3.5 sm:h-3.5 drop-shadow-md" 
-                  fill={isFavorite(topic.id) ? '#fbbf24' : 'none'}
-                  stroke={isFavorite(topic.id) ? '#fbbf24' : '#94a3b8'}
-                  strokeWidth={2}
-                />
-              </button>
             </div>
           ))}
         </div>
