@@ -20,19 +20,35 @@ const TopicsList = () => {
     const loadCustomTopics = () => {
       try {
         const customTopicsJson = localStorage.getItem('customTopics');
+        console.log('📚 localStorage customTopics:', customTopicsJson);
+        console.log('👤 التفضيلات الحالية:', preferences);
+        
         if (customTopicsJson) {
           const customTopics = JSON.parse(customTopicsJson);
+          console.log('📋 جميع المواضيع المخصصة:', customTopics);
+          
           // Filter custom topics by gender and education level
-          const filteredCustomTopics = customTopics.filter((topic: Topic) => 
-            topic.gender === preferences?.gender && 
-            topic.educationLevel === preferences?.educationLevel
-          );
+          const filteredCustomTopics = customTopics.filter((topic: Topic) => {
+            const matches = topic.gender === preferences?.gender && 
+                          topic.educationLevel === preferences?.educationLevel;
+            console.log(`🔍 فحص موضوع "${topic.title}":`, {
+              topicGender: topic.gender,
+              topicLevel: topic.educationLevel,
+              prefGender: preferences?.gender,
+              prefLevel: preferences?.educationLevel,
+              matches
+            });
+            return matches;
+          });
+          
+          console.log('✅ المواضيع المفلترة:', filteredCustomTopics);
           setAllTopics([...filteredCustomTopics, ...staticTopics]);
         } else {
+          console.log('⚠️ لا توجد مواضيع مخصصة في localStorage');
           setAllTopics(staticTopics);
         }
       } catch (error) {
-        console.error('Error loading custom topics:', error);
+        console.error('❌ خطأ في تحميل المواضيع:', error);
         setAllTopics(staticTopics);
       }
     };
