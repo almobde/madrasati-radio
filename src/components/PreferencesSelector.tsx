@@ -112,22 +112,21 @@ const PreferencesSelector = () => {
             <h2 className="text-4xl font-heading font-bold mb-8 text-center text-gradient">المرحلة الدراسية</h2>
             <div className="grid grid-cols-3 gap-4">
               {levelOptions.map((option) => (
-                <ModernCard
+                <div
                   key={option.value}
-                  variant="premium"
-                  padding="lg"
-                  className={`cursor-pointer text-center transition-all duration-500 hover:scale-[1.02] ${
+                  className={`cursor-pointer text-center transition-all duration-300 hover:scale-105 p-6 rounded-2xl ${
                     selectedLevel === option.value
-                      ? 'border-4 border-[hsl(var(--primary))] shadow-[0_0_30px_hsl(var(--primary))/40] scale-[1.02]'
-                      : 'hover:border-[hsl(var(--primary))]/30 hover:shadow-xl'
+                      ? `bg-gradient-to-r ${option.color} shadow-xl scale-105`
+                      : 'bg-white/50 hover:bg-white/70 shadow-md'
                   }`}
                   onClick={() => setSelectedLevel(option.value)}
                 >
-                  <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r ${option.color} flex items-center justify-center shadow-lg`}>
-                    <option.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-lg font-body font-bold text-foreground">{option.label}</h3>
-                </ModernCard>
+                  <h3 className={`text-base font-body font-bold ${
+                    selectedLevel === option.value ? 'text-white' : 'text-foreground'
+                  }`}>
+                    {option.label}
+                  </h3>
+                </div>
               ))}
             </div>
           </div>
