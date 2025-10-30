@@ -1,21 +1,64 @@
 // مكون عارض الموضوع الشامل - Complete Topic Viewer Component
+import { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ModernButton } from '@/components/ui/modern-button';
 import { ModernCard, ModernCardHeader, ModernCardTitle, ModernCardContent } from '@/components/ui/modern-card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, Home, BookOpen, Mic, Heart, Sparkles, Radio, Crown, Lightbulb, Quote, HelpCircle, MessageCircle, Download, Share2, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { ArrowRight, Home, BookOpen, Mic, Heart, Sparkles, Radio, Crown, Lightbulb, Quote, HelpCircle, MessageCircle, Download, Share2, Settings, Trash2, Edit } from 'lucide-react';
 import Footer from './Footer';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const TopicViewer = () => {
-  const { currentTopic, setCurrentTopic, preferences, fontSize, increaseFontSize, decreaseFontSize, resetFontSize } = useAppContext();
+  const { currentTopic, setCurrentTopic, preferences } = useAppContext();
   const { toast } = useToast();
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   if (!currentTopic) return null;
 
   const handleBackToTopics = () => {
     setCurrentTopic(null);
+  };
+
+  const handleDeleteTopic = async () => {
+    if (!currentTopic || !currentTopic.id) return;
+    
+    setIsDeleting(true);
+    try {
+      const { error } = await supabase
+        .from('custom_topics')
+        .delete()
+        .eq('id', currentTopic.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "تم الحذف بنجاح",
+        description: "تم حذف الموضوع من القائمة",
+      });
+      
+      setIsAdminOpen(false);
+      setCurrentTopic(null);
+    } catch (error) {
+      console.error('Error deleting topic:', error);
+      toast({
+        title: "خطأ",
+        description: "فشل في حذف الموضوع",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleEditTopic = () => {
+    toast({
+      title: "قريباً",
+      description: "خاصية التعديل قيد التطوير",
+    });
   };
 
   const handleExportToPDF = () => {
@@ -314,15 +357,6 @@ ${currentTopic.content.radioEnding}
                     محتوى إذاعي شامل ومتكامل
                   </p>
                 </div>
-              <ModernButton 
-                variant="glass" 
-                size="sm"
-                onClick={handleBackToTopics}
-                className="font-body"
-                title="العودة للمواضيع"
-              >
-                <Home className="w-5 h-5" />
-              </ModernButton>
               </div>
               
               {/* أزرار التحكم */}
@@ -330,9 +364,18 @@ ${currentTopic.content.radioEnding}
                 <ModernButton 
                   variant="glass" 
                   size="sm"
+                  onClick={handleBackToTopics}
+                  className="font-body"
+                  title="الرئيسية"
+                >
+                  <Home className="w-5 h-5" />
+                </ModernButton>
+                <ModernButton 
+                  variant="glass" 
+                  size="sm"
                   onClick={handleExportToPDF}
                   className="font-body"
-                  title="تصدير PDF"
+                  title="تصدير"
                 >
                   <Download className="w-5 h-5" />
                 </ModernButton>
@@ -345,38 +388,47 @@ ${currentTopic.content.radioEnding}
                 >
                   <Share2 className="w-5 h-5" />
                 </ModernButton>
-                <div className="flex gap-1">
-                  <ModernButton 
-                    variant="glass" 
-                    size="sm"
-                    onClick={decreaseFontSize}
-                    className="font-body"
-                    title="تصغير الخط"
-                  >
-                    <ZoomOut className="w-5 h-5" />
-                  </ModernButton>
-                  <ModernButton 
-                    variant="glass" 
-                    size="sm"
-                    onClick={resetFontSize}
-                    className="font-body"
-                    title="إعادة ضبط الخط"
-                  >
-                    <RotateCcw className="w-5 h-5" />
-                  </ModernButton>
-                  <ModernButton 
-                    variant="glass" 
-                    size="sm"
-                    onClick={increaseFontSize}
-                    className="font-body"
-                    title="تكبير الخط"
-                  >
-                    <ZoomIn className="w-5 h-5" />
-                  </ModernButton>
-                </div>
-                <span className="text-sm text-muted-foreground self-center">
-                  {fontSize}%
-                </span>
+                
+                {/* زر الإدارة */}
+                <Dialog open={isAdminOpen} onOpenChange={setIsAdminOpen}>
+                  <DialogTrigger asChild>
+                    <ModernButton 
+                      variant="glass" 
+                      size="sm"
+                      className="font-body"
+                      title="الإدارة"
+                    >
+                      <Settings className="w-5 h-5" />
+                    </ModernButton>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]" dir="rtl">
+                    <DialogHeader>
+                      <DialogTitle>إدارة الموضوع</DialogTitle>
+                      <DialogDescription>
+                        يمكنك تعديل أو حذف هذا الموضوع
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                      <ModernButton 
+                        variant="glass" 
+                        onClick={handleEditTopic}
+                        className="w-full justify-start gap-2"
+                      >
+                        <Edit className="w-5 h-5" />
+                        <span>تعديل الموضوع</span>
+                      </ModernButton>
+                      <ModernButton 
+                        variant="glass" 
+                        onClick={handleDeleteTopic}
+                        disabled={isDeleting}
+                        className="w-full justify-start gap-2 text-destructive hover:text-destructive"
+                      >
+                        <Trash2 className="w-5 h-5" />
+                        <span>{isDeleting ? 'جارِ الحذف...' : 'حذف الموضوع'}</span>
+                      </ModernButton>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </ModernCard>
