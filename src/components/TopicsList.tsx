@@ -1,16 +1,12 @@
 // قائمة المواضيع الإذاعية - Radio Topics List
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Search, Radio, Book, ArrowLeft } from 'lucide-react';
-import { ModernCard } from './ui/modern-card';
-import { Badge } from './ui/badge';
+import { Search, Radio, ArrowLeft } from 'lucide-react';
 import { Input } from './ui/input';
 import { useAppContext } from '../context/AppContext';
 import { topics } from '../data/topics';
 
 const TopicsList = () => {
-  const navigate = useNavigate();
-  const { preferences, setCurrentTopic } = useAppContext();
+  const { preferences, setPreferences, setCurrentTopic } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
 
   // تصفية المواضيع حسب البحث فقط
@@ -32,7 +28,7 @@ const TopicsList = () => {
         
         {/* زر الرجوع */}
         <button
-          onClick={() => navigate('/')}
+          onClick={() => setPreferences(null)}
           className="mb-6 flex items-center gap-2 px-4 py-2 bg-white/90 hover:bg-white rounded-lg transition-colors shadow-sm hover:shadow-md"
         >
           <ArrowLeft className="w-5 h-5 text-radio-dark" />
