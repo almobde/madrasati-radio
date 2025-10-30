@@ -172,36 +172,36 @@ ${currentTopic.content.radioEnding}
                     محتوى إذاعي شامل ومتكامل
                   </p>
                 </div>
-                <ModernButton 
-                  variant="glass" 
-                  size="sm"
-                  onClick={handleBackToTopics}
-                  className="font-body"
-                >
-                  <Home className="w-4 h-4" />
-                  العودة للمواضيع
-                </ModernButton>
+              <ModernButton 
+                variant="glass" 
+                size="sm"
+                onClick={handleBackToTopics}
+                className="font-body"
+                title="العودة للمواضيع"
+              >
+                <Home className="w-5 h-5" />
+              </ModernButton>
               </div>
               
               {/* أزرار التحكم */}
-              <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+              <div className="flex flex-wrap gap-2 justify-center md:justify-start items-center">
                 <ModernButton 
                   variant="glass" 
                   size="sm"
                   onClick={handleExportToPDF}
                   className="font-body"
+                  title="تصدير PDF"
                 >
-                  <Download className="w-4 h-4" />
-                  تصدير PDF
+                  <Download className="w-5 h-5" />
                 </ModernButton>
                 <ModernButton 
                   variant="glass" 
                   size="sm"
                   onClick={handleShare}
                   className="font-body"
+                  title="مشاركة"
                 >
-                  <Share2 className="w-4 h-4" />
-                  مشاركة
+                  <Share2 className="w-5 h-5" />
                 </ModernButton>
                 <div className="flex gap-1">
                   <ModernButton 
@@ -211,7 +211,7 @@ ${currentTopic.content.radioEnding}
                     className="font-body"
                     title="تصغير الخط"
                   >
-                    <ZoomOut className="w-4 h-4" />
+                    <ZoomOut className="w-5 h-5" />
                   </ModernButton>
                   <ModernButton 
                     variant="glass" 
@@ -220,7 +220,7 @@ ${currentTopic.content.radioEnding}
                     className="font-body"
                     title="إعادة ضبط الخط"
                   >
-                    <RotateCcw className="w-4 h-4" />
+                    <RotateCcw className="w-5 h-5" />
                   </ModernButton>
                   <ModernButton 
                     variant="glass" 
@@ -229,11 +229,11 @@ ${currentTopic.content.radioEnding}
                     className="font-body"
                     title="تكبير الخط"
                   >
-                    <ZoomIn className="w-4 h-4" />
+                    <ZoomIn className="w-5 h-5" />
                   </ModernButton>
                 </div>
                 <span className="text-sm text-muted-foreground self-center">
-                  حجم الخط: {fontSize}%
+                  {fontSize}%
                 </span>
               </div>
             </div>
