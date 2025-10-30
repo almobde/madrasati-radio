@@ -101,7 +101,7 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
   };
 
   return (
-    <div className={`min-h-screen p-6 ${preferences?.gender === 'girls' ? 'bg-gradient-to-br from-pink-200 via-pink-300 to-purple-400' : 'bg-gradient-to-br from-[hsl(200,100%,90%)] via-[hsl(210,100%,85%)] to-[hsl(220,100%,80%)]'}`}>
+    <div className={`min-h-screen p-6 transition-all duration-700 ${preferences?.gender === 'girls' ? 'bg-gradient-to-br from-[hsl(330,70%,30%)] via-[hsl(320,80%,40%)] to-[hsl(310,90%,50%)]' : 'bg-gradient-to-br from-[hsl(220,70%,25%)] via-[hsl(210,80%,35%)] to-[hsl(200,90%,45%)]'}`}>
       <div className="max-w-4xl mx-auto">
         {/* زر الرجوع */}
         <button
@@ -115,12 +115,12 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
         {/* العنوان */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <Sparkles className="w-8 h-8 text-radio-gold" />
-            <h1 className="text-3xl md:text-4xl font-heading font-bold text-radio-dark">
+            <Sparkles className="w-8 h-8 text-white" />
+            <h1 className="text-3xl md:text-4xl font-heading font-bold text-white transition-colors duration-700">
               توليد موضوع جديد
             </h1>
           </div>
-          <p className="text-gray-700 font-body">
+          <p className="text-white/90 font-body transition-colors duration-700">
             اكتب عنوان الموضوع وسيتم توليد محتوى إذاعي متكامل بالذكاء الاصطناعي
           </p>
         </div>

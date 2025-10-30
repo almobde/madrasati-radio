@@ -58,7 +58,7 @@ const TopicsList = () => {
   }
 
   return (
-    <main className={`min-h-screen ${preferences?.gender === 'girls' ? 'bg-gradient-to-br from-pink-200 via-pink-300 to-purple-400' : 'bg-gradient-to-br from-[hsl(200,100%,90%)] via-[hsl(210,100%,85%)] to-[hsl(220,100%,80%)]'}`}>
+    <main className={`min-h-screen transition-all duration-700 ${preferences?.gender === 'girls' ? 'bg-gradient-to-br from-[hsl(330,70%,30%)] via-[hsl(320,80%,40%)] to-[hsl(310,90%,50%)]' : 'bg-gradient-to-br from-[hsl(220,70%,25%)] via-[hsl(210,80%,35%)] to-[hsl(200,90%,45%)]'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
         {/* زر الرجوع */}
@@ -72,10 +72,10 @@ const TopicsList = () => {
 
         {/* العنوان الرئيسي البسيط */}
         <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-heading font-bold text-radio-dark mb-4">
+          <h1 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4 transition-colors duration-700">
             مكتبة المواضيع الإذاعية
           </h1>
-          <p className="text-gray-700 font-body max-w-2xl mx-auto">
+          <p className="text-white/90 font-body max-w-2xl mx-auto transition-colors duration-700">
             اختر من مجموعة متنوعة من المواضيع المتخصصة والمعدة بعناية لطلاب {genderText} - المرحلة {levelText}
           </p>
         </div>

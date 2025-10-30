@@ -29,7 +29,7 @@ const TopicViewer = () => {
   };
 
   return (
-    <div className={`min-h-screen p-4 ${preferences?.gender === 'girls' ? 'bg-gradient-to-br from-pink-200 via-pink-300 to-purple-400' : 'bg-gradient-to-br from-[hsl(200,100%,90%)] via-[hsl(210,100%,85%)] to-[hsl(220,100%,80%)]'}`}>
+    <div className={`min-h-screen p-4 transition-all duration-700 ${preferences?.gender === 'girls' ? 'bg-gradient-to-br from-[hsl(330,70%,30%)] via-[hsl(320,80%,40%)] to-[hsl(310,90%,50%)]' : 'bg-gradient-to-br from-[hsl(220,70%,25%)] via-[hsl(210,80%,35%)] to-[hsl(200,90%,45%)]'}`}>
       <div className="max-w-7xl mx-auto">
         {/* رأس الصفحة */}
         <div className="mb-8 fade-in">
