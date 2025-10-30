@@ -14,7 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      custom_topics: {
+        Row: {
+          category: string
+          content: Json
+          created_at: string
+          education_level: string
+          gender: string
+          id: string
+          title: string
+        }
+        Insert: {
+          category?: string
+          content: Json
+          created_at?: string
+          education_level: string
+          gender: string
+          id?: string
+          title: string
+        }
+        Update: {
+          category?: string
+          content?: Json
+          created_at?: string
+          education_level?: string
+          gender?: string
+          id?: string
+          title?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

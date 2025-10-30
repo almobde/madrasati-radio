@@ -109,27 +109,39 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
     }
   };
 
-  const handleAddToList = () => {
+  const handleAddToList = async () => {
     if (generatedTopic && preferences) {
-      const existingTopics = JSON.parse(localStorage.getItem('customTopics') || '[]');
-      const newTopic = {
-        ...generatedTopic,
-        gender: preferences.gender,
-        educationLevel: preferences.educationLevel,
-      };
-      existingTopics.push(newTopic);
-      localStorage.setItem('customTopics', JSON.stringify(existingTopics));
+      try {
+        const { error } = await supabase
+          .from('custom_topics')
+          .insert({
+            title: generatedTopic.title,
+            category: generatedTopic.category,
+            gender: preferences.gender,
+            education_level: preferences.educationLevel,
+            content: generatedTopic.content,
+          });
 
-      const levelName = preferences.educationLevel === 'primary' ? 'ابتدائي' : 
-                        preferences.educationLevel === 'middle' ? 'متوسط' : 'ثانوي';
-      const genderName = preferences.gender === 'girls' ? 'البنات' : 'البنين';
+        if (error) throw error;
 
-      toast({
-        title: "✅ تم الإضافة",
-        description: `تم إضافة الموضوع إلى قائمة ${genderName} - ${levelName}`,
-      });
+        const levelName = preferences.educationLevel === 'primary' ? 'ابتدائي' : 
+                          preferences.educationLevel === 'middle' ? 'متوسط' : 'ثانوي';
+        const genderName = preferences.gender === 'girls' ? 'البنات' : 'البنين';
 
-      onBack();
+        toast({
+          title: "✅ تم الإضافة",
+          description: `تم إضافة الموضوع إلى قائمة ${genderName} - ${levelName}`,
+        });
+
+        onBack();
+      } catch (error) {
+        console.error('Error saving topic:', error);
+        toast({
+          title: "خطأ",
+          description: "حدث خطأ أثناء حفظ الموضوع",
+          variant: "destructive",
+        });
+      }
     }
   };
 

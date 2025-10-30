@@ -6,7 +6,8 @@ import { Button } from './ui/button';
 import { useAppContext } from '../context/AppContext';
 import { topics as staticTopics } from '../data/topics';
 import { TopicGenerator } from './TopicGenerator';
-import { Topic } from '../types';
+import { Topic, Gender, EducationLevel } from '../types';
+import { supabase } from '@/integrations/supabase/client';
 import Footer from './Footer';
 
 const TopicsList = () => {
@@ -15,22 +16,34 @@ const TopicsList = () => {
   const [showGenerator, setShowGenerator] = useState(false);
   const [allTopics, setAllTopics] = useState<Topic[]>(staticTopics);
 
-  // Load custom topics from localStorage and filter by current preferences
+  // Load custom topics from database and filter by current preferences
   useEffect(() => {
-    const loadCustomTopics = () => {
+    const loadCustomTopics = async () => {
       try {
-        const customTopicsJson = localStorage.getItem('customTopics');
-        if (customTopicsJson) {
-          const customTopics = JSON.parse(customTopicsJson);
-          // Filter custom topics by gender and education level
-          const filteredCustomTopics = customTopics.filter((topic: Topic) => 
-            topic.gender === preferences?.gender && 
-            topic.educationLevel === preferences?.educationLevel
-          );
-          setAllTopics([...filteredCustomTopics, ...staticTopics]);
-        } else {
+        if (!preferences) {
           setAllTopics(staticTopics);
+          return;
         }
+
+        const { data, error } = await supabase
+          .from('custom_topics')
+          .select('*')
+          .eq('gender', preferences.gender)
+          .eq('education_level', preferences.educationLevel)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        const customTopics: Topic[] = (data || []).map((item: any) => ({
+          id: item.id,
+          title: item.title,
+          category: item.category,
+          gender: item.gender as Gender,
+          educationLevel: item.education_level as EducationLevel,
+          content: item.content,
+        }));
+
+        setAllTopics([...customTopics, ...staticTopics]);
       } catch (error) {
         console.error('Error loading custom topics:', error);
         setAllTopics(staticTopics);
