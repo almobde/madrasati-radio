@@ -3,7 +3,6 @@ import { useAppContext } from '../context/AppContext';
 import PreferencesSelector from '../components/PreferencesSelector';
 import TopicsList from '../components/TopicsList';
 import TopicViewer from '../components/TopicViewer';
-import Header from '../components/Header';
 
 const Index = () => {
   const { preferences, currentTopic } = useAppContext();
@@ -15,12 +14,7 @@ const Index = () => {
 
   // إذا تم اختيار موضوع للعرض
   if (currentTopic) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <TopicViewer />
-      </div>
-    );
+    return <TopicViewer />;
   }
 
   // عرض قائمة المواضيع

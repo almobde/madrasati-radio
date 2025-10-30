@@ -1,13 +1,16 @@
 // قائمة المواضيع الإذاعية - Radio Topics List
 import { useState } from 'react';
-import { Search, Radio, ArrowLeft } from 'lucide-react';
+import { Search, Radio, ArrowLeft, Sparkles } from 'lucide-react';
 import { Input } from './ui/input';
+import { Button } from './ui/button';
 import { useAppContext } from '../context/AppContext';
 import { topics } from '../data/topics';
+import { TopicGenerator } from './TopicGenerator';
 
 const TopicsList = () => {
   const { preferences, setPreferences, setCurrentTopic } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
+  const [showGenerator, setShowGenerator] = useState(false);
 
   // تصفية المواضيع حسب البحث فقط
   const filteredTopics = topics.filter(topic => {
@@ -21,6 +24,10 @@ const TopicsList = () => {
   const genderText = preferences?.gender === 'girls' ? 'طالبات' : 'طلاب';
   const levelText = preferences?.educationLevel === 'primary' ? 'ابتدائي' : 
                    preferences?.educationLevel === 'middle' ? 'متوسط' : 'ثانوي';
+
+  if (showGenerator) {
+    return <TopicGenerator onBack={() => setShowGenerator(false)} />;
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-[hsl(200,100%,90%)] via-[hsl(210,100%,85%)] to-[hsl(220,100%,80%)]">
@@ -43,6 +50,17 @@ const TopicsList = () => {
           <p className="text-gray-700 font-body max-w-2xl mx-auto">
             اختر من مجموعة متنوعة من المواضيع المتخصصة والمعدة بعناية لطلاب {genderText} - المرحلة {levelText}
           </p>
+        </div>
+
+        {/* زر توليد موضوع جديد */}
+        <div className="max-w-md mx-auto mb-6">
+          <Button
+            onClick={() => setShowGenerator(true)}
+            className="w-full bg-gradient-to-r from-radio-gold to-yellow-500 hover:from-radio-gold/90 hover:to-yellow-500/90 text-white py-6 text-lg font-heading"
+          >
+            <Sparkles className="w-6 h-6 ml-2" />
+            توليد موضوع جديد بالذكاء الاصطناعي
+          </Button>
         </div>
 
         {/* شريط البحث */}
