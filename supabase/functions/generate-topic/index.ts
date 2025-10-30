@@ -361,14 +361,14 @@ ${sections.join('\n\n')}
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: "google/gemini-2.5-pro",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt }
         ],
         tools: tools,
         tool_choice: { type: "function", function: { name: "create_radio_content" } },
-        max_tokens: 8000,
+        max_tokens: 12000,
         temperature: 0.7,
       }),
     });
