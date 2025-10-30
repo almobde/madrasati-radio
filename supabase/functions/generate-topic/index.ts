@@ -398,6 +398,28 @@ ${sections.join('\n\n')}
     const data = await response.json();
     console.log("AI Response:", JSON.stringify(data, null, 2));
 
+    // Check for error in response
+    if (data.error) {
+      console.error("AI provider error:", data.error);
+      return new Response(JSON.stringify({ 
+        error: "خطأ من مزود الخدمة. الرجاء المحاولة مرة أخرى." 
+      }), {
+        status: 502,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Check if choices exist
+    if (!data.choices || !data.choices[0]) {
+      console.error("No choices in AI response:", data);
+      return new Response(JSON.stringify({ 
+        error: "استجابة غير صالحة من النموذج" 
+      }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     // Extract structured output from tool call
     let topicContent;
     try {
