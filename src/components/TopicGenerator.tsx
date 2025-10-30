@@ -50,8 +50,6 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
 
     setIsGenerating(true);
     try {
-      console.log('بدء توليد الموضوع:', title.trim());
-      
       const { data, error } = await supabase.functions.invoke('generate-topic', {
         body: {
           title: title.trim(),
@@ -63,15 +61,9 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
         }
       });
 
-      console.log('رد Edge Function:', { data, error });
-
-      if (error) {
-        console.error('خطأ Edge Function:', error);
-        throw error;
-      }
+      if (error) throw error;
 
       if (data.error) {
-        console.error('خطأ من البيانات:', data.error);
         toast({
           title: "خطأ",
           description: data.error,
@@ -81,7 +73,6 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
       }
 
       if (!data || !data.content) {
-        console.error('لا توجد بيانات محتوى:', data);
         toast({
           title: "خطأ",
           description: "لم يتم استلام المحتوى من الخادم",
@@ -94,10 +85,11 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
         id: Date.now().toString(),
         title: title.trim(),
         category: 'موضوع مولد',
+        gender: preferences?.gender,
+        educationLevel: preferences?.educationLevel,
         content: data.content
       };
 
-      console.log('الموضوع المُولَّد:', newTopic);
       setGeneratedTopic(newTopic);
 
       toast({
@@ -106,7 +98,7 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
       });
 
     } catch (error) {
-      console.error('خطأ في توليد الموضوع:', error);
+      console.error('Error generating topic:', error);
       toast({
         title: "خطأ",
         description: "حدث خطأ أثناء توليد الموضوع. حاول مرة أخرى.",

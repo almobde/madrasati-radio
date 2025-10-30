@@ -29,9 +29,27 @@ interface AppProviderProps {
 }
 
 export const AppProvider = ({ children }: AppProviderProps) => {
-  const [preferences, setPreferences] = useState<UserPreferences | null>(null);
+  // Load preferences from localStorage on mount
+  const [preferences, setPreferences] = useState<UserPreferences | null>(() => {
+    try {
+      const saved = localStorage.getItem('userPreferences');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
   const [currentTopic, setCurrentTopic] = useState<Topic | null>(null);
   const [fontSize, setFontSize] = useState<number>(100);
+
+  // Custom setPreferences that also saves to localStorage
+  const setPreferencesWithStorage = (prefs: UserPreferences | null) => {
+    setPreferences(prefs);
+    if (prefs) {
+      localStorage.setItem('userPreferences', JSON.stringify(prefs));
+    } else {
+      localStorage.removeItem('userPreferences');
+    }
+  };
 
   const themeClass = preferences?.gender === 'girls' ? 'girls-theme' : 'boys-theme';
 
@@ -51,7 +69,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     <AppContext.Provider
       value={{
         preferences,
-        setPreferences,
+        setPreferences: setPreferencesWithStorage,
         currentTopic,
         setCurrentTopic,
         themeClass,
