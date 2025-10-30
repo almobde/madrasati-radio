@@ -130,7 +130,7 @@ const TopicsList = () => {
         <div className="max-w-md mx-auto mb-6 flex gap-2 justify-center">
           <button
             onClick={() => setActiveTab('all')}
-            className={`flex-1 py-3 px-6 rounded-xl font-heading font-bold text-sm transition-all duration-300 ${
+            className={`flex-1 py-3 px-4 rounded-xl font-heading font-bold text-sm transition-all duration-300 whitespace-nowrap ${
               activeTab === 'all'
                 ? preferences?.gender === 'girls'
                   ? 'bg-white text-[hsl(330,70%,40%)] shadow-lg scale-105'
@@ -142,7 +142,7 @@ const TopicsList = () => {
           </button>
           <button
             onClick={() => setActiveTab('favorites')}
-            className={`flex-1 py-3 px-6 rounded-xl font-heading font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
+            className={`flex-1 py-3 px-4 rounded-xl font-heading font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap ${
               activeTab === 'favorites'
                 ? preferences?.gender === 'girls'
                   ? 'bg-white text-[hsl(330,70%,40%)] shadow-lg scale-105'
@@ -150,7 +150,7 @@ const TopicsList = () => {
                 : 'bg-white/50 text-white hover:bg-white/70 hover:scale-102'
             }`}
           >
-            <Star className="w-5 h-5" fill={activeTab === 'favorites' ? 'currentColor' : 'none'} />
+            <Star className="w-4 h-4" fill={activeTab === 'favorites' ? 'currentColor' : 'none'} />
             المفضلة ({allTopics.filter(t => isFavorite(t.id)).length})
           </button>
         </div>
