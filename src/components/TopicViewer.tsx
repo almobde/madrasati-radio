@@ -5,6 +5,7 @@ import { ModernButton } from '@/components/ui/modern-button';
 import { ModernCard, ModernCardHeader, ModernCardTitle, ModernCardContent } from '@/components/ui/modern-card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Home, BookOpen, Mic, Heart, Sparkles, Radio, Crown, Lightbulb, Quote, HelpCircle, MessageCircle } from 'lucide-react';
+import Footer from './Footer';
 
 const TopicViewer = () => {
   const { currentTopic, setCurrentTopic, preferences } = useAppContext();
@@ -325,6 +326,9 @@ const TopicViewer = () => {
             </TabsContent>
           </div>
         </Tabs>
+        
+        {/* التذييل */}
+        <Footer />
       </div>
     </div>
   );

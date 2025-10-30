@@ -6,6 +6,7 @@ import { useToast } from './ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAppContext } from '../context/AppContext';
 import { Topic } from '../types';
+import Footer from './Footer';
 
 interface TopicGeneratorProps {
   onBack: () => void;
@@ -97,10 +98,10 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
         {/* زر الرجوع */}
         <button
           onClick={onBack}
-          className="mb-6 flex items-center gap-2 px-4 py-2 bg-white/90 hover:bg-white rounded-lg transition-colors shadow-sm hover:shadow-md"
+          className="mb-6 flex items-center gap-2 px-5 py-3 bg-white hover:bg-gray-50 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:bg-gray-100 active:scale-95"
         >
           <ArrowLeft className="w-5 h-5 text-radio-dark" />
-          <span className="font-body text-radio-dark">رجوع</span>
+          <span className="font-body text-radio-dark font-semibold">رجوع</span>
         </button>
 
         {/* العنوان */}
@@ -136,7 +137,7 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
             <Button
               onClick={handleGenerate}
               disabled={isGenerating || !title.trim()}
-              className="w-full bg-radio-gold hover:bg-radio-gold/90 text-white text-lg py-6"
+              className="w-full bg-white hover:bg-gray-50 text-radio-dark text-lg py-6 shadow-lg hover:shadow-xl hover:scale-[1.02] active:bg-gray-100 active:scale-95 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
               {isGenerating ? (
                 <>
@@ -162,7 +163,7 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
               </h2>
               <Button
                 onClick={handleAddToList}
-                className="bg-green-600 hover:bg-green-700 text-white"
+                className="bg-white hover:bg-gray-50 text-radio-dark shadow-lg hover:shadow-xl hover:scale-105 active:bg-gray-100 active:scale-95 transition-all duration-300"
               >
                 إضافة للقائمة
               </Button>
@@ -205,6 +206,9 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
             </div>
           </div>
         )}
+        
+        {/* التذييل */}
+        <Footer />
       </div>
     </div>
   );

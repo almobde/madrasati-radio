@@ -5,6 +5,7 @@ import { ModernButton } from '@/components/ui/modern-button';
 import { UserPreferences, Gender, EducationLevel } from '../types';
 import { useAppContext } from '../context/AppContext';
 import { GraduationCap, Users, BookOpen, Star, Sparkles, Crown, Gem } from 'lucide-react';
+import Footer from './Footer';
 const PreferencesSelector = () => {
   const {
     setPreferences
@@ -101,6 +102,9 @@ const PreferencesSelector = () => {
               </p>}
           </div>
         </div>
+        
+        {/* التذييل */}
+        <Footer />
       </div>
     </div>;
 };

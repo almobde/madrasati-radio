@@ -7,6 +7,7 @@ import { useAppContext } from '../context/AppContext';
 import { topics as staticTopics } from '../data/topics';
 import { TopicGenerator } from './TopicGenerator';
 import { Topic } from '../types';
+import Footer from './Footer';
 
 const TopicsList = () => {
   const { preferences, setPreferences, setCurrentTopic } = useAppContext();
@@ -55,7 +56,7 @@ const TopicsList = () => {
         {/* زر الرجوع */}
         <button
           onClick={() => setPreferences(null)}
-          className="mb-6 flex items-center gap-2 px-5 py-3 bg-radio-dark hover:bg-radio-dark/90 text-white rounded-xl transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
+          className="mb-6 flex items-center gap-2 px-5 py-3 bg-white hover:bg-gray-50 text-radio-dark rounded-xl transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:bg-gray-100 active:scale-95"
         >
           <ArrowLeft className="w-5 h-5" />
           <span className="font-body font-semibold">رجوع للصفحة الرئيسية</span>
@@ -75,7 +76,7 @@ const TopicsList = () => {
         <div className="max-w-md mx-auto mb-6">
           <Button
             onClick={() => setShowGenerator(true)}
-            className="w-full bg-gradient-to-r from-secondary to-secondary/90 hover:from-secondary/90 hover:to-secondary/80 text-white py-6 text-lg font-heading shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
+            className="w-full bg-white hover:bg-gray-50 text-radio-dark py-6 text-lg font-heading shadow-lg hover:shadow-xl hover:scale-[1.02] active:bg-gray-100 active:scale-95 transition-all duration-300"
           >
             <Sparkles className="w-6 h-6 ml-2" />
             توليد موضوع جديد بالذكاء الاصطناعي
@@ -114,6 +115,9 @@ const TopicsList = () => {
             </div>
           ))}
         </div>
+        
+        {/* التذييل */}
+        <Footer />
       </div>
     </main>
   );
