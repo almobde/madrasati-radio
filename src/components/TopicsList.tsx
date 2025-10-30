@@ -28,6 +28,15 @@ const TopicsList = () => {
     <main className="min-h-screen bg-gradient-to-br from-[hsl(200,100%,90%)] via-[hsl(210,100%,85%)] to-[hsl(220,100%,80%)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
+        {/* زر الرجوع */}
+        <button
+          onClick={() => window.history.back()}
+          className="mb-6 flex items-center gap-2 px-4 py-2 bg-white/90 hover:bg-white rounded-lg transition-colors shadow-sm"
+        >
+          <ArrowLeft className="w-5 h-5 text-radio-dark" />
+          <span className="font-body text-radio-dark">رجوع</span>
+        </button>
+
         {/* العنوان الرئيسي البسيط */}
         <div className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl font-heading font-bold text-radio-dark mb-4">
