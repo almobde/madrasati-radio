@@ -1,19 +1,38 @@
 // قائمة المواضيع الإذاعية - Radio Topics List
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Radio, ArrowLeft, Sparkles } from 'lucide-react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { useAppContext } from '../context/AppContext';
-import { topics } from '../data/topics';
+import { topics as staticTopics } from '../data/topics';
 import { TopicGenerator } from './TopicGenerator';
+import { Topic } from '../types';
 
 const TopicsList = () => {
   const { preferences, setPreferences, setCurrentTopic } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [showGenerator, setShowGenerator] = useState(false);
+  const [allTopics, setAllTopics] = useState<Topic[]>(staticTopics);
+
+  // Load custom topics from localStorage
+  useEffect(() => {
+    const loadCustomTopics = () => {
+      try {
+        const customTopicsJson = localStorage.getItem('customTopics');
+        if (customTopicsJson) {
+          const customTopics = JSON.parse(customTopicsJson);
+          setAllTopics([...customTopics, ...staticTopics]);
+        }
+      } catch (error) {
+        console.error('Error loading custom topics:', error);
+      }
+    };
+
+    loadCustomTopics();
+  }, [showGenerator]); // Reload when returning from generator
 
   // تصفية المواضيع حسب البحث فقط
-  const filteredTopics = topics.filter(topic => {
+  const filteredTopics = allTopics.filter(topic => {
     const matchesSearch = !searchTerm || 
       topic.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       topic.category.toLowerCase().includes(searchTerm.toLowerCase());
