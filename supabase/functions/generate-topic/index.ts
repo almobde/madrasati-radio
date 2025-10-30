@@ -224,6 +224,8 @@ ${sections.join('\n\n')}
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt }
         ],
+        max_tokens: 8000,
+        temperature: 0.7,
       }),
     });
 
@@ -265,9 +267,19 @@ ${sections.join('\n\n')}
         // Try to parse directly
         topicContent = JSON.parse(content);
       }
+      
+      // Validate required fields
+      if (!topicContent.introduction || !topicContent.quranVerses || !topicContent.hadiths) {
+        console.error("Missing required fields in AI response");
+        return new Response(JSON.stringify({ error: "المحتوى المُولّد غير مكتمل" }), {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
     } catch (parseError) {
       console.error("Failed to parse AI response:", parseError);
-      return new Response(JSON.stringify({ error: "فشل في تحليل النتيجة" }), {
+      console.error("Content preview:", content.substring(0, 500));
+      return new Response(JSON.stringify({ error: "فشل في تحليل النتيجة. الرجاء المحاولة مرة أخرى." }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
