@@ -481,58 +481,27 @@ const TopicViewer = () => {
       content += `🌟 الخاتمة:\n${currentTopic.content.radioEnding}`;
     }
 
-    // استخدام Web Share API إذا كان متاحاً
-    if (navigator.share) {
-      navigator.share({
-        title: `إذاعة مدرسية - ${currentTopic.title}`,
-        text: content,
-      }).then(() => {
-        toast({
-          title: "تمت المشاركة بنجاح! ✅",
-          description: "تم مشاركة المحتوى",
-        });
-      }).catch((error) => {
-        // إذا ألغى المستخدم المشاركة
-        if (error.name !== 'AbortError') {
-          console.error('Error sharing:', error);
-          fallbackShare(content);
-        }
-      });
-    } else {
-      // استخدام الطريقة البديلة
-      fallbackShare(content);
-    }
-  };
-
-  const fallbackShare = (content: string) => {
-    // مشاركة عبر واتساب
-    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(content)}`;
+    // عرض خيارات المشاركة مباشرة
+    const shareChoice = confirm("اختر طريقة المشاركة:\n\n✅ موافق = واتساب\n❌ إلغاء = البريد الإلكتروني");
     
-    // مشاركة عبر البريد الإلكتروني
-    const emailSubject = encodeURIComponent(`إذاعة مدرسية - ${currentTopic.title}`);
-    const emailBody = encodeURIComponent(content);
-    const emailUrl = `mailto:?subject=${emailSubject}&body=${emailBody}`;
-
-    // نسخ إلى الحافظة كخيار إضافي
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(content).then(() => {
-        const choice = confirm("تم نسخ المحتوى!\n\nاختر طريقة المشاركة:\nموافق = واتساب\nإلغاء = البريد الإلكتروني");
-        
-        if (choice) {
-          window.open(whatsappUrl, '_blank');
-        } else {
-          window.open(emailUrl, '_blank');
-        }
+    if (shareChoice) {
+      // مشاركة عبر واتساب
+      const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(content)}`;
+      window.open(whatsappUrl, '_blank');
+      toast({
+        title: "تم فتح واتساب 💚",
+        description: "يمكنك الآن اختيار جهة الاتصال",
       });
     } else {
-      // عرض خيارات المشاركة
-      const shareOption = confirm("اختر طريقة المشاركة:\nموافق = واتساب\nإلغاء = البريد الإلكتروني");
-      
-      if (shareOption) {
-        window.open(whatsappUrl, '_blank');
-      } else {
-        window.open(emailUrl, '_blank');
-      }
+      // مشاركة عبر البريد الإلكتروني
+      const emailSubject = encodeURIComponent(`إذاعة مدرسية - ${currentTopic.title}`);
+      const emailBody = encodeURIComponent(content);
+      const emailUrl = `mailto:?subject=${emailSubject}&body=${emailBody}`;
+      window.location.href = emailUrl;
+      toast({
+        title: "تم فتح البريد الإلكتروني 📧",
+        description: "يمكنك الآن إرسال الرسالة",
+      });
     }
   };
 
