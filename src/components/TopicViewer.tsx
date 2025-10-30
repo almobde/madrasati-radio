@@ -44,6 +44,7 @@ const TopicViewer = () => {
             padding: 40px; 
             background: white;
             color: #333;
+            font-size: 18px;
           }
           .header {
             text-align: center;
@@ -52,42 +53,49 @@ const TopicViewer = () => {
             background: ${themeColor};
             color: white;
             border-radius: 12px;
+            border: 3px solid ${themeColor};
           }
-          .header h1 { margin: 0; font-size: 32px; }
+          .header h1 { margin: 0; font-size: 38px; }
+          .header p { margin: 10px 0 0 0; font-size: 20px; }
           .section {
             margin-bottom: 30px;
             page-break-inside: avoid;
+            border: 3px solid ${themeColor};
+            border-radius: 12px;
           }
           .section-title {
             background: ${themeColor};
             color: white;
-            padding: 15px 20px;
-            font-size: 22px;
+            padding: 18px 25px;
+            font-size: 26px;
             font-weight: bold;
-            border-radius: 8px 8px 0 0;
+            border-radius: 9px 9px 0 0;
           }
           .section-content {
-            padding: 25px;
-            border: 2px solid ${themeColor};
-            border-top: none;
-            border-radius: 0 0 8px 8px;
-            line-height: 1.8;
+            padding: 30px;
+            background: white;
+            border-radius: 0 0 9px 9px;
+            line-height: 2;
+            font-size: 19px;
           }
           .verse, .hadith {
             background: #f5f5f5;
-            padding: 20px;
-            margin: 15px 0;
-            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
             text-align: center;
+            border: 2px solid #e0e0e0;
           }
-          .verse-text { font-size: 20px; line-height: 2; margin-bottom: 10px; }
-          .reference { color: #666; font-size: 14px; margin-top: 10px; }
+          .verse-text { font-size: 24px; line-height: 2.2; margin-bottom: 15px; font-weight: 500; }
+          .reference { color: #666; font-size: 17px; margin-top: 12px; font-weight: 600; }
           .fact { 
-            margin: 15px 0; 
-            padding: 15px; 
+            margin: 18px 0; 
+            padding: 20px; 
             background: #fff3cd; 
-            border-right: 4px solid #ffc107;
-            border-radius: 8px;
+            border-right: 5px solid #ffc107;
+            border-radius: 10px;
+            font-size: 18px;
+            border: 2px solid #ffc107;
           }
           @media print {
             body { padding: 20px; }
