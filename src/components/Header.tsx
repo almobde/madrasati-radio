@@ -56,7 +56,7 @@ const Header = () => {
               alt="شعار الإذاعة المدرسية" 
               className="w-10 h-10 object-contain"
             />
-            <span className="font-arabic text-base font-semibold text-primary">
+            <span className="font-arabic text-lg font-semibold text-primary">
               إذاعتنا
             </span>
           </div>
