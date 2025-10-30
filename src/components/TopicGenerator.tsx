@@ -185,6 +185,21 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
                 className="text-lg"
                 disabled={isGenerating}
               />
+              <div className="mt-3">
+                <p className="text-sm text-gray-600 font-body mb-2">عناوين مقترحة:</p>
+                <div className="flex flex-wrap gap-2">
+                  {['الصدق', 'التعاون', 'الإبداع', 'الأمانة', 'العطاء', 'الإيجابية', 'التفاؤل', 'الطموح'].map((suggestion) => (
+                    <button
+                      key={suggestion}
+                      onClick={() => setTitle(suggestion)}
+                      disabled={isGenerating}
+                      className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 text-radio-dark rounded-full transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                    >
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {/* الخطاب */}
@@ -330,39 +345,97 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
             </div>
 
             <div className="space-y-4 text-right">
-              <div>
-                <h3 className="font-heading font-bold text-radio-dark mb-2">المقدمة</h3>
-                <p className="text-gray-700 font-body leading-relaxed">
-                  {generatedTopic.content.introduction.primary}
-                </p>
-              </div>
+              {selectedSections.introduction && generatedTopic.content.introduction && (
+                <div>
+                  <h3 className="font-heading font-bold text-radio-dark mb-2">المقدمة</h3>
+                  <p className="text-gray-700 font-body leading-relaxed">
+                    {generatedTopic.content.introduction.primary}
+                  </p>
+                </div>
+              )}
 
-              <div>
-                <h3 className="font-heading font-bold text-radio-dark mb-2">الآيات القرآنية</h3>
-                {generatedTopic.content.quranVerses.map((verse, idx) => (
-                  <div key={idx} className="mb-2 p-3 bg-green-50 rounded-lg">
-                    <p className="font-body text-gray-800 mb-1">{verse.text}</p>
-                    <p className="text-sm text-gray-600">({verse.reference})</p>
+              {selectedSections.quranVerses && generatedTopic.content.quranVerses && (
+                <div>
+                  <h3 className="font-heading font-bold text-radio-dark mb-2">الآيات القرآنية</h3>
+                  {generatedTopic.content.quranVerses.map((verse, idx) => (
+                    <div key={idx} className="mb-2 p-3 bg-green-50 rounded-lg">
+                      <p className="font-body text-gray-800 mb-1">{verse.text}</p>
+                      <p className="text-sm text-gray-600">({verse.reference})</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {selectedSections.hadiths && generatedTopic.content.hadiths && (
+                <div>
+                  <h3 className="font-heading font-bold text-radio-dark mb-2">الأحاديث النبوية</h3>
+                  {generatedTopic.content.hadiths.map((hadith, idx) => (
+                    <div key={idx} className="mb-2 p-3 bg-blue-50 rounded-lg">
+                      <p className="font-body text-gray-800 mb-1">{hadith.text}</p>
+                      <p className="text-sm text-gray-600">({hadith.reference})</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {selectedSections.didYouKnow && generatedTopic.content.didYouKnow && (
+                <div>
+                  <h3 className="font-heading font-bold text-radio-dark mb-2">معلومات</h3>
+                  <div className="space-y-2">
+                    {(generatedTopic.content.didYouKnow[preferences?.educationLevel || 'middle'] || []).map((fact, idx) => (
+                      <p key={idx} className="text-gray-700 font-body p-2 bg-yellow-50 rounded-lg">
+                        {fact}
+                      </p>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
 
-              <div>
-                <h3 className="font-heading font-bold text-radio-dark mb-2">الأحاديث النبوية</h3>
-                {generatedTopic.content.hadiths.map((hadith, idx) => (
-                  <div key={idx} className="mb-2 p-3 bg-blue-50 rounded-lg">
-                    <p className="font-body text-gray-800 mb-1">{hadith.text}</p>
-                    <p className="text-sm text-gray-600">({hadith.reference})</p>
+              {selectedSections.morningWord && generatedTopic.content.morningWord && (
+                <div>
+                  <h3 className="font-heading font-bold text-radio-dark mb-2">كلمة</h3>
+                  <p className="text-gray-700 font-body leading-relaxed">
+                    {generatedTopic.content.morningWord[preferences?.educationLevel || 'middle']}
+                  </p>
+                </div>
+              )}
+
+              {selectedSections.miscellaneous && generatedTopic.content.miscellaneous && (
+                <div>
+                  <h3 className="font-heading font-bold text-radio-dark mb-2">منوعات</h3>
+                  <div className="space-y-3">
+                    {(generatedTopic.content.miscellaneous[preferences?.educationLevel || 'middle'] || []).map((item, idx) => (
+                      <div key={idx} className="p-3 bg-purple-50 rounded-lg">
+                        <h4 className="font-body font-semibold text-gray-800 mb-1">{item.title}</h4>
+                        <p className="text-gray-700 font-body text-sm">{item.content}</p>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
 
-              <div>
-                <h3 className="font-heading font-bold text-radio-dark mb-2">كلمة</h3>
-                <p className="text-gray-700 font-body leading-relaxed">
-                  {generatedTopic.content.morningWord.middle}
-                </p>
-              </div>
+              {selectedSections.questions && generatedTopic.content.questions && (
+                <div>
+                  <h3 className="font-heading font-bold text-radio-dark mb-2">أسئلة</h3>
+                  <div className="space-y-3">
+                    {(generatedTopic.content.questions[preferences?.educationLevel || 'middle'] || []).map((question, idx) => (
+                      <div key={idx} className="p-3 bg-orange-50 rounded-lg">
+                        <p className="font-body text-gray-800 mb-1">{question.question}</p>
+                        <p className="text-sm text-gray-600 font-semibold">الإجابة: {question.answer}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {selectedSections.conclusion && generatedTopic.content.conclusion && (
+                <div>
+                  <h3 className="font-heading font-bold text-radio-dark mb-2">خاتمة</h3>
+                  <p className="text-gray-700 font-body leading-relaxed">
+                    {generatedTopic.content.conclusion}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         )}
