@@ -20,14 +20,14 @@ const PreferencesSelector = () => {
   const genderOptions = [
     { 
       value: 'boys' as Gender, 
-      label: 'مدرسة البنين', 
+      label: 'بنين', 
       icon: Crown,
       gradient: 'bg-boys-gradient',
       description: 'تصميم احترافي للطلاب'
     },
     { 
       value: 'girls' as Gender, 
-      label: 'مدرسة البنات', 
+      label: 'بنات', 
       icon: Gem,
       gradient: 'bg-girls-gradient',
       description: 'تصميم أنيق للطالبات'
@@ -37,21 +37,21 @@ const PreferencesSelector = () => {
   const levelOptions = [
     { 
       value: 'primary' as EducationLevel, 
-      label: 'المرحلة الابتدائية', 
+      label: 'ابتدائي', 
       description: 'كلمات بسيطة ومحتوى قصير مناسب للأطفال',
       icon: BookOpen,
       color: 'from-green-400 to-green-600'
     },
     { 
       value: 'middle' as EducationLevel, 
-      label: 'المرحلة المتوسطة', 
+      label: 'متوسط', 
       description: 'محتوى متوسط الطول مع تفاصيل أكثر',
       icon: GraduationCap,
       color: 'from-blue-400 to-blue-600'
     },
     { 
       value: 'secondary' as EducationLevel, 
-      label: 'المرحلة الثانوية', 
+      label: 'ثانوي', 
       description: 'محتوى غني ومفصل مع مفاهيم متقدمة',
       icon: Users,
       color: 'from-purple-400 to-purple-600'
