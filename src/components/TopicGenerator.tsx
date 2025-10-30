@@ -312,7 +312,7 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
             <Button
               onClick={handleGenerate}
               disabled={isGenerating || !title.trim()}
-              className="w-full bg-white hover:bg-gray-50 text-radio-dark text-lg py-6 shadow-lg hover:shadow-xl hover:scale-[1.02] active:bg-gray-100 active:scale-95 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white text-lg py-6 shadow-lg hover:shadow-xl hover:scale-[1.02] active:bg-orange-700 active:scale-95 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
               {isGenerating ? (
                 <>
@@ -338,7 +338,7 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
               </h2>
               <Button
                 onClick={handleAddToList}
-                className="bg-white hover:bg-gray-50 text-radio-dark shadow-lg hover:shadow-xl hover:scale-105 active:bg-gray-100 active:scale-95 transition-all duration-300"
+                className="bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-xl hover:scale-105 active:bg-orange-700 active:scale-95 transition-all duration-300"
               >
                 إضافة للقائمة
               </Button>
