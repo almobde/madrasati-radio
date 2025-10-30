@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { ArrowLeft, Sparkles } from 'lucide-react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
@@ -10,6 +10,17 @@ import Footer from './Footer';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
+
+// مجموعة كبيرة من العناوين المقترحة
+const ALL_SUGGESTIONS = [
+  'الصدق', 'التعاون', 'الإبداع', 'الأمانة', 'العطاء', 'الإيجابية', 
+  'التفاؤل', 'الطموح', 'الاحترام', 'النظافة', 'الصبر', 'الشكر',
+  'الإخلاص', 'المثابرة', 'النجاح', 'التميز', 'الإتقان', 'الأخوة',
+  'التسامح', 'الوفاء', 'الكرم', 'الشجاعة', 'المسؤولية', 'الانضباط',
+  'الإبتسامة', 'النشاط', 'التنظيم', 'حب الوطن', 'الأمل', 'القراءة',
+  'العلم', 'الحكمة', 'الصداقة', 'التواضع', 'الجد', 'البر',
+  'الحياء', 'الرحمة', 'العدل', 'الإحسان'
+];
 
 interface TopicGeneratorProps {
   onBack: () => void;
@@ -33,6 +44,12 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
   });
   const { toast } = useToast();
   const { preferences } = useAppContext();
+
+  // عناوين مقترحة عشوائية تتغير في كل مرة
+  const randomSuggestions = useMemo(() => {
+    const shuffled = [...ALL_SUGGESTIONS].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 8);
+  }, []);
 
   const toggleSection = (section: keyof typeof selectedSections) => {
     setSelectedSections(prev => ({ ...prev, [section]: !prev[section] }));
@@ -188,7 +205,7 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
               <div className="mt-3">
                 <p className="text-sm text-gray-600 font-body mb-2">عناوين مقترحة:</p>
                 <div className="flex flex-wrap gap-2">
-                  {['الصدق', 'التعاون', 'الإبداع', 'الأمانة', 'العطاء', 'الإيجابية', 'التفاؤل', 'الطموح'].map((suggestion) => (
+                  {randomSuggestions.map((suggestion) => (
                     <button
                       key={suggestion}
                       onClick={() => setTitle(suggestion)}

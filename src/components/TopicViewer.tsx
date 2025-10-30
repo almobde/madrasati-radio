@@ -10,12 +10,14 @@ import { ArrowRight, Home, BookOpen, Mic, Heart, Sparkles, Radio, Crown, Lightbu
 import Footer from './Footer';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const TopicViewer = () => {
   const { currentTopic, setCurrentTopic, preferences } = useAppContext();
   const { toast } = useToast();
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const isMobile = useIsMobile();
 
   if (!currentTopic) return null;
 
@@ -559,15 +561,17 @@ const TopicViewer = () => {
                 >
                   <Download className="w-5 h-5" />
                 </ModernButton>
-                <ModernButton 
-                  variant="glass" 
-                  size="sm"
-                  onClick={handleShare}
-                  className={`font-body ${preferences?.gender === 'girls' ? 'bg-[#e91e63] hover:bg-[#c2185b]' : 'bg-[#3b82f6] hover:bg-[#2563eb]'} text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300`}
-                  title="مشاركة"
-                >
-                  <Share2 className="w-5 h-5" />
-                </ModernButton>
+                {isMobile && (
+                  <ModernButton 
+                    variant="glass" 
+                    size="sm"
+                    onClick={handleShare}
+                    className={`font-body ${preferences?.gender === 'girls' ? 'bg-[#e91e63] hover:bg-[#c2185b]' : 'bg-[#3b82f6] hover:bg-[#2563eb]'} text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300`}
+                    title="مشاركة"
+                  >
+                    <Share2 className="w-5 h-5" />
+                  </ModernButton>
+                )}
                 
                 {/* زر الإدارة */}
                 <Dialog open={isAdminOpen} onOpenChange={setIsAdminOpen}>
