@@ -25,75 +25,56 @@ const TopicsList = () => {
                    preferences?.educationLevel === 'middle' ? 'متوسط' : 'ثانوي';
 
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      
-      {/* العنوان الرئيسي البسيط */}
-      <div className="text-center mb-12">
-        <h1 className="text-3xl md:text-4xl font-heading font-bold text-radio-dark mb-4">
-          مكتبة المواضيع الإذاعية
-        </h1>
-        <p className="text-gray-600 font-body max-w-2xl mx-auto">
-          اختر من مجموعة متنوعة من المواضيع المتخصصة والمعدة بعناية لطلاب {genderText} - المرحلة {levelText}
-        </p>
-      </div>
-
-      {/* شريط البحث */}
-      <div className="max-w-md mx-auto mb-8">
-        <div className="relative">
-          <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-          <Input
-            type="text"
-            placeholder="ابحث في المواضيع..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pr-10 rounded-lg border-gray-300 focus:ring-radio-gold focus:border-radio-gold"
-          />
+    <main className="min-h-screen bg-gradient-to-br from-[hsl(200,100%,90%)] via-[hsl(210,100%,85%)] to-[hsl(220,100%,80%)]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        {/* العنوان الرئيسي البسيط */}
+        <div className="text-center mb-12">
+          <h1 className="text-3xl md:text-4xl font-heading font-bold text-radio-dark mb-4">
+            مكتبة المواضيع الإذاعية
+          </h1>
+          <p className="text-gray-700 font-body max-w-2xl mx-auto">
+            اختر من مجموعة متنوعة من المواضيع المتخصصة والمعدة بعناية لطلاب {genderText} - المرحلة {levelText}
+          </p>
         </div>
-      </div>
 
-      {/* شبكة المواضيع */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filteredTopics.map((topic, index) => (
-          <ModernCard
-            key={topic.id}
-            variant="luxury"
-            padding="none"
-            className="group cursor-pointer hover:shadow-lg transition-all duration-300 overflow-hidden"
-            onClick={() => setCurrentTopic(topic)}
-          >
-            {/* صورة الموضوع */}
-            <div className="aspect-[4/3] bg-gradient-to-br from-radio-gold/10 to-radio-gold/5 relative overflow-hidden">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-16 h-16 bg-radio-gold rounded-full flex items-center justify-center shadow-lg">
-                  <Radio className="w-8 h-8 text-white" />
+        {/* شريط البحث */}
+        <div className="max-w-md mx-auto mb-8">
+          <div className="relative">
+            <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Input
+              type="text"
+              placeholder="ابحث في المواضيع..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pr-10 rounded-lg border-gray-300 focus:ring-radio-gold focus:border-radio-gold bg-white/90 backdrop-blur-sm"
+            />
+          </div>
+        </div>
+
+        {/* شبكة المواضيع - 3 في الصف على الجوال */}
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-3 sm:gap-4">
+          {filteredTopics.map((topic) => (
+            <div
+              key={topic.id}
+              className="group cursor-pointer"
+              onClick={() => setCurrentTopic(topic)}
+            >
+              {/* مربع الموضوع */}
+              <div className="bg-white/90 backdrop-blur-sm rounded-xl p-3 sm:p-4 hover:shadow-lg transition-all duration-300 hover:scale-105 border border-white/50">
+                {/* أيقونة الموضوع */}
+                <div className="aspect-square bg-gradient-to-br from-radio-gold/20 to-radio-gold/10 rounded-lg flex items-center justify-center mb-2 sm:mb-3">
+                  <Radio className="w-6 h-6 sm:w-8 sm:h-8 text-radio-gold" />
                 </div>
-              </div>
-              <div className="absolute top-3 right-3">
-                <Badge className="bg-white/90 text-radio-dark text-xs px-2 py-1 font-medium">
-                  {topic.category}
-                </Badge>
+                
+                {/* عنوان الموضوع */}
+                <h3 className="font-heading font-bold text-radio-dark text-xs sm:text-sm text-center line-clamp-2 min-h-[2.5rem] sm:min-h-[3rem] flex items-center justify-center">
+                  {topic.title}
+                </h3>
               </div>
             </div>
-
-            {/* محتوى الكارت */}
-            <div className="p-4">
-              <h3 className="font-heading font-bold text-radio-dark text-lg mb-2 line-clamp-2">
-                {topic.title}
-              </h3>
-              
-              {/* تفاصيل إضافية */}
-              <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                <div className="flex items-center gap-2">
-                  <Book className="w-4 h-4 text-gray-400" />
-                  <span className="text-xs text-gray-500 font-body">
-                    موضوع تعليمي
-                  </span>
-                </div>
-                <ArrowLeft className="w-4 h-4 text-radio-gold opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-              </div>
-            </div>
-          </ModernCard>
-        ))}
+          ))}
+        </div>
       </div>
     </main>
   );
