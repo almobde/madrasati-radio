@@ -149,14 +149,18 @@ const TopicViewer = () => {
                   </ModernCardTitle>
                 </ModernCardHeader>
                 <ModernCardContent>
-                  <p className="text-xl font-heading leading-loose text-foreground text-center mb-4">
-                    {currentTopic.content.quranVerse?.text || 'لا توجد آيات متاحة حالياً'}
-                  </p>
-                  {currentTopic.content.quranVerse?.reference && (
-                    <p className="text-sm text-[hsl(var(--primary))] font-semibold text-center">
-                      {currentTopic.content.quranVerse.reference}
-                    </p>
-                  )}
+                  <div className="space-y-6">
+                    {currentTopic.content.quranVerses.map((verse, index) => (
+                      <div key={index} className="border-b border-border pb-4 last:border-0">
+                        <p className="text-xl font-heading leading-loose text-foreground text-center mb-4">
+                          {verse.text}
+                        </p>
+                        <p className="text-sm text-[hsl(var(--primary))] font-semibold text-center">
+                          {verse.reference}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </ModernCardContent>
               </ModernCard>
             </TabsContent>
@@ -167,18 +171,22 @@ const TopicViewer = () => {
                 <ModernCardHeader>
                   <ModernCardTitle className="text-2xl flex items-center gap-3">
                     <MessageCircle className="w-6 h-6 text-[hsl(var(--primary))]" />
-                    حديث شريف
+                    أحاديث شريفة
                   </ModernCardTitle>
                 </ModernCardHeader>
                 <ModernCardContent>
-                  <p className="text-lg font-body leading-loose text-foreground mb-4">
-                    {currentTopic.content.hadith?.text || 'لا يوجد حديث متاح حالياً'}
-                  </p>
-                  {currentTopic.content.hadith?.reference && (
-                    <p className="text-sm text-[hsl(var(--primary))] font-semibold text-center">
-                      {currentTopic.content.hadith.reference}
-                    </p>
-                  )}
+                  <div className="space-y-6">
+                    {currentTopic.content.hadiths.map((hadith, index) => (
+                      <div key={index} className="border-b border-border pb-4 last:border-0">
+                        <p className="text-lg font-body leading-loose text-foreground mb-4">
+                          {hadith.text}
+                        </p>
+                        <p className="text-sm text-[hsl(var(--primary))] font-semibold text-center">
+                          {hadith.reference}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </ModernCardContent>
               </ModernCard>
             </TabsContent>

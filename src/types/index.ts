@@ -13,14 +13,14 @@ export interface Topic {
       middle: string;
       secondary: string;
     };
-    quranVerse: {
+    quranVerses: Array<{
       text: string;
       reference: string;
-    };
-    hadith: {
+    }>;
+    hadiths: Array<{
       text: string;
       reference: string;
-    };
+    }>;
     didYouKnow: {
       primary: string[];
       middle: string[];
