@@ -1,5 +1,6 @@
 // قائمة المواضيع الإذاعية - Radio Topics List
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, Radio, Book, ArrowLeft } from 'lucide-react';
 import { ModernCard } from './ui/modern-card';
 import { Badge } from './ui/badge';
@@ -8,6 +9,7 @@ import { useAppContext } from '../context/AppContext';
 import { topics } from '../data/topics';
 
 const TopicsList = () => {
+  const navigate = useNavigate();
   const { preferences, setCurrentTopic } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -30,11 +32,11 @@ const TopicsList = () => {
         
         {/* زر الرجوع */}
         <button
-          onClick={() => window.history.back()}
-          className="mb-6 flex items-center gap-2 px-4 py-2 bg-white/90 hover:bg-white rounded-lg transition-colors shadow-sm"
+          onClick={() => navigate('/')}
+          className="mb-6 flex items-center gap-2 px-4 py-2 bg-white/90 hover:bg-white rounded-lg transition-colors shadow-sm hover:shadow-md"
         >
           <ArrowLeft className="w-5 h-5 text-radio-dark" />
-          <span className="font-body text-radio-dark">رجوع</span>
+          <span className="font-body text-radio-dark">رجوع للصفحة الرئيسية</span>
         </button>
 
         {/* العنوان الرئيسي البسيط */}
