@@ -20,10 +20,217 @@ const TopicViewer = () => {
 
   const handleExportToPDF = () => {
     toast({
-      title: "طباعة المحتوى",
-      description: "يمكنك حفظ الصفحة كـ PDF من خيارات الطباعة",
+      title: "جارِ التحضير للطباعة...",
+      description: "يتم تجهيز جميع المحاور",
     });
-    window.print();
+
+    // إنشاء نافذة جديدة للطباعة
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+
+    const themeColor = preferences?.gender === 'girls' ? '#e91e63' : '#2196f3';
+    
+    // بناء HTML الكامل
+    let html = `
+      <!DOCTYPE html>
+      <html dir="rtl" lang="ar">
+      <head>
+        <meta charset="UTF-8">
+        <title>${currentTopic.title}</title>
+        <style>
+          * { box-sizing: border-box; }
+          body { 
+            font-family: Arial, sans-serif; 
+            padding: 40px; 
+            background: white;
+            color: #333;
+          }
+          .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: ${themeColor};
+            color: white;
+            border-radius: 12px;
+          }
+          .header h1 { margin: 0; font-size: 32px; }
+          .section {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+          }
+          .section-title {
+            background: ${themeColor};
+            color: white;
+            padding: 15px 20px;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 8px 8px 0 0;
+          }
+          .section-content {
+            padding: 25px;
+            border: 2px solid ${themeColor};
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            line-height: 1.8;
+          }
+          .verse, .hadith {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            text-align: center;
+          }
+          .verse-text { font-size: 20px; line-height: 2; margin-bottom: 10px; }
+          .reference { color: #666; font-size: 14px; margin-top: 10px; }
+          .fact { 
+            margin: 15px 0; 
+            padding: 15px; 
+            background: #fff3cd; 
+            border-right: 4px solid #ffc107;
+            border-radius: 8px;
+          }
+          @media print {
+            body { padding: 20px; }
+            .section { page-break-inside: avoid; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>${currentTopic.title}</h1>
+          <p>محتوى إذاعي شامل ومتكامل</p>
+        </div>
+    `;
+
+    // المقدمة
+    html += `
+      <div class="section">
+        <div class="section-title">📖 المقدمة</div>
+        <div class="section-content">
+          <p>${getContentByLevel(currentTopic.content.introduction)}</p>
+        </div>
+      </div>
+    `;
+
+    // الآيات القرآنية
+    html += `
+      <div class="section">
+        <div class="section-title">📿 الآيات القرآنية</div>
+        <div class="section-content">
+    `;
+    currentTopic.content.quranVerses.forEach(verse => {
+      html += `
+        <div class="verse">
+          <div class="verse-text">${verse.text}</div>
+          <div class="reference">${verse.reference}</div>
+        </div>
+      `;
+    });
+    html += `</div></div>`;
+
+    // الأحاديث
+    html += `
+      <div class="section">
+        <div class="section-title">💬 الأحاديث النبوية</div>
+        <div class="section-content">
+    `;
+    currentTopic.content.hadiths.forEach(hadith => {
+      html += `
+        <div class="hadith">
+          <p>${hadith.text}</p>
+          <div class="reference">${hadith.reference}</div>
+        </div>
+      `;
+    });
+    html += `</div></div>`;
+
+    // هل تعلم
+    html += `
+      <div class="section">
+        <div class="section-title">💡 هل تعلم</div>
+        <div class="section-content">
+    `;
+    getContentByLevel(currentTopic.content.didYouKnow).forEach((fact: string, i: number) => {
+      html += `<div class="fact"><strong>${i + 1}.</strong> ${fact}</div>`;
+    });
+    html += `</div></div>`;
+
+    // كلمة الصباح
+    html += `
+      <div class="section">
+        <div class="section-title">🎤 كلمة الصباح</div>
+        <div class="section-content">
+          <p>${getContentByLevel(currentTopic.content.morningWord)}</p>
+        </div>
+      </div>
+    `;
+
+    // منوعات
+    if (currentTopic.content.miscellaneous && getContentByLevel(currentTopic.content.miscellaneous).length > 0) {
+      html += `
+        <div class="section">
+          <div class="section-title">✨ منوعات</div>
+          <div class="section-content">
+      `;
+      getContentByLevel(currentTopic.content.miscellaneous).forEach((item: any) => {
+        html += `
+          <div style="margin: 20px 0;">
+            <h3 style="color: ${themeColor};">${item.title}</h3>
+            <p>${item.content}</p>
+          </div>
+        `;
+      });
+      html += `</div></div>`;
+    }
+
+    // أسئلة وألغاز
+    if (currentTopic.content.questions && getContentByLevel(currentTopic.content.questions).length > 0) {
+      html += `
+        <div class="section">
+          <div class="section-title">❓ أسئلة وألغاز</div>
+          <div class="section-content">
+      `;
+      getContentByLevel(currentTopic.content.questions).forEach((q: any) => {
+        html += `
+          <div style="margin: 20px 0; padding: 20px; background: #f3e5f5; border-radius: 8px;">
+            <p style="font-weight: bold; color: #7b1fa2;">س: ${q.question}</p>
+            <p style="color: #4a148c; margin-top: 10px;">ج: ${q.answer}</p>
+          </div>
+        `;
+      });
+      html += `</div></div>`;
+    }
+
+    // الخاتمة
+    html += `
+      <div class="section">
+        <div class="section-title">🌟 الخاتمة</div>
+        <div class="section-content">
+          <p>${currentTopic.content.conclusion || ''}</p>
+          <p style="margin-top: 20px;">${currentTopic.content.radioEnding}</p>
+        </div>
+      </div>
+    `;
+
+    html += `
+      </body>
+      </html>
+    `;
+
+    // كتابة المحتوى للنافذة الجديدة
+    printWindow.document.write(html);
+    printWindow.document.close();
+
+    // انتظار تحميل المحتوى ثم طباعة
+    printWindow.onload = () => {
+      setTimeout(() => {
+        printWindow.print();
+        toast({
+          title: "جاهز للطباعة! 📄",
+          description: "اختر 'حفظ كـ PDF' من خيارات الطباعة",
+        });
+      }, 500);
+    };
   };
 
   const handleShare = () => {
