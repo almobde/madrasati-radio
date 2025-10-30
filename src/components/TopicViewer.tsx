@@ -17,6 +17,7 @@ const TopicViewer = () => {
   const { toast } = useToast();
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('medium');
   const isMobile = useIsMobile();
 
   if (!currentTopic) return null;
@@ -635,8 +636,9 @@ const TopicViewer = () => {
                 </div>
               </div>
               
-              {/* أزرار التحكم */}
-              <div className="flex gap-2 justify-center md:justify-start items-center">
+              {/* أزرار التحكم - سطران للجوال */}
+              <div className="grid grid-cols-3 md:flex gap-2 justify-center md:justify-start items-center">
+                {/* السطر الأول */}
                 <ModernButton 
                   variant="glass" 
                   size="sm"
@@ -664,6 +666,8 @@ const TopicViewer = () => {
                 >
                   <Copy className="w-5 h-5" />
                 </ModernButton>
+                
+                {/* السطر الثاني */}
                 {isMobile && (
                   <ModernButton 
                     variant="glass" 
@@ -675,6 +679,24 @@ const TopicViewer = () => {
                     <Share2 className="w-5 h-5" />
                   </ModernButton>
                 )}
+                <ModernButton 
+                  variant="glass" 
+                  size="sm"
+                  onClick={() => {
+                    const sizes: Array<'small' | 'medium' | 'large'> = ['small', 'medium', 'large'];
+                    const currentIndex = sizes.indexOf(fontSize);
+                    const nextIndex = (currentIndex + 1) % sizes.length;
+                    setFontSize(sizes[nextIndex]);
+                    toast({
+                      title: "تم تغيير حجم الخط",
+                      description: sizes[nextIndex] === 'small' ? 'صغير' : sizes[nextIndex] === 'medium' ? 'متوسط' : 'كبير',
+                    });
+                  }}
+                  className={`font-body ${preferences?.gender === 'girls' ? 'bg-[#e91e63] hover:bg-[#c2185b]' : 'bg-[#3b82f6] hover:bg-[#2563eb]'} text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300`}
+                  title="حجم الخط"
+                >
+                  <BookOpen className="w-5 h-5" />
+                </ModernButton>
                 
                 {/* زر الإدارة */}
                 <Dialog open={isAdminOpen} onOpenChange={setIsAdminOpen}>
@@ -722,7 +744,7 @@ const TopicViewer = () => {
         </div>
 
         {/* التبويبات الثمانية */}
-        <Tabs defaultValue="introduction" className="w-full" dir="rtl">
+        <Tabs defaultValue="introduction" className={`w-full ${fontSize === 'small' ? 'text-sm' : fontSize === 'large' ? 'text-lg' : 'text-base'}`} dir="rtl">
           <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 gap-2 bg-transparent p-2 h-auto mb-8">
             <TabsTrigger 
               value="introduction" 

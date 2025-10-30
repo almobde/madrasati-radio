@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { ArrowLeft, Sparkles } from 'lucide-react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
+import { Progress } from './ui/progress';
 import { useToast } from './ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAppContext } from '../context/AppContext';
@@ -29,6 +30,7 @@ interface TopicGeneratorProps {
 export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
   const [title, setTitle] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [generatedTopic, setGeneratedTopic] = useState<Topic | null>(null);
   const [addressStyle, setAddressStyle] = useState<'masculine' | 'feminine'>('masculine');
   const [contentLength, setContentLength] = useState<'long' | 'short'>('long');
@@ -66,6 +68,16 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
     }
 
     setIsGenerating(true);
+    setProgress(0);
+    
+    // محاكاة التقدم
+    const progressInterval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 90) return prev;
+        return prev + 10;
+      });
+    }, 800);
+    
     try {
       const { data, error } = await supabase.functions.invoke('generate-topic', {
         body: {
@@ -77,6 +89,9 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
           selectedSections
         }
       });
+
+      clearInterval(progressInterval);
+      setProgress(100);
 
       if (error) throw error;
 
@@ -121,8 +136,10 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
         description: "حدث خطأ أثناء توليد الموضوع. حاول مرة أخرى.",
         variant: "destructive",
       });
+      clearInterval(progressInterval);
     } finally {
       setIsGenerating(false);
+      setTimeout(() => setProgress(0), 1000);
     }
   };
 
@@ -325,6 +342,18 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
                 </div>
               </div>
             </div>
+
+            {isGenerating && (
+              <div className="space-y-3">
+                <Progress value={progress} className="h-2" />
+                <p className="text-center text-sm text-gray-600">
+                  {progress < 30 && 'جاري تحليل العنوان...'}
+                  {progress >= 30 && progress < 60 && 'جاري إنشاء المحتوى...'}
+                  {progress >= 60 && progress < 90 && 'جاري التنسيق والمراجعة...'}
+                  {progress >= 90 && 'اكتمل التوليد!'}
+                </p>
+              </div>
+            )}
 
             <Button
               onClick={handleGenerate}
