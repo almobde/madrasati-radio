@@ -109,11 +109,6 @@ const PreferencesSelector = () => {
               ابدأ الرحلة الإعلامية
               <Sparkles className="w-6 h-6" />
             </ModernButton>
-            {selectedGender && selectedLevel && <p className={`mt-4 text-sm animate-pulse transition-colors duration-700 ${
-                selectedGender ? 'text-white/80' : 'text-muted-foreground'
-              }`}>
-                ✨ جاهز للانطلاق نحو تجربة إذاعية مميزة!
-              </p>}
           </div>
         </div>
         
