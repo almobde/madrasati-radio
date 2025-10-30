@@ -77,30 +77,30 @@ const PreferencesSelector = () => {
           </p>
         </div>
 
-        <div className="space-y-12 slide-up">
+        <div className="space-y-10 slide-up max-w-4xl mx-auto">
           {/* اختيار نوع المدرسة */}
           <div>
-            <h2 className="text-4xl font-heading font-bold mb-8 text-center text-gradient">نوع المدرسة</h2>
-            <div className="grid grid-cols-2 gap-6">
+            <h2 className="text-3xl font-heading font-bold mb-6 text-center text-gradient">نوع المدرسة</h2>
+            <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto">
               {genderOptions.map((option) => (
                 <ModernCard
                   key={option.value}
                   variant="glass"  
-                  padding="lg"
-                  className={`cursor-pointer transition-all duration-500 hover:scale-[1.03] ${
+                  padding="sm"
+                  className={`cursor-pointer transition-all duration-500 hover:scale-[1.02] ${
                     selectedGender === option.value
                       ? option.value === 'boys' 
-                        ? 'border-4 border-boys-primary shadow-[0_0_40px_hsl(var(--boys-primary))/30] scale-[1.02]'
-                        : 'border-4 border-girls-primary shadow-[0_0_40px_hsl(var(--girls-primary))/30] scale-[1.02]'
+                        ? 'border-3 border-boys-primary shadow-[0_0_30px_hsl(var(--boys-primary))/25] scale-[1.01]'
+                        : 'border-3 border-girls-primary shadow-[0_0_30px_hsl(var(--girls-primary))/25] scale-[1.01]'
                       : 'border-2 border-[hsl(var(--primary))]/20 hover:border-[hsl(var(--primary))]/40'
                   }`}
                   onClick={() => setSelectedGender(option.value)}
                 >
                   <div className="text-center">
-                    <div className={`w-20 h-20 mx-auto mb-6 rounded-full ${option.gradient} flex items-center justify-center shadow-lg`}>
-                      <option.icon className="w-10 h-10 text-white" />
+                    <div className={`w-14 h-14 mx-auto mb-3 rounded-full ${option.gradient} flex items-center justify-center shadow-lg`}>
+                      <option.icon className="w-7 h-7 text-white" />
                     </div>
-                    <h3 className="text-2xl font-body font-bold text-foreground">{option.label}</h3>
+                    <h3 className="text-xl font-body font-bold text-foreground">{option.label}</h3>
                   </div>
                 </ModernCard>
               ))}
@@ -109,19 +109,19 @@ const PreferencesSelector = () => {
 
           {/* اختيار المرحلة الدراسية */}
           <div>
-            <h2 className="text-4xl font-heading font-bold mb-8 text-center text-gradient">المرحلة الدراسية</h2>
-            <div className="grid grid-cols-3 gap-6">
+            <h2 className="text-3xl font-heading font-bold mb-6 text-center text-gradient">المرحلة الدراسية</h2>
+            <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
               {levelOptions.map((option) => (
                 <div
                   key={option.value}
-                  className={`cursor-pointer text-center transition-all duration-300 hover:scale-105 p-8 rounded-2xl min-w-[120px] ${
+                  className={`cursor-pointer text-center transition-all duration-300 hover:scale-105 p-5 rounded-xl ${
                     selectedLevel === option.value
-                      ? `bg-gradient-to-r ${option.color} shadow-xl scale-105`
+                      ? `bg-gradient-to-r ${option.color} shadow-lg scale-105`
                       : 'bg-white/70 hover:bg-white/90 shadow-md'
                   }`}
                   onClick={() => setSelectedLevel(option.value)}
                 >
-                  <h3 className={`text-xl font-body font-bold whitespace-nowrap ${
+                  <h3 className={`text-lg font-body font-bold whitespace-nowrap ${
                     selectedLevel === option.value ? 'text-white' : 'text-foreground'
                   }`}>
                     {option.label}
