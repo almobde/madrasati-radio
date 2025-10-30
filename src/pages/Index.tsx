@@ -3,7 +3,6 @@ import { useAppContext } from '../context/AppContext';
 import PreferencesSelector from '../components/PreferencesSelector';
 import TopicsList from '../components/TopicsList';
 import TopicViewer from '../components/TopicViewer';
-import TestimonialsSection from '../components/TestimonialsSection';
 import AdminButton from '../components/AdminButton';
 
 const Index = () => {
@@ -17,10 +16,7 @@ const Index = () => {
       ) : currentTopic ? (
         <TopicViewer />
       ) : (
-        <>
-          <TopicsList />
-          <TestimonialsSection />
-        </>
+        <TopicsList />
       )}
     </>
   );

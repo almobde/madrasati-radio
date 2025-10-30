@@ -60,7 +60,7 @@ const PreferencesSelector = () => {
         : 'bg-gradient-to-t from-sky-200 to-blue-500'
     }`}>
       <div className="w-full max-w-5xl">
-        <div className="text-center mb-12 fade-in">
+        <div className="text-center mb-12 fade-in mt-8">
           <h1 className={`text-4xl md:text-5xl font-joyel font-bold leading-tight mb-6 transition-colors duration-700 ${
             selectedGender ? 'text-white' : 'text-slate-50'
           }`}>
