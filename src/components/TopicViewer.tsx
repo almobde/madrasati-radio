@@ -4,16 +4,140 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ModernButton } from '@/components/ui/modern-button';
 import { ModernCard, ModernCardHeader, ModernCardTitle, ModernCardContent } from '@/components/ui/modern-card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, Home, BookOpen, Mic, Heart, Sparkles, Radio, Crown, Lightbulb, Quote, HelpCircle, MessageCircle } from 'lucide-react';
+import { ArrowRight, Home, BookOpen, Mic, Heart, Sparkles, Radio, Crown, Lightbulb, Quote, HelpCircle, MessageCircle, Download, Share2, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import Footer from './Footer';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
+import { useToast } from '@/hooks/use-toast';
 
 const TopicViewer = () => {
-  const { currentTopic, setCurrentTopic, preferences } = useAppContext();
+  const { currentTopic, setCurrentTopic, preferences, fontSize, increaseFontSize, decreaseFontSize, resetFontSize } = useAppContext();
+  const { toast } = useToast();
 
   if (!currentTopic) return null;
 
   const handleBackToTopics = () => {
     setCurrentTopic(null);
+  };
+
+  const handleExportToPDF = async () => {
+    try {
+      toast({
+        title: "جارِ التصدير...",
+        description: "يرجى الانتظار حتى يتم إنشاء ملف PDF",
+      });
+
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const margin = 15;
+      let yPosition = margin;
+
+      // إضافة العنوان
+      pdf.setFontSize(20);
+      pdf.text(currentTopic.title, pageWidth / 2, yPosition, { align: 'center' });
+      yPosition += 15;
+
+      // إضافة خط فاصل
+      pdf.setLineWidth(0.5);
+      pdf.line(margin, yPosition, pageWidth - margin, yPosition);
+      yPosition += 10;
+
+      const sections = [
+        { title: 'المقدمة', content: getContentByLevel(currentTopic.content.introduction) },
+        { title: 'الآيات القرآنية', content: currentTopic.content.quranVerses.map(v => `${v.text}\n(${v.reference})`).join('\n\n') },
+        { title: 'الأحاديث النبوية', content: currentTopic.content.hadiths.map(h => `${h.text}\n(${h.reference})`).join('\n\n') },
+        { title: 'هل تعلم', content: getContentByLevel(currentTopic.content.didYouKnow).join('\n\n') },
+        { title: 'كلمة الصباح', content: getContentByLevel(currentTopic.content.morningWord) },
+        { title: 'منوعات', content: getContentByLevel(currentTopic.content.miscellaneous).map((m: any) => `${m.title}\n${m.content}`).join('\n\n') },
+        { title: 'أسئلة', content: getContentByLevel(currentTopic.content.questions).map((q: any) => `س: ${q.question}\nج: ${q.answer}`).join('\n\n') },
+        { title: 'الخاتمة', content: `${currentTopic.content.conclusion || ''}\n${currentTopic.content.radioEnding}` },
+      ];
+
+      for (const section of sections) {
+        if (yPosition > pageHeight - 40) {
+          pdf.addPage();
+          yPosition = margin;
+        }
+
+        // عنوان القسم
+        pdf.setFontSize(16);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text(section.title, pageWidth - margin, yPosition, { align: 'right' });
+        yPosition += 8;
+
+        // محتوى القسم
+        pdf.setFontSize(12);
+        pdf.setFont('helvetica', 'normal');
+        const lines = pdf.splitTextToSize(section.content, pageWidth - 2 * margin);
+        
+        for (const line of lines) {
+          if (yPosition > pageHeight - 20) {
+            pdf.addPage();
+            yPosition = margin;
+          }
+          pdf.text(line, pageWidth - margin, yPosition, { align: 'right' });
+          yPosition += 6;
+        }
+
+        yPosition += 10;
+      }
+
+      pdf.save(`${currentTopic.title}.pdf`);
+      
+      toast({
+        title: "تم التصدير بنجاح!",
+        description: "تم حفظ الملف على جهازك",
+      });
+    } catch (error) {
+      console.error('Error exporting PDF:', error);
+      toast({
+        title: "خطأ في التصدير",
+        description: "حدث خطأ أثناء إنشاء ملف PDF",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleShare = () => {
+    const content = `
+إذاعة مدرسية - ${currentTopic.title}
+
+المقدمة:
+${getContentByLevel(currentTopic.content.introduction)}
+
+الآيات القرآنية:
+${currentTopic.content.quranVerses.map(v => `${v.text}\n(${v.reference})`).join('\n\n')}
+
+الأحاديث النبوية:
+${currentTopic.content.hadiths.map(h => `${h.text}\n(${h.reference})`).join('\n\n')}
+
+هل تعلم:
+${getContentByLevel(currentTopic.content.didYouKnow).join('\n')}
+
+كلمة الصباح:
+${getContentByLevel(currentTopic.content.morningWord)}
+
+الخاتمة:
+${currentTopic.content.radioEnding}
+    `.trim();
+
+    // مشاركة عبر واتساب
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(content)}`;
+    
+    // مشاركة عبر البريد الإلكتروني
+    const emailSubject = encodeURIComponent(`إذاعة مدرسية - ${currentTopic.title}`);
+    const emailBody = encodeURIComponent(content);
+    const emailUrl = `mailto:?subject=${emailSubject}&body=${emailBody}`;
+
+    // عرض خيارات المشاركة
+    const shareOption = confirm("اختر طريقة المشاركة:\nموافق = واتساب\nإلغاء = البريد الإلكتروني");
+    
+    if (shareOption) {
+      window.open(whatsappUrl, '_blank');
+    } else {
+      window.location.href = emailUrl;
+    }
   };
 
   // دالة للحصول على المحتوى حسب المرحلة التعليمية
@@ -34,28 +158,84 @@ const TopicViewer = () => {
         {/* رأس الصفحة */}
         <div className="mb-8 fade-in">
           <ModernCard variant="glass" padding="lg" className="mb-6">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <div className="text-center md:text-right flex-1">
-                <div className="flex items-center justify-center md:justify-start gap-3 mb-3">
-                  <Radio className="w-8 h-8 text-[hsl(var(--primary))]" />
-                  <h1 className="text-3xl md:text-4xl font-heading font-bold text-gradient leading-tight">
-                    {currentTopic.title}
-                  </h1>
-                  <Crown className="w-8 h-8 text-[hsl(var(--primary))]" />
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div className="text-center md:text-right flex-1">
+                  <div className="flex items-center justify-center md:justify-start gap-3 mb-3">
+                    <Radio className="w-8 h-8 text-[hsl(var(--primary))]" />
+                    <h1 className="text-3xl md:text-4xl font-heading font-bold text-gradient leading-tight">
+                      {currentTopic.title}
+                    </h1>
+                    <Crown className="w-8 h-8 text-[hsl(var(--primary))]" />
+                  </div>
+                  <p className="text-base text-muted-foreground font-body">
+                    محتوى إذاعي شامل ومتكامل
+                  </p>
                 </div>
-                <p className="text-base text-muted-foreground font-body">
-                  محتوى إذاعي شامل ومتكامل
-                </p>
+                <ModernButton 
+                  variant="glass" 
+                  size="sm"
+                  onClick={handleBackToTopics}
+                  className="font-body"
+                >
+                  <Home className="w-4 h-4" />
+                  العودة للمواضيع
+                </ModernButton>
               </div>
-              <ModernButton 
-                variant="glass" 
-                size="sm"
-                onClick={handleBackToTopics}
-                className="font-body"
-              >
-                <Home className="w-4 h-4" />
-                العودة للمواضيع
-              </ModernButton>
+              
+              {/* أزرار التحكم */}
+              <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+                <ModernButton 
+                  variant="glass" 
+                  size="sm"
+                  onClick={handleExportToPDF}
+                  className="font-body"
+                >
+                  <Download className="w-4 h-4" />
+                  تصدير PDF
+                </ModernButton>
+                <ModernButton 
+                  variant="glass" 
+                  size="sm"
+                  onClick={handleShare}
+                  className="font-body"
+                >
+                  <Share2 className="w-4 h-4" />
+                  مشاركة
+                </ModernButton>
+                <div className="flex gap-1">
+                  <ModernButton 
+                    variant="glass" 
+                    size="sm"
+                    onClick={decreaseFontSize}
+                    className="font-body"
+                    title="تصغير الخط"
+                  >
+                    <ZoomOut className="w-4 h-4" />
+                  </ModernButton>
+                  <ModernButton 
+                    variant="glass" 
+                    size="sm"
+                    onClick={resetFontSize}
+                    className="font-body"
+                    title="إعادة ضبط الخط"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                  </ModernButton>
+                  <ModernButton 
+                    variant="glass" 
+                    size="sm"
+                    onClick={increaseFontSize}
+                    className="font-body"
+                    title="تكبير الخط"
+                  >
+                    <ZoomIn className="w-4 h-4" />
+                  </ModernButton>
+                </div>
+                <span className="text-sm text-muted-foreground self-center">
+                  حجم الخط: {fontSize}%
+                </span>
+              </div>
             </div>
           </ModernCard>
         </div>

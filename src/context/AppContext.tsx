@@ -8,6 +8,10 @@ interface AppContextType {
   currentTopic: Topic | null;
   setCurrentTopic: (topic: Topic | null) => void;
   themeClass: string;
+  fontSize: number;
+  increaseFontSize: () => void;
+  decreaseFontSize: () => void;
+  resetFontSize: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -27,8 +31,21 @@ interface AppProviderProps {
 export const AppProvider = ({ children }: AppProviderProps) => {
   const [preferences, setPreferences] = useState<UserPreferences | null>(null);
   const [currentTopic, setCurrentTopic] = useState<Topic | null>(null);
+  const [fontSize, setFontSize] = useState<number>(100);
 
   const themeClass = preferences?.gender === 'girls' ? 'girls-theme' : 'boys-theme';
+
+  const increaseFontSize = () => {
+    setFontSize(prev => Math.min(prev + 10, 150));
+  };
+
+  const decreaseFontSize = () => {
+    setFontSize(prev => Math.max(prev - 10, 70));
+  };
+
+  const resetFontSize = () => {
+    setFontSize(100);
+  };
 
   return (
     <AppContext.Provider
@@ -38,9 +55,13 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         currentTopic,
         setCurrentTopic,
         themeClass,
+        fontSize,
+        increaseFontSize,
+        decreaseFontSize,
+        resetFontSize,
       }}
     >
-      <div className={`min-h-screen bg-gray-50 ${themeClass}`}>
+      <div className={`min-h-screen bg-gray-50 ${themeClass}`} style={{ fontSize: `${fontSize}%` }}>
         {children}
       </div>
     </AppContext.Provider>
