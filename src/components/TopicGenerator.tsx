@@ -70,13 +70,13 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
     setIsGenerating(true);
     setProgress(0);
     
-    // محاكاة التقدم
+    // تحريك شريط التقدم تدريجياً وببطء
+    let currentProgress = 0;
     const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 90) return prev;
-        return prev + 10;
-      });
-    }, 800);
+      currentProgress += Math.random() * 3; // زيادة عشوائية بين 0-3%
+      if (currentProgress > 95) currentProgress = 95; // لا يتجاوز 95% حتى ينتهي التوليد
+      setProgress(Math.floor(currentProgress));
+    }, 1500); // كل 1.5 ثانية
     
     try {
       const { data, error } = await supabase.functions.invoke('generate-topic', {
@@ -91,7 +91,7 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
       });
 
       clearInterval(progressInterval);
-      setProgress(100);
+      setProgress(100); // عند الانتهاء يصل إلى 100%
 
       if (error) throw error;
 
