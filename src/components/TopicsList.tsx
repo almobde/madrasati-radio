@@ -84,7 +84,11 @@ const TopicsList = () => {
         <div className="max-w-md mx-auto mb-6">
           <Button
             onClick={() => setShowGenerator(true)}
-            className="w-full bg-white hover:bg-gray-50 text-radio-dark py-6 text-lg font-heading shadow-lg hover:shadow-xl hover:scale-[1.02] active:bg-gray-100 active:scale-95 transition-all duration-300"
+            className={`w-full py-6 text-lg font-heading shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 text-white ${
+              preferences?.gender === 'girls'
+                ? 'bg-gradient-to-r from-[hsl(330,70%,40%)] to-[hsl(310,80%,50%)] hover:from-[hsl(330,70%,45%)] hover:to-[hsl(310,80%,55%)]'
+                : 'bg-gradient-to-r from-[hsl(220,70%,35%)] to-[hsl(200,80%,45%)] hover:from-[hsl(220,70%,40%)] hover:to-[hsl(200,80%,50%)]'
+            }`}
           >
             <Sparkles className="w-6 h-6 ml-2" />
             توليد موضوع جديد بالذكاء الاصطناعي
