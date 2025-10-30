@@ -5,7 +5,7 @@ import { ModernCard } from '@/components/ui/modern-card';
 import { ModernButton } from '@/components/ui/modern-button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { LogIn } from 'lucide-react';
+import { LogIn, Home } from 'lucide-react';
 import { z } from 'zod';
 
 const authSchema = z.object({
@@ -80,7 +80,18 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary via-primary-dark to-primary flex items-center justify-center p-4">
-      <ModernCard className="w-full max-w-md p-8">
+      <div className="w-full max-w-md">
+        <ModernButton 
+          variant="glass" 
+          size="sm" 
+          onClick={() => navigate('/')}
+          className="mb-4"
+        >
+          <Home className="w-4 h-4 ml-2" />
+          العودة للصفحة الرئيسية
+        </ModernButton>
+        
+        <ModernCard className="w-full p-8">
         <div className="text-center mb-6">
           <LogIn className="w-12 h-12 text-primary mx-auto mb-4" />
           <h1 className="text-2xl font-heading font-bold text-foreground mb-2">
@@ -129,6 +140,7 @@ const Auth = () => {
           </ModernButton>
         </form>
       </ModernCard>
+      </div>
     </div>
   );
 };

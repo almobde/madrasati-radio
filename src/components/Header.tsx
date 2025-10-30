@@ -1,8 +1,41 @@
 // هيدر الموقع الأنيق - Elegant Site Header
-import { Radio, Search, User } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Radio, Search, User, Shield } from 'lucide-react';
 import { ModernButton } from './ui/modern-button';
+import { supabase } from '@/integrations/supabase/client';
 
 const Header = () => {
+  const [isAdmin, setIsAdmin] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    checkAdminStatus();
+    
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
+      checkAdminStatus();
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const checkAdminStatus = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session) {
+      setIsAdmin(false);
+      return;
+    }
+
+    const { data: roleData } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', session.user.id)
+      .single();
+
+    setIsAdmin(roleData?.role === 'admin');
+  };
+
   return (
     <header className="w-full bg-white border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,7 +82,23 @@ const Header = () => {
             <button className="p-2 text-gray-600 hover:text-radio-gold transition-colors duration-200">
               <Search className="w-5 h-5" />
             </button>
-            <ModernButton variant="glass" size="sm" className="hidden sm:flex">
+            {isAdmin && (
+              <ModernButton 
+                variant="premium" 
+                size="sm" 
+                onClick={() => navigate('/admin')}
+                className="hidden sm:flex"
+              >
+                <Shield className="w-4 h-4 ml-2" />
+                لوحة التحكم
+              </ModernButton>
+            )}
+            <ModernButton 
+              variant="glass" 
+              size="sm" 
+              className="hidden sm:flex"
+              onClick={() => navigate('/auth')}
+            >
               <User className="w-4 h-4 ml-2" />
               تسجيل الدخول
             </ModernButton>

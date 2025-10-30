@@ -5,7 +5,7 @@ import { ModernCard } from '@/components/ui/modern-card';
 import { ModernButton } from '@/components/ui/modern-button';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { LogOut, Trash2, Check, X, MessageCircle, Radio } from 'lucide-react';
+import { LogOut, Trash2, Check, X, MessageCircle, Radio, Home } from 'lucide-react';
 
 interface Testimonial {
   id: string;
@@ -170,15 +170,40 @@ const Admin = () => {
     return null;
   }
 
+  const approvedTestimonials = testimonials.filter(t => t.approved).length;
+  const pendingTestimonials = testimonials.filter(t => !t.approved).length;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary via-primary-dark to-primary p-4">
       <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <h1 className="text-3xl font-heading font-bold text-white">لوحة التحكم</h1>
-          <ModernButton onClick={handleLogout} variant="glass">
-            <LogOut className="w-4 h-4 ml-2" />
-            تسجيل الخروج
-          </ModernButton>
+          <div className="flex gap-2">
+            <ModernButton onClick={() => navigate('/')} variant="glass" size="sm">
+              <Home className="w-4 h-4 ml-2" />
+              الصفحة الرئيسية
+            </ModernButton>
+            <ModernButton onClick={handleLogout} variant="glass" size="sm">
+              <LogOut className="w-4 h-4 ml-2" />
+              خروج
+            </ModernButton>
+          </div>
+        </div>
+
+        {/* إحصائيات سريعة */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+          <ModernCard className="p-4 text-center">
+            <div className="text-3xl font-bold text-primary mb-1">{testimonials.length}</div>
+            <div className="text-sm text-muted-foreground font-body">إجمالي الآراء</div>
+          </ModernCard>
+          <ModernCard className="p-4 text-center">
+            <div className="text-3xl font-bold text-green-600 mb-1">{approvedTestimonials}</div>
+            <div className="text-sm text-muted-foreground font-body">آراء معتمدة</div>
+          </ModernCard>
+          <ModernCard className="p-4 text-center">
+            <div className="text-3xl font-bold text-yellow-600 mb-1">{pendingTestimonials}</div>
+            <div className="text-sm text-muted-foreground font-body">قيد المراجعة</div>
+          </ModernCard>
         </div>
 
         <Tabs defaultValue="testimonials" className="w-full">
