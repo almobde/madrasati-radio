@@ -110,14 +110,14 @@ const PreferencesSelector = () => {
           {/* اختيار المرحلة الدراسية */}
           <div>
             <h2 className="text-4xl font-heading font-bold mb-8 text-center text-gradient">المرحلة الدراسية</h2>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-6">
               {levelOptions.map((option) => (
                 <div
                   key={option.value}
                   className={`cursor-pointer text-center transition-all duration-300 hover:scale-105 p-8 rounded-2xl min-w-[120px] ${
                     selectedLevel === option.value
                       ? `bg-gradient-to-r ${option.color} shadow-xl scale-105`
-                      : 'bg-white/50 hover:bg-white/70 shadow-md'
+                      : 'bg-white/70 hover:bg-white/90 shadow-md'
                   }`}
                   onClick={() => setSelectedLevel(option.value)}
                 >
