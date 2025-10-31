@@ -159,7 +159,7 @@ const TopicsList = () => {
                 ? preferences?.gender === 'girls'
                   ? 'bg-white text-[hsl(330,70%,40%)] shadow-lg scale-105'
                   : 'bg-white text-[hsl(220,70%,35%)] shadow-lg scale-105'
-                : 'bg-white/50 text-white hover:bg-white/70 hover:scale-102'
+                : 'bg-white/30 text-white hover:bg-white/40 hover:scale-102'
             }`}
           >
             جميع المواضيع ({allTopics.length})
@@ -171,7 +171,7 @@ const TopicsList = () => {
                 ? preferences?.gender === 'girls'
                   ? 'bg-white text-[hsl(330,70%,40%)] shadow-lg scale-105'
                   : 'bg-white text-[hsl(220,70%,35%)] shadow-lg scale-105'
-                : 'bg-white/50 text-white hover:bg-white/70 hover:scale-102'
+                : 'bg-white/30 text-white hover:bg-white/40 hover:scale-102'
             }`}
           >
             <Star className="w-4 h-4" fill={activeTab === 'favorites' ? 'currentColor' : 'none'} />
