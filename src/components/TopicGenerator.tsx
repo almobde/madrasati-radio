@@ -12,6 +12,7 @@ import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
 import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 // مجموعة كبيرة من العناوين المقترحة
 const ALL_SUGGESTIONS = [
@@ -191,71 +192,195 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
     }
   };
 
-  const handleExport = () => {
+  const handleExport = async () => {
     if (!generatedTopic) return;
 
-    const doc = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: 'a4'
-    });
+    try {
+      // إنشاء عنصر مؤقت للمحتوى
+      const exportElement = document.createElement('div');
+      exportElement.style.width = '800px';
+      exportElement.style.padding = '40px';
+      exportElement.style.backgroundColor = 'white';
+      exportElement.style.fontFamily = 'Arial, sans-serif';
+      exportElement.style.direction = 'rtl';
+      exportElement.style.position = 'absolute';
+      exportElement.style.right = '-9999px';
 
-    let yPos = 20;
-    const lineHeight = 7;
-    const pageHeight = doc.internal.pageSize.height;
-    const margin = 20;
+      // بناء HTML للمحتوى
+      let htmlContent = `
+        <h1 style="font-size: 28px; font-weight: bold; color: #1a1a1a; margin-bottom: 30px; text-align: center;">
+          ${generatedTopic.title}
+        </h1>
+      `;
 
-    const addText = (text: string, fontSize: number = 12, isBold: boolean = false) => {
-      if (yPos > pageHeight - margin) {
-        doc.addPage();
-        yPos = margin;
+      const content = generatedTopic.content;
+
+      if (selectedSections.introduction && content.introduction) {
+        htmlContent += `
+          <div style="margin-bottom: 25px;">
+            <h2 style="font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 10px;">المقدمة</h2>
+            <p style="line-height: 1.8; color: #333;">${content.introduction.primary}</p>
+          </div>
+        `;
       }
-      doc.setFontSize(fontSize);
-      doc.text(text, margin, yPos, { align: 'right', maxWidth: 170 });
-      yPos += lineHeight;
-    };
 
-    // العنوان
-    addText(generatedTopic.title, 18, true);
-    yPos += 5;
+      if (selectedSections.quranVerses && content.quranVerses && content.quranVerses.length > 0) {
+        htmlContent += `
+          <div style="margin-bottom: 25px;">
+            <h2 style="font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 10px;">الآيات القرآنية</h2>
+        `;
+        content.quranVerses.forEach((verse: any) => {
+          htmlContent += `
+            <div style="background: #e8f5e9; padding: 15px; margin-bottom: 10px; border-radius: 8px;">
+              <p style="color: #1b5e20; line-height: 1.8; margin-bottom: 5px;">${verse.text}</p>
+              <p style="color: #4caf50; font-size: 14px;">(${verse.reference})</p>
+            </div>
+          `;
+        });
+        htmlContent += `</div>`;
+      }
 
-    // المحتوى
-    const content = generatedTopic.content;
+      if (selectedSections.hadiths && content.hadiths && content.hadiths.length > 0) {
+        htmlContent += `
+          <div style="margin-bottom: 25px;">
+            <h2 style="font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 10px;">الأحاديث النبوية</h2>
+        `;
+        content.hadiths.forEach((hadith: any) => {
+          htmlContent += `
+            <div style="background: #e3f2fd; padding: 15px; margin-bottom: 10px; border-radius: 8px;">
+              <p style="color: #0d47a1; line-height: 1.8; margin-bottom: 5px;">${hadith.text}</p>
+              <p style="color: #1976d2; font-size: 14px;">(${hadith.reference})</p>
+            </div>
+          `;
+        });
+        htmlContent += `</div>`;
+      }
 
-    if (content.introduction) {
-      addText('المقدمة', 14, true);
-      addText(content.introduction.primary || '');
-      yPos += 3;
-    }
+      if (selectedSections.didYouKnow && content.didYouKnow) {
+        const facts = content.didYouKnow[preferences?.educationLevel || 'middle'] || [];
+        if (facts.length > 0) {
+          htmlContent += `
+            <div style="margin-bottom: 25px;">
+              <h2 style="font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 10px;">معلومات</h2>
+          `;
+          facts.forEach((fact: string) => {
+            htmlContent += `
+              <p style="background: #fff9c4; padding: 10px; margin-bottom: 8px; border-radius: 8px; color: #333; line-height: 1.6;">${fact}</p>
+            `;
+          });
+          htmlContent += `</div>`;
+        }
+      }
 
-    if (content.quranVerses && content.quranVerses.length > 0) {
-      addText('الآيات القرآنية', 14, true);
-      content.quranVerses.forEach((verse: any) => {
-        addText(`${verse.text} - ${verse.reference}`);
+      if (selectedSections.morningWord && content.morningWord) {
+        htmlContent += `
+          <div style="margin-bottom: 25px;">
+            <h2 style="font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 10px;">كلمة</h2>
+            <p style="line-height: 1.8; color: #333;">${content.morningWord[preferences?.educationLevel || 'middle']}</p>
+          </div>
+        `;
+      }
+
+      if (selectedSections.miscellaneous && content.miscellaneous) {
+        const items = content.miscellaneous[preferences?.educationLevel || 'middle'] || [];
+        if (items.length > 0) {
+          htmlContent += `
+            <div style="margin-bottom: 25px;">
+              <h2 style="font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 10px;">منوعات</h2>
+          `;
+          items.forEach((item: any) => {
+            htmlContent += `
+              <div style="background: #f3e5f5; padding: 15px; margin-bottom: 10px; border-radius: 8px;">
+                <h3 style="font-weight: bold; color: #4a148c; margin-bottom: 5px;">${item.title}</h3>
+                <p style="color: #6a1b9a; line-height: 1.6;">${item.content}</p>
+              </div>
+            `;
+          });
+          htmlContent += `</div>`;
+        }
+      }
+
+      if (selectedSections.questions && content.questions) {
+        const questions = content.questions[preferences?.educationLevel || 'middle'] || [];
+        if (questions.length > 0) {
+          htmlContent += `
+            <div style="margin-bottom: 25px;">
+              <h2 style="font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 10px;">أسئلة</h2>
+          `;
+          questions.forEach((question: any) => {
+            htmlContent += `
+              <div style="background: #fff3e0; padding: 15px; margin-bottom: 10px; border-radius: 8px;">
+                <p style="color: #e65100; line-height: 1.6; margin-bottom: 5px;">${question.question}</p>
+                <p style="color: #f57c00; font-size: 14px;"><strong>الإجابة:</strong> ${question.answer}</p>
+              </div>
+            `;
+          });
+          htmlContent += `</div>`;
+        }
+      }
+
+      if (selectedSections.conclusion && content.conclusion) {
+        htmlContent += `
+          <div style="margin-bottom: 25px;">
+            <h2 style="font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 10px;">خاتمة</h2>
+            <p style="line-height: 1.8; color: #333;">${content.conclusion}</p>
+          </div>
+        `;
+      }
+
+      exportElement.innerHTML = htmlContent;
+      document.body.appendChild(exportElement);
+
+      // تحويل إلى صورة
+      const canvas = await html2canvas(exportElement, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff'
       });
-      yPos += 3;
-    }
 
-    if (content.hadiths && content.hadiths.length > 0) {
-      addText('الأحاديث النبوية', 14, true);
-      content.hadiths.forEach((hadith: any) => {
-        addText(hadith.text);
-        addText(`[${hadith.reference}]`);
+      // إزالة العنصر المؤقت
+      document.body.removeChild(exportElement);
+
+      // إنشاء PDF
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
       });
-      yPos += 3;
+
+      const imgWidth = 210; // عرض A4
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      // إضافة الصفحة الأولى
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= 297; // ارتفاع A4
+
+      // إضافة صفحات إضافية إذا لزم الأمر
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= 297;
+      }
+
+      pdf.save(`${generatedTopic.title}.pdf`);
+
+      toast({
+        title: "✅ تم التصدير",
+        description: "تم تصدير الموضوع بنجاح",
+      });
+    } catch (error) {
+      console.error('خطأ في التصدير:', error);
+      toast({
+        title: "خطأ",
+        description: "حدث خطأ أثناء تصدير الموضوع",
+        variant: "destructive",
+      });
     }
-
-    if (content.conclusion) {
-      addText('الخاتمة', 14, true);
-      addText(content.conclusion);
-    }
-
-    doc.save(`${generatedTopic.title}.pdf`);
-
-    toast({
-      title: "✅ تم التصدير",
-      description: "تم تصدير الموضوع بنجاح",
-    });
   };
 
   const handleCancel = () => {
@@ -463,34 +588,37 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
         {/* عرض النتيجة */}
         {generatedTopic && (
           <div className="bg-white/90 backdrop-blur-sm rounded-xl p-6 shadow-lg">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-heading font-bold text-radio-dark">
-                {generatedTopic.title}
-              </h2>
-              <div className="flex gap-2">
-                <Button
-                  onClick={handleCancel}
-                  variant="outline"
-                  className="shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
-                >
-                  <X className="w-4 h-4 ml-2" />
-                  إلغاء
-                </Button>
-                <Button
-                  onClick={handleExport}
-                  variant="secondary"
-                  className="shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
-                >
-                  <Download className="w-4 h-4 ml-2" />
-                  تصدير
-                </Button>
-                <Button
-                  onClick={handleAddToList}
-                  className="bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-xl hover:scale-105 active:bg-orange-700 active:scale-95 transition-all duration-300"
-                >
-                  إضافة للقائمة
-                </Button>
-              </div>
+            <h2 className="text-2xl font-heading font-bold text-radio-dark text-center mb-4">
+              {generatedTopic.title}
+            </h2>
+
+            {/* الأزرار */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-6">
+              <Button
+                onClick={handleCancel}
+                variant="outline"
+                size="sm"
+                className="shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
+              >
+                <X className="w-4 h-4 ml-2" />
+                إلغاء
+              </Button>
+              <Button
+                onClick={handleExport}
+                variant="secondary"
+                size="sm"
+                className="shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
+              >
+                <Download className="w-4 h-4 ml-2" />
+                تصدير
+              </Button>
+              <Button
+                onClick={handleAddToList}
+                size="sm"
+                className="bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-xl hover:scale-105 active:bg-orange-700 active:scale-95 transition-all duration-300"
+              >
+                إضافة للقائمة
+              </Button>
             </div>
 
             <div className="space-y-4 text-right">
