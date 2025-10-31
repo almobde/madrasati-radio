@@ -723,56 +723,48 @@ const TopicViewer = () => {
               value="introduction" 
               className="bg-white hover:bg-gray-50 text-radio-dark data-[state=active]:bg-gray-100 data-[state=active]:scale-105 text-sm font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 p-3 rounded-lg shadow-md"
             >
-              <BookOpen className="w-4 h-4 mb-1" />
               <span className="text-xs">المقدمة</span>
             </TabsTrigger>
             <TabsTrigger 
               value="verses" 
               className="bg-white hover:bg-gray-50 text-radio-dark data-[state=active]:bg-gray-100 data-[state=active]:scale-105 text-sm font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 p-3 rounded-lg shadow-md"
             >
-              <Heart className="w-4 h-4 mb-1" />
               <span className="text-xs">الآيات</span>
             </TabsTrigger>
             <TabsTrigger 
               value="hadith" 
               className="bg-white hover:bg-gray-50 text-radio-dark data-[state=active]:bg-gray-100 data-[state=active]:scale-105 text-sm font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 p-3 rounded-lg shadow-md"
             >
-              <MessageCircle className="w-4 h-4 mb-1" />
               <span className="text-xs">الحديث</span>
             </TabsTrigger>
             <TabsTrigger 
               value="didYouKnow" 
               className="bg-white hover:bg-gray-50 text-radio-dark data-[state=active]:bg-gray-100 data-[state=active]:scale-105 text-sm font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 p-3 rounded-lg shadow-md"
             >
-              <Lightbulb className="w-4 h-4 mb-1" />
               <span className="text-xs">معلومات</span>
             </TabsTrigger>
             <TabsTrigger 
               value="morningWord" 
               className="bg-white hover:bg-gray-50 text-radio-dark data-[state=active]:bg-gray-100 data-[state=active]:scale-105 text-sm font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 p-3 rounded-lg shadow-md"
             >
-              <Mic className="w-4 h-4 mb-1" />
               <span className="text-xs">كلمة</span>
             </TabsTrigger>
             <TabsTrigger 
               value="miscellaneous" 
               className="bg-white hover:bg-gray-50 text-radio-dark data-[state=active]:bg-gray-100 data-[state=active]:scale-105 text-sm font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 p-3 rounded-lg shadow-md"
             >
-              <Sparkles className="w-4 h-4 mb-1" />
               <span className="text-xs">منوعات</span>
             </TabsTrigger>
             <TabsTrigger 
               value="questions" 
               className="bg-white hover:bg-gray-50 text-radio-dark data-[state=active]:bg-gray-100 data-[state=active]:scale-105 text-sm font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 p-3 rounded-lg shadow-md"
             >
-              <HelpCircle className="w-4 h-4 mb-1" />
               <span className="text-xs">أسئلة</span>
             </TabsTrigger>
             <TabsTrigger 
               value="conclusion" 
               className="bg-white hover:bg-gray-50 text-radio-dark data-[state=active]:bg-gray-100 data-[state=active]:scale-105 text-sm font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 p-3 rounded-lg shadow-md"
             >
-              <Sparkles className="w-4 h-4 mb-1" />
               <span className="text-xs">الخاتمة</span>
             </TabsTrigger>
           </TabsList>
