@@ -199,17 +199,18 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
       // إنشاء عنصر مؤقت للمحتوى
       const exportElement = document.createElement('div');
       exportElement.style.width = '800px';
-      exportElement.style.padding = '50px';
+      exportElement.style.padding = '60px';
       exportElement.style.backgroundColor = 'white';
-      exportElement.style.fontFamily = 'Arial, sans-serif';
+      exportElement.style.fontFamily = 'Tahoma, Verdana, sans-serif';
       exportElement.style.direction = 'rtl';
       exportElement.style.position = 'absolute';
       exportElement.style.right = '-9999px';
-      exportElement.style.lineHeight = '2.2';
+      exportElement.style.lineHeight = '2.8';
+      exportElement.style.letterSpacing = '0.5px';
 
       // بناء HTML للمحتوى
       let htmlContent = `
-        <h1 style="font-size: 28px; font-weight: bold; color: #1a1a1a; margin-bottom: 40px; text-align: center; line-height: 2.2;">
+        <h1 style="font-size: 32px; font-weight: bold; color: #1a1a1a; margin-bottom: 50px; text-align: center; line-height: 3; letter-spacing: 1px;">
           ${generatedTopic.title}
         </h1>
       `;
@@ -218,23 +219,23 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
 
       if (selectedSections.introduction && content.introduction) {
         htmlContent += `
-          <div style="margin-bottom: 35px;">
-            <h2 style="font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 15px; line-height: 2.2;">المقدمة</h2>
-            <p style="line-height: 2.4; color: #333; word-spacing: 2px;">${content.introduction.primary}</p>
+          <div style="margin-bottom: 40px;">
+            <h2 style="font-size: 24px; font-weight: bold; color: #2c3e50; margin-bottom: 20px; line-height: 2.8; letter-spacing: 0.8px;">المقدمة</h2>
+            <p style="font-size: 18px; line-height: 3; color: #333; word-spacing: 3px; letter-spacing: 0.5px;">${content.introduction.primary}</p>
           </div>
         `;
       }
 
       if (selectedSections.quranVerses && content.quranVerses && content.quranVerses.length > 0) {
         htmlContent += `
-          <div style="margin-bottom: 35px;">
-            <h2 style="font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 15px; line-height: 2.2;">الآيات القرآنية</h2>
+          <div style="margin-bottom: 40px;">
+            <h2 style="font-size: 24px; font-weight: bold; color: #2c3e50; margin-bottom: 20px; line-height: 2.8; letter-spacing: 0.8px;">الآيات القرآنية</h2>
         `;
         content.quranVerses.forEach((verse: any) => {
           htmlContent += `
-            <div style="background: #e8f5e9; padding: 20px; margin-bottom: 15px; border-radius: 8px;">
-              <p style="color: #1b5e20; line-height: 2.4; margin-bottom: 10px; word-spacing: 2px;">${verse.text}</p>
-              <p style="color: #4caf50; font-size: 14px; line-height: 2;">(${verse.reference})</p>
+            <div style="background: #e8f5e9; padding: 25px; margin-bottom: 20px; border-radius: 8px;">
+              <p style="font-size: 18px; color: #1b5e20; line-height: 3; margin-bottom: 15px; word-spacing: 3px; letter-spacing: 0.5px;">${verse.text}</p>
+              <p style="color: #4caf50; font-size: 16px; line-height: 2.5; letter-spacing: 0.3px;">(${verse.reference})</p>
             </div>
           `;
         });
@@ -243,14 +244,14 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
 
       if (selectedSections.hadiths && content.hadiths && content.hadiths.length > 0) {
         htmlContent += `
-          <div style="margin-bottom: 35px;">
-            <h2 style="font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 15px; line-height: 2.2;">الأحاديث النبوية</h2>
+          <div style="margin-bottom: 40px;">
+            <h2 style="font-size: 24px; font-weight: bold; color: #2c3e50; margin-bottom: 20px; line-height: 2.8; letter-spacing: 0.8px;">الأحاديث النبوية</h2>
         `;
         content.hadiths.forEach((hadith: any) => {
           htmlContent += `
-            <div style="background: #e3f2fd; padding: 20px; margin-bottom: 15px; border-radius: 8px;">
-              <p style="color: #0d47a1; line-height: 2.4; margin-bottom: 10px; word-spacing: 2px;">${hadith.text}</p>
-              <p style="color: #1976d2; font-size: 14px; line-height: 2;">(${hadith.reference})</p>
+            <div style="background: #e3f2fd; padding: 25px; margin-bottom: 20px; border-radius: 8px;">
+              <p style="font-size: 18px; color: #0d47a1; line-height: 3; margin-bottom: 15px; word-spacing: 3px; letter-spacing: 0.5px;">${hadith.text}</p>
+              <p style="color: #1976d2; font-size: 16px; line-height: 2.5; letter-spacing: 0.3px;">(${hadith.reference})</p>
             </div>
           `;
         });
@@ -261,12 +262,12 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
         const facts = content.didYouKnow[preferences?.educationLevel || 'middle'] || [];
         if (facts.length > 0) {
           htmlContent += `
-            <div style="margin-bottom: 35px;">
-              <h2 style="font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 15px; line-height: 2.2;">معلومات</h2>
+            <div style="margin-bottom: 40px;">
+              <h2 style="font-size: 24px; font-weight: bold; color: #2c3e50; margin-bottom: 20px; line-height: 2.8; letter-spacing: 0.8px;">معلومات</h2>
           `;
           facts.forEach((fact: string) => {
             htmlContent += `
-              <p style="background: #fff9c4; padding: 15px; margin-bottom: 12px; border-radius: 8px; color: #333; line-height: 2.2; word-spacing: 2px;">${fact}</p>
+              <p style="font-size: 18px; background: #fff9c4; padding: 20px; margin-bottom: 18px; border-radius: 8px; color: #333; line-height: 3; word-spacing: 3px; letter-spacing: 0.5px;">${fact}</p>
             `;
           });
           htmlContent += `</div>`;
@@ -275,9 +276,9 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
 
       if (selectedSections.morningWord && content.morningWord) {
         htmlContent += `
-          <div style="margin-bottom: 35px;">
-            <h2 style="font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 15px; line-height: 2.2;">كلمة</h2>
-            <p style="line-height: 2.4; color: #333; word-spacing: 2px;">${content.morningWord[preferences?.educationLevel || 'middle']}</p>
+          <div style="margin-bottom: 40px;">
+            <h2 style="font-size: 24px; font-weight: bold; color: #2c3e50; margin-bottom: 20px; line-height: 2.8; letter-spacing: 0.8px;">كلمة</h2>
+            <p style="font-size: 18px; line-height: 3; color: #333; word-spacing: 3px; letter-spacing: 0.5px;">${content.morningWord[preferences?.educationLevel || 'middle']}</p>
           </div>
         `;
       }
@@ -286,14 +287,14 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
         const items = content.miscellaneous[preferences?.educationLevel || 'middle'] || [];
         if (items.length > 0) {
           htmlContent += `
-            <div style="margin-bottom: 35px;">
-              <h2 style="font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 15px; line-height: 2.2;">منوعات</h2>
+            <div style="margin-bottom: 40px;">
+              <h2 style="font-size: 24px; font-weight: bold; color: #2c3e50; margin-bottom: 20px; line-height: 2.8; letter-spacing: 0.8px;">منوعات</h2>
           `;
           items.forEach((item: any) => {
             htmlContent += `
-              <div style="background: #f3e5f5; padding: 20px; margin-bottom: 15px; border-radius: 8px;">
-                <h3 style="font-weight: bold; color: #4a148c; margin-bottom: 10px; line-height: 2.2;">${item.title}</h3>
-                <p style="color: #6a1b9a; line-height: 2.2; word-spacing: 2px;">${item.content}</p>
+              <div style="background: #f3e5f5; padding: 25px; margin-bottom: 20px; border-radius: 8px;">
+                <h3 style="font-size: 20px; font-weight: bold; color: #4a148c; margin-bottom: 15px; line-height: 2.8; letter-spacing: 0.5px;">${item.title}</h3>
+                <p style="font-size: 18px; color: #6a1b9a; line-height: 3; word-spacing: 3px; letter-spacing: 0.5px;">${item.content}</p>
               </div>
             `;
           });
@@ -305,14 +306,14 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
         const questions = content.questions[preferences?.educationLevel || 'middle'] || [];
         if (questions.length > 0) {
           htmlContent += `
-            <div style="margin-bottom: 35px;">
-              <h2 style="font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 15px; line-height: 2.2;">أسئلة</h2>
+            <div style="margin-bottom: 40px;">
+              <h2 style="font-size: 24px; font-weight: bold; color: #2c3e50; margin-bottom: 20px; line-height: 2.8; letter-spacing: 0.8px;">أسئلة</h2>
           `;
           questions.forEach((question: any) => {
             htmlContent += `
-              <div style="background: #fff3e0; padding: 20px; margin-bottom: 15px; border-radius: 8px;">
-                <p style="color: #e65100; line-height: 2.2; margin-bottom: 10px; word-spacing: 2px;">${question.question}</p>
-                <p style="color: #f57c00; font-size: 14px; line-height: 2;"><strong>الإجابة:</strong> ${question.answer}</p>
+              <div style="background: #fff3e0; padding: 25px; margin-bottom: 20px; border-radius: 8px;">
+                <p style="font-size: 18px; color: #e65100; line-height: 3; margin-bottom: 15px; word-spacing: 3px; letter-spacing: 0.5px;">${question.question}</p>
+                <p style="color: #f57c00; font-size: 16px; line-height: 2.5; letter-spacing: 0.3px;"><strong>الإجابة:</strong> ${question.answer}</p>
               </div>
             `;
           });
@@ -322,9 +323,9 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
 
       if (selectedSections.conclusion && content.conclusion) {
         htmlContent += `
-          <div style="margin-bottom: 35px;">
-            <h2 style="font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 15px; line-height: 2.2;">خاتمة</h2>
-            <p style="line-height: 2.4; color: #333; word-spacing: 2px;">${content.conclusion}</p>
+          <div style="margin-bottom: 40px;">
+            <h2 style="font-size: 24px; font-weight: bold; color: #2c3e50; margin-bottom: 20px; line-height: 2.8; letter-spacing: 0.8px;">خاتمة</h2>
+            <p style="font-size: 18px; line-height: 3; color: #333; word-spacing: 3px; letter-spacing: 0.5px;">${content.conclusion}</p>
           </div>
         `;
       }
@@ -594,29 +595,26 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
             </h2>
 
             {/* الأزرار */}
-            <div className="flex flex-wrap justify-center gap-2 mb-6">
+            <div className="flex justify-center gap-2 mb-6">
               <Button
                 onClick={handleCancel}
                 variant="outline"
-                size="sm"
-                className="text-xs px-3 py-1 h-8 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
+                className="text-sm px-4 py-2 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
               >
-                <X className="w-3 h-3 ml-1" />
+                <X className="w-4 h-4 ml-1" />
                 إلغاء
               </Button>
               <Button
                 onClick={handleExport}
                 variant="secondary"
-                size="sm"
-                className="text-xs px-3 py-1 h-8 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
+                className="text-sm px-4 py-2 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
               >
-                <Download className="w-3 h-3 ml-1" />
+                <Download className="w-4 h-4 ml-1" />
                 تصدير
               </Button>
               <Button
                 onClick={handleAddToList}
-                size="sm"
-                className="text-xs px-3 py-1 h-8 bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-xl hover:scale-105 active:bg-orange-700 active:scale-95 transition-all duration-300"
+                className="text-sm px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-xl hover:scale-105 active:bg-orange-700 active:scale-95 transition-all duration-300"
               >
                 إضافة للقائمة
               </Button>
