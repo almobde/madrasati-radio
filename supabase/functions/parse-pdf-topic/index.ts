@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -42,11 +43,12 @@ serve(async (req) => {
     
     console.log("PDF downloaded successfully");
     
-    // Convert to base64
+    // Convert to base64 safely using Deno's std library
     const arrayBuffer = await fileData.arrayBuffer();
-    const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+    const uint8Array = new Uint8Array(arrayBuffer);
+    const base64 = encodeBase64(uint8Array);
     
-    console.log("PDF converted to base64, calling Lovable AI...");
+    console.log(`PDF converted to base64 (${base64.length} chars), calling Lovable AI...`);
     
     // Use Lovable AI to analyze the PDF
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -67,14 +69,14 @@ serve(async (req) => {
   "suggestedTitle": "عنوان مقترح قصير (كلمة أو كلمتين)",
   "mainPoints": ["نقطة رئيسية 1", "نقطة 2", "نقطة 3", "نقطة 4", "نقطة 5"],
   "keywords": ["كلمة مفتاحية 1", "كلمة 2", "كلمة 3"],
-  "fullText": "النص الكامل المستخرج من PDF"
+  "fullText": "ملخص شامل وواضح للمحتوى"
 }
 
 **مهم جداً:**
 - العنوان المقترح يجب أن يكون قصيراً جداً (1-3 كلمات فقط)
 - استخرج 5-7 نقاط رئيسية فقط من المحتوى
 - الكلمات المفتاحية يجب أن تكون 3-5 كلمات فقط
-- النص الكامل يجب أن يحتوي على كل محتوى PDF المهم
+- fullText يجب أن يحتوي على ملخص شامل للمحتوى (ليس النص الكامل، بل ملخص جيد)
 - **أرجع JSON فقط - لا نص إضافي قبله أو بعده**`
           },
           {
@@ -82,7 +84,7 @@ serve(async (req) => {
             content: [
               {
                 type: "text",
-                text: "حلل هذا المستند واستخرج المعلومات المطلوبة. أرجع JSON فقط."
+                text: "حلل هذا المستند PDF واستخرج المعلومات المطلوبة. أرجع JSON فقط."
               },
               {
                 type: "image_url",
