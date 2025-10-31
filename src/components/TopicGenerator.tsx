@@ -603,7 +603,6 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
                 size="sm"
                 className="text-sm h-9 w-24 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
               >
-                <X className="w-4 h-4 ml-1" />
                 إلغاء
               </Button>
               <Button
@@ -612,7 +611,6 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
                 size="sm"
                 className="text-sm h-9 w-24 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
               >
-                <Download className="w-4 h-4 ml-1" />
                 تصدير
               </Button>
               <Button
