@@ -338,6 +338,7 @@ const Admin = () => {
   };
 
   const handleEditTopic = (topic: Topic) => {
+    console.log('✏️ فتح نافذة التعديل للموضوع:', topic.title);
     setEditingTopic(topic);
     setEditTitle(topic.title);
     setEditCategory(topic.category);
@@ -371,25 +372,43 @@ const Admin = () => {
   };
 
   const handleDeleteTopic = async (id: string) => {
-    if (!confirm('هل أنت متأكد من حذف هذا الموضوع؟')) return;
+    console.log('🗑️ محاولة حذف الموضوع:', id);
+    
+    if (!confirm('هل أنت متأكد من حذف هذا الموضوع؟')) {
+      console.log('❌ تم إلغاء الحذف من قبل المستخدم');
+      return;
+    }
 
-    const { error } = await supabase
-      .from('custom_topics')
-      .delete()
-      .eq('id', id);
+    try {
+      console.log('⏳ جاري حذف الموضوع من قاعدة البيانات...');
+      
+      const { error } = await supabase
+        .from('custom_topics')
+        .delete()
+        .eq('id', id);
 
-    if (error) {
+      if (error) {
+        console.error('❌ خطأ في حذف الموضوع:', error);
+        toast({
+          title: 'خطأ',
+          description: `حدث خطأ أثناء حذف الموضوع: ${error.message}`,
+          variant: 'destructive',
+        });
+      } else {
+        console.log('✅ تم حذف الموضوع بنجاح');
+        toast({
+          title: 'تم الحذف',
+          description: 'تم حذف الموضوع بنجاح',
+        });
+        fetchTopics();
+      }
+    } catch (err) {
+      console.error('❌ خطأ غير متوقع:', err);
       toast({
         title: 'خطأ',
-        description: 'حدث خطأ أثناء حذف الموضوع',
+        description: 'حدث خطأ غير متوقع',
         variant: 'destructive',
       });
-    } else {
-      toast({
-        title: 'تم الحذف',
-        description: 'تم حذف الموضوع بنجاح',
-      });
-      fetchTopics();
     }
   };
 
