@@ -16,21 +16,23 @@ const TopicsList = () => {
   const [showGenerator, setShowGenerator] = useState(false);
   const [allTopics, setAllTopics] = useState<Topic[]>(staticTopics);
   const [activeTab, setActiveTab] = useState<'all' | 'favorites'>('all');
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Load custom topics from database and filter by current preferences
+  // Load custom topics from database
   useEffect(() => {
     const loadCustomTopics = async () => {
+      setIsLoading(true);
       try {
         if (!preferences) {
           setAllTopics(staticTopics);
+          setIsLoading(false);
           return;
         }
 
+        // تحميل جميع المواضيع من قاعدة البيانات
         const { data, error } = await supabase
           .from('custom_topics')
           .select('*')
-          .eq('gender', preferences.gender)
-          .eq('education_level', preferences.educationLevel)
           .order('display_order', { ascending: true });
 
         if (error) throw error;
@@ -45,10 +47,18 @@ const TopicsList = () => {
           created_at: item.created_at,
         }));
 
-        setAllTopics([...customTopics, ...staticTopics]);
+        // تصفية المواضيع حسب التفضيلات
+        const filteredCustomTopics = customTopics.filter(
+          topic => topic.gender === preferences.gender && 
+                   topic.educationLevel === preferences.educationLevel
+        );
+
+        setAllTopics([...filteredCustomTopics, ...staticTopics]);
       } catch (error) {
         console.error('Error loading custom topics:', error);
         setAllTopics(staticTopics);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -72,6 +82,20 @@ const TopicsList = () => {
 
   if (showGenerator) {
     return <TopicGenerator onBack={() => setShowGenerator(false)} />;
+  }
+
+  // عرض حالة التحميل
+  if (isLoading) {
+    return (
+      <main className={`min-h-screen transition-all duration-700 ${preferences?.gender === 'girls' ? 'bg-gradient-to-br from-[hsl(330,70%,30%)] via-[hsl(320,80%,40%)] to-[hsl(310,90%,50%)]' : 'bg-gradient-to-br from-[hsl(220,70%,25%)] via-[hsl(210,80%,35%)] to-[hsl(200,90%,45%)]'}`}>
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+            <p className="text-white font-body text-lg">جاري تحميل المواضيع...</p>
+          </div>
+        </div>
+      </main>
+    );
   }
 
   return (
@@ -156,8 +180,19 @@ const TopicsList = () => {
         </div>
 
         {/* شبكة المواضيع - 3 في الصف على الجوال */}
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-3 sm:gap-4">
-          {filteredTopics.map((topic) => (
+        {filteredTopics.length === 0 ? (
+          <div className="col-span-full text-center py-12">
+            <p className="text-white font-body text-lg">
+              {activeTab === 'favorites' 
+                ? 'لا توجد مواضيع مفضلة بعد' 
+                : searchTerm 
+                  ? 'لا توجد نتائج للبحث' 
+                  : 'لا توجد مواضيع متاحة لهذه الفئة'}
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-3 sm:gap-4">
+            {filteredTopics.map((topic) => (
             <div
               key={topic.id}
               className="group relative"
@@ -189,8 +224,9 @@ const TopicsList = () => {
                 </h3>
               </div>
             </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
         
         {/* التذييل */}
         <Footer />

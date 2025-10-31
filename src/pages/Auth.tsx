@@ -17,7 +17,6 @@ const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -46,49 +45,25 @@ const Auth = () => {
       const validated = authSchema.parse({ email, password });
       setIsLoading(true);
 
-      if (isSignUp) {
-        // التسجيل
-        const { error } = await supabase.auth.signUp({
-          email: validated.email,
-          password: validated.password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/`,
-          }
-        });
+      // تسجيل الدخول فقط - لا يوجد تسجيل
+      const { error } = await supabase.auth.signInWithPassword({
+        email: validated.email,
+        password: validated.password,
+      });
 
-        if (error) {
+      if (error) {
+        if (error.message.includes('Invalid login credentials')) {
           toast({
-            title: 'خطأ في التسجيل',
-            description: error.message,
+            title: 'خطأ في تسجيل الدخول',
+            description: 'البريد الإلكتروني أو كلمة المرور غير صحيحة',
             variant: 'destructive',
           });
         } else {
           toast({
-            title: 'تم إنشاء الحساب',
-            description: 'تم إنشاء حسابك بنجاح',
+            title: 'خطأ',
+            description: error.message,
+            variant: 'destructive',
           });
-        }
-      } else {
-        // تسجيل الدخول
-        const { error } = await supabase.auth.signInWithPassword({
-          email: validated.email,
-          password: validated.password,
-        });
-
-        if (error) {
-          if (error.message.includes('Invalid login credentials')) {
-            toast({
-              title: 'خطأ في تسجيل الدخول',
-              description: 'البريد الإلكتروني أو كلمة المرور غير صحيحة',
-              variant: 'destructive',
-            });
-          } else {
-            toast({
-              title: 'خطأ',
-              description: error.message,
-              variant: 'destructive',
-            });
-          }
         }
       }
     } catch (error) {
@@ -121,10 +96,10 @@ const Auth = () => {
         <div className="text-center mb-6">
           <LogIn className="w-12 h-12 text-primary mx-auto mb-4" />
           <h1 className="text-2xl font-heading font-bold text-foreground mb-2">
-            {isSignUp ? 'إنشاء حساب جديد' : 'تسجيل الدخول'}
+            تسجيل الدخول
           </h1>
           <p className="text-muted-foreground font-body text-sm">
-            {isSignUp ? 'قم بإنشاء حساب للوصول إلى لوحة التحكم' : 'لوحة التحكم - الإدارة'}
+            لوحة التحكم - الإدارة فقط
           </p>
         </div>
 
@@ -162,22 +137,9 @@ const Auth = () => {
             disabled={isLoading}
             className="w-full"
           >
-            {isLoading 
-              ? (isSignUp ? 'جاري إنشاء الحساب...' : 'جاري تسجيل الدخول...') 
-              : (isSignUp ? 'إنشاء حساب' : 'تسجيل الدخول')
-            }
+            {isLoading ? 'جاري تسجيل الدخول...' : 'تسجيل الدخول'}
           </ModernButton>
         </form>
-
-        <div className="mt-4 text-center">
-          <button
-            type="button"
-            onClick={() => setIsSignUp(!isSignUp)}
-            className="text-sm text-primary hover:underline font-body"
-          >
-            {isSignUp ? 'لديك حساب؟ سجل دخول' : 'ليس لديك حساب؟ أنشئ حساب جديد'}
-          </button>
-        </div>
       </ModernCard>
       </div>
     </div>
