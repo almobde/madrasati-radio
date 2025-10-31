@@ -154,7 +154,11 @@ const TopicsList = () => {
         <div className="max-w-md mx-auto mb-6 flex gap-2 justify-center">
           <button
             onClick={() => setActiveTab('all')}
-            className={`flex-1 py-3 px-4 rounded-xl font-heading font-bold text-sm transition-all duration-300 whitespace-nowrap ${
+            className={`flex-1 py-3 px-4 rounded-xl font-heading font-bold text-sm transition-all duration-300 whitespace-nowrap border-[3px] ${
+              preferences?.gender === 'girls'
+                ? 'border-[hsl(330,70%,40%)]'
+                : 'border-[hsl(220,70%,35%)]'
+            } ${
               activeTab === 'all'
                 ? preferences?.gender === 'girls'
                   ? 'bg-white text-[hsl(330,70%,40%)] shadow-lg scale-105'
@@ -166,7 +170,11 @@ const TopicsList = () => {
           </button>
           <button
             onClick={() => setActiveTab('favorites')}
-            className={`flex-1 py-3 px-4 rounded-xl font-heading font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap ${
+            className={`flex-1 py-3 px-4 rounded-xl font-heading font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap border-[3px] ${
+              preferences?.gender === 'girls'
+                ? 'border-[hsl(330,70%,40%)]'
+                : 'border-[hsl(220,70%,35%)]'
+            } ${
               activeTab === 'favorites'
                 ? preferences?.gender === 'girls'
                   ? 'bg-white text-[hsl(330,70%,40%)] shadow-lg scale-105'
