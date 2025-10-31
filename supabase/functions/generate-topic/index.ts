@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { title, gender, educationLevel, addressStyle, contentLength, selectedSections } = await req.json();
+    const { title, gender, educationLevel, addressStyle, contentLength, selectedSections, pdfContent } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 
     if (!LOVABLE_API_KEY) {
@@ -141,6 +141,15 @@ ${contentLengthGuidelines}`;
     sections.push(`${sectionNumber}. **نهاية الإذاعة** مع السلام`);
     
     const userPrompt = `أنشئ محتوى إذاعة مدرسية متكاملة عن موضوع: "${title}"
+
+${pdfContent ? `**معلومات إضافية من ملف PDF:**
+
+${pdfContent}
+
+استخدم هذه المعلومات كمصدر إضافي لإثراء المحتوى، وادمجها بشكل طبيعي مع الآيات والأحاديث والمعلومات المناسبة.
+تأكد من استخدام المعلومات الواردة في PDF في جميع الأقسام ذات الصلة (المقدمة، معلومات، كلمة، منوعات، إلخ).
+
+---` : ''}
 
 يجب أن يتضمن المحتوى الأقسام التالية فقط:
 

@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { ArrowLeft, Sparkles, Download, X } from 'lucide-react';
+import { ArrowLeft, Sparkles, Download, X, Upload, FileText, Loader2 } from 'lucide-react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { Progress } from './ui/progress';
@@ -46,6 +46,9 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
     questions: true,
     conclusion: true,
   });
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [isPdfProcessing, setIsPdfProcessing] = useState(false);
+  const [pdfContent, setPdfContent] = useState<string>('');
   const { toast } = useToast();
   const { preferences } = useAppContext();
 
@@ -57,6 +60,87 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
 
   const toggleSection = (section: keyof typeof selectedSections) => {
     setSelectedSections(prev => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const handlePdfUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Check file type
+    if (file.type !== 'application/pdf') {
+      toast({
+        title: "خطأ",
+        description: "يرجى اختيار ملف PDF فقط",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check file size (10MB max)
+    if (file.size > 10 * 1024 * 1024) {
+      toast({
+        title: "خطأ",
+        description: "حجم الملف كبير جداً. الحد الأقصى 10 ميجابايت",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setPdfFile(file);
+    setIsPdfProcessing(true);
+
+    try {
+      // Upload to Supabase Storage
+      const filePath = `${Date.now()}_${file.name}`;
+      const { error: uploadError } = await supabase.storage
+        .from('pdf-uploads')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      // Parse PDF content
+      const { data, error } = await supabase.functions.invoke('parse-pdf-topic', {
+        body: { pdfPath: filePath }
+      });
+
+      if (error) throw error;
+
+      if (data.error) {
+        toast({
+          title: "خطأ",
+          description: data.error,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Set extracted data
+      if (data.suggestedTitle) {
+        setTitle(data.suggestedTitle);
+      }
+      if (data.fullText) {
+        setPdfContent(data.fullText);
+      }
+
+      toast({
+        title: "✅ نجح",
+        description: "تم استخراج محتوى PDF بنجاح",
+      });
+
+      // Clean up the file from storage after processing
+      await supabase.storage.from('pdf-uploads').remove([filePath]);
+
+    } catch (error) {
+      console.error('Error processing PDF:', error);
+      toast({
+        title: "خطأ",
+        description: "حدث خطأ أثناء معالجة الملف",
+        variant: "destructive",
+      });
+      setPdfFile(null);
+    } finally {
+      setIsPdfProcessing(false);
+    }
   };
 
   const handleGenerate = async () => {
@@ -88,7 +172,8 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
           educationLevel: preferences?.educationLevel || 'middle',
           addressStyle,
           contentLength,
-          selectedSections
+          selectedSections,
+          pdfContent: pdfContent || undefined
         }
       });
 
@@ -390,6 +475,8 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
     setGeneratedTopic(null);
     setTitle('');
     setProgress(0);
+    setPdfFile(null);
+    setPdfContent('');
   };
 
   return (
@@ -430,7 +517,7 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="مثال: الأمل، المثابرة، حب الوطن..."
                 className="text-lg"
-                disabled={isGenerating}
+                disabled={isGenerating || isPdfProcessing}
               />
               <div className="mt-3">
                 <p className="text-sm text-gray-600 font-body mb-2">عناوين مقترحة:</p>
@@ -439,7 +526,7 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
                     <button
                       key={suggestion}
                       onClick={() => setTitle(suggestion)}
-                      disabled={isGenerating}
+                      disabled={isGenerating || isPdfProcessing}
                       className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 text-radio-dark rounded-full transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
                       {suggestion}
@@ -447,6 +534,54 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
                   ))}
                 </div>
               </div>
+            </div>
+
+            {/* رفع PDF */}
+            <div className="mt-4 p-5 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border-2 border-dashed border-blue-300">
+              <div className="flex items-center gap-3 mb-3">
+                <Upload className="w-5 h-5 text-blue-600" />
+                <label className="block text-radio-dark font-heading font-bold">
+                  أو ارفع ملف PDF لتحويله إلى موضوع
+                </label>
+              </div>
+              <div className="relative">
+                <input 
+                  type="file" 
+                  accept=".pdf"
+                  onChange={handlePdfUpload}
+                  disabled={isGenerating || isPdfProcessing}
+                  className="w-full cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                />
+                {isPdfProcessing && (
+                  <div className="absolute inset-0 bg-white/80 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                    <div className="flex items-center gap-2 text-blue-600">
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <span className="font-body font-semibold">جاري معالجة الملف...</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+              {pdfFile && !isPdfProcessing && (
+                <div className="mt-3 p-3 bg-white rounded-lg border border-green-200 flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-green-600" />
+                  <div className="flex-1">
+                    <p className="text-sm text-green-700 font-semibold">{pdfFile.name}</p>
+                    <p className="text-xs text-green-600">تم استخراج المحتوى بنجاح ✓</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setPdfFile(null);
+                      setPdfContent('');
+                    }}
+                    className="p-1 hover:bg-red-100 rounded-full transition-colors"
+                  >
+                    <X className="w-4 h-4 text-red-500" />
+                  </button>
+                </div>
+              )}
+              <p className="text-xs text-gray-600 mt-2 font-body">
+                الحد الأقصى: 10 ميجابايت | سيتم استخراج المحتوى وتوليد موضوع إذاعي منه
+              </p>
             </div>
 
             {/* الخطاب */}
