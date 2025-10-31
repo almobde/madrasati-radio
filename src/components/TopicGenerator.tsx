@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { ArrowLeft, Sparkles } from 'lucide-react';
+import { ArrowLeft, Sparkles, Download, X } from 'lucide-react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { Progress } from './ui/progress';
@@ -11,6 +11,7 @@ import Footer from './Footer';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
+import jsPDF from 'jspdf';
 
 // مجموعة كبيرة من العناوين المقترحة
 const ALL_SUGGESTIONS = [
@@ -188,6 +189,79 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
         });
       }
     }
+  };
+
+  const handleExport = () => {
+    if (!generatedTopic) return;
+
+    const doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4'
+    });
+
+    let yPos = 20;
+    const lineHeight = 7;
+    const pageHeight = doc.internal.pageSize.height;
+    const margin = 20;
+
+    const addText = (text: string, fontSize: number = 12, isBold: boolean = false) => {
+      if (yPos > pageHeight - margin) {
+        doc.addPage();
+        yPos = margin;
+      }
+      doc.setFontSize(fontSize);
+      doc.text(text, margin, yPos, { align: 'right', maxWidth: 170 });
+      yPos += lineHeight;
+    };
+
+    // العنوان
+    addText(generatedTopic.title, 18, true);
+    yPos += 5;
+
+    // المحتوى
+    const content = generatedTopic.content;
+
+    if (content.introduction) {
+      addText('المقدمة', 14, true);
+      addText(content.introduction.primary || '');
+      yPos += 3;
+    }
+
+    if (content.quranVerses && content.quranVerses.length > 0) {
+      addText('الآيات القرآنية', 14, true);
+      content.quranVerses.forEach((verse: any) => {
+        addText(`${verse.text} - ${verse.reference}`);
+      });
+      yPos += 3;
+    }
+
+    if (content.hadiths && content.hadiths.length > 0) {
+      addText('الأحاديث النبوية', 14, true);
+      content.hadiths.forEach((hadith: any) => {
+        addText(hadith.text);
+        addText(`[${hadith.reference}]`);
+      });
+      yPos += 3;
+    }
+
+    if (content.conclusion) {
+      addText('الخاتمة', 14, true);
+      addText(content.conclusion);
+    }
+
+    doc.save(`${generatedTopic.title}.pdf`);
+
+    toast({
+      title: "✅ تم التصدير",
+      description: "تم تصدير الموضوع بنجاح",
+    });
+  };
+
+  const handleCancel = () => {
+    setGeneratedTopic(null);
+    setTitle('');
+    setProgress(0);
   };
 
   return (
@@ -393,12 +467,30 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
               <h2 className="text-2xl font-heading font-bold text-radio-dark">
                 {generatedTopic.title}
               </h2>
-              <Button
-                onClick={handleAddToList}
-                className="bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-xl hover:scale-105 active:bg-orange-700 active:scale-95 transition-all duration-300"
-              >
-                إضافة للقائمة
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  onClick={handleCancel}
+                  variant="outline"
+                  className="shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
+                >
+                  <X className="w-4 h-4 ml-2" />
+                  إلغاء
+                </Button>
+                <Button
+                  onClick={handleExport}
+                  variant="secondary"
+                  className="shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
+                >
+                  <Download className="w-4 h-4 ml-2" />
+                  تصدير
+                </Button>
+                <Button
+                  onClick={handleAddToList}
+                  className="bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-xl hover:scale-105 active:bg-orange-700 active:scale-95 transition-all duration-300"
+                >
+                  إضافة للقائمة
+                </Button>
+              </div>
             </div>
 
             <div className="space-y-4 text-right">
