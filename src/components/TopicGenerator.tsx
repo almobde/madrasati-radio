@@ -90,17 +90,20 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
     setIsPdfProcessing(true);
 
     try {
-      // Upload to Supabase Storage
-      const filePath = `${Date.now()}_${file.name}`;
+      // Upload to Supabase Storage with safe filename (ASCII only)
+      const timestamp = Date.now();
+      const safeFileName = `pdf_${timestamp}.pdf`;
       const { error: uploadError } = await supabase.storage
         .from('pdf-uploads')
-        .upload(filePath, file);
+        .upload(safeFileName, file);
 
       if (uploadError) throw uploadError;
 
+      console.log('PDF uploaded successfully:', safeFileName);
+
       // Parse PDF content
       const { data, error } = await supabase.functions.invoke('parse-pdf-topic', {
-        body: { pdfPath: filePath }
+        body: { pdfPath: safeFileName }
       });
 
       if (error) throw error;
@@ -127,8 +130,10 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
         description: "تم استخراج محتوى PDF بنجاح",
       });
 
+      console.log('PDF processed successfully');
+
       // Clean up the file from storage after processing
-      await supabase.storage.from('pdf-uploads').remove([filePath]);
+      await supabase.storage.from('pdf-uploads').remove([safeFileName]);
 
     } catch (error) {
       console.error('Error processing PDF:', error);
