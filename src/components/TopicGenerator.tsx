@@ -610,21 +610,22 @@ export const TopicGenerator = ({ onBack }: TopicGeneratorProps) => {
 
         {/* عرض النتيجة */}
         {generatedTopic && (
-          <div className="bg-white/90 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+          <div className="relative bg-white/90 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+            {/* زر الإغلاق */}
+            <button
+              onClick={handleCancel}
+              className="absolute left-4 top-4 p-2 rounded-full bg-red-50 hover:bg-red-100 text-red-500 hover:text-red-600 transition-all duration-200 hover:scale-110 shadow-md hover:shadow-lg z-10"
+              aria-label="إغلاق"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
             <h2 className="text-2xl font-heading font-bold text-radio-dark text-center mb-4">
               {generatedTopic.title}
             </h2>
 
             {/* الأزرار */}
             <div className="flex justify-center gap-2 mb-6">
-              <Button
-                onClick={handleCancel}
-                variant="outline"
-                size="sm"
-                className="text-sm h-9 w-24 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
-              >
-                إلغاء
-              </Button>
               <Button
                 onClick={handleExport}
                 variant="secondary"
