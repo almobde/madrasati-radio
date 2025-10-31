@@ -794,6 +794,19 @@ const Admin = () => {
                       <Eye className="w-4 h-4 ml-1" />
                       عرض الموضوع
                     </ModernButton>
+
+                    {/* زر حذف الموضوع المبلغ عنه */}
+                    {report.report_type === 'delete' && (
+                      <ModernButton
+                        size="sm"
+                        variant="neon"
+                        onClick={() => handleDeleteTopic(report.topic_id)}
+                        className="bg-orange-500 hover:bg-orange-600"
+                      >
+                        <Trash2 className="w-4 h-4 ml-1" />
+                        حذف الموضوع
+                      </ModernButton>
+                    )}
                     
                     {!report.is_resolved && (
                       <ModernButton
