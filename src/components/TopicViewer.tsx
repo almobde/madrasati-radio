@@ -6,17 +6,17 @@ import { ModernButton } from '@/components/ui/modern-button';
 import { ModernCard, ModernCardHeader, ModernCardTitle, ModernCardContent } from '@/components/ui/modern-card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { ArrowRight, Home, BookOpen, Mic, Heart, Sparkles, Radio, Crown, Lightbulb, Quote, HelpCircle, MessageCircle, Download, Share2, Settings, Trash2, Edit, Copy } from 'lucide-react';
+import { ArrowRight, Home, BookOpen, Mic, Heart, Sparkles, Radio, Crown, Lightbulb, Quote, HelpCircle, MessageCircle, Download, Share2, Settings, Edit, Copy, AlertCircle } from 'lucide-react';
 import Footer from './Footer';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { ReportTopicDialog } from './ReportTopicDialog';
 
 const TopicViewer = () => {
   const { currentTopic, setCurrentTopic, preferences } = useAppContext();
   const { toast } = useToast();
   const [isAdminOpen, setIsAdminOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [isReportOpen, setIsReportOpen] = useState(false);
   const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('medium');
   const isMobile = useIsMobile();
 
@@ -24,37 +24,6 @@ const TopicViewer = () => {
 
   const handleBackToTopics = () => {
     setCurrentTopic(null);
-  };
-
-  const handleDeleteTopic = async () => {
-    if (!currentTopic || !currentTopic.id) return;
-    
-    setIsDeleting(true);
-    try {
-      const { error } = await supabase
-        .from('custom_topics')
-        .delete()
-        .eq('id', currentTopic.id);
-
-      if (error) throw error;
-
-      toast({
-        title: "تم الحذف بنجاح",
-        description: "تم حذف الموضوع من القائمة",
-      });
-      
-      setIsAdminOpen(false);
-      setCurrentTopic(null);
-    } catch (error) {
-      console.error('Error deleting topic:', error);
-      toast({
-        title: "خطأ",
-        description: "فشل في حذف الموضوع",
-        variant: "destructive",
-      });
-    } finally {
-      setIsDeleting(false);
-    }
   };
 
   const handleEditTopic = () => {
@@ -714,26 +683,20 @@ const TopicViewer = () => {
                     <DialogHeader>
                       <DialogTitle>إدارة الموضوع</DialogTitle>
                       <DialogDescription>
-                        يمكنك تعديل أو حذف هذا الموضوع
+                        يمكنك الإبلاغ عن أي مشكلة في هذا الموضوع
                       </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
                       <ModernButton 
                         variant="glass" 
-                        onClick={handleEditTopic}
+                        onClick={() => {
+                          setIsAdminOpen(false);
+                          setIsReportOpen(true);
+                        }}
                         className="w-full justify-start gap-2"
                       >
-                        <Edit className="w-5 h-5" />
-                        <span>تعديل الموضوع</span>
-                      </ModernButton>
-                      <ModernButton 
-                        variant="glass" 
-                        onClick={handleDeleteTopic}
-                        disabled={isDeleting}
-                        className="w-full justify-start gap-2 text-destructive hover:text-destructive"
-                      >
-                        <Trash2 className="w-5 h-5" />
-                        <span>{isDeleting ? 'جارِ الحذف...' : 'حذف الموضوع'}</span>
+                        <AlertCircle className="w-5 h-5" />
+                        <span>الإبلاغ عن مشكلة</span>
                       </ModernButton>
                     </div>
                   </DialogContent>
@@ -742,6 +705,16 @@ const TopicViewer = () => {
             </div>
           </ModernCard>
         </div>
+
+        {/* Report Topic Dialog */}
+        {currentTopic?.id && (
+          <ReportTopicDialog
+            isOpen={isReportOpen}
+            onClose={() => setIsReportOpen(false)}
+            topicId={currentTopic.id}
+            topicTitle={currentTopic.title}
+          />
+        )}
 
         {/* التبويبات الثمانية */}
         <Tabs defaultValue="introduction" className={`w-full ${fontSize === 'small' ? 'text-sm' : fontSize === 'large' ? 'text-lg' : 'text-base'}`} dir="rtl">

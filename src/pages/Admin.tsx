@@ -5,12 +5,13 @@ import { ModernCard } from '@/components/ui/modern-card';
 import { ModernButton } from '@/components/ui/modern-button';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { LogOut, Trash2, Radio, Home, Edit, Filter, Image as ImageIcon, ExternalLink, ToggleLeft, ToggleRight, ChevronUp, ChevronDown } from 'lucide-react';
+import { LogOut, Trash2, Radio, Home, Edit, Filter, Image as ImageIcon, ExternalLink, ToggleLeft, ToggleRight, ChevronUp, ChevronDown, AlertCircle, CheckCircle, Eye } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
 
 interface Topic {
   id: string;
@@ -31,6 +32,19 @@ interface Banner {
   created_at: string;
 }
 
+interface TopicReport {
+  id: string;
+  topic_id: string;
+  user_id: string | null;
+  report_type: 'delete' | 'edit' | 'add';
+  note_text: string;
+  created_at: string;
+  is_resolved: boolean;
+  custom_topics?: {
+    title: string;
+  };
+}
+
 const Admin = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,12 +60,44 @@ const Admin = () => {
   const [bannerLink, setBannerLink] = useState('');
   const [isBannerActive, setIsBannerActive] = useState(true);
   const [isUploadingBanner, setIsUploadingBanner] = useState(false);
+  const [reports, setReports] = useState<TopicReport[]>([]);
+  const [reportFilter, setReportFilter] = useState<'all' | 'unresolved' | 'resolved'>('unresolved');
+  const [reportTypeFilter, setReportTypeFilter] = useState<string>('all');
   const { toast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
     checkAdminAccess();
   }, []);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+
+    // Setup realtime subscription for reports
+    const channel = supabase
+      .channel('topic_reports_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'topic_reports'
+        },
+        (payload) => {
+          console.log('New report received:', payload);
+          toast({
+            title: '🔔 ملاحظة جديدة',
+            description: 'تم إضافة ملاحظة جديدة على موضوع',
+          });
+          fetchReports();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [isAdmin]);
 
   const checkAdminAccess = async () => {
     try {
@@ -72,6 +118,7 @@ const Admin = () => {
         setIsAdmin(true);
         fetchTopics();
         fetchBanner();
+        fetchReports();
       } else {
         toast({
           title: 'غير مصرح',
@@ -110,6 +157,20 @@ const Admin = () => {
       setIsBannerActive(data.is_active);
       setBannerPreview(data.image_url);
     }
+  };
+
+  const fetchReports = async () => {
+    const { data } = await supabase
+      .from('topic_reports')
+      .select(`
+        *,
+        custom_topics (
+          title
+        )
+      `)
+      .order('created_at', { ascending: false });
+    
+    if (data) setReports(data as TopicReport[]);
   };
 
   const handleBannerImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -384,6 +445,57 @@ const Admin = () => {
     }
   };
 
+  const handleResolveReport = async (reportId: string) => {
+    const { error } = await supabase
+      .from('topic_reports')
+      .update({ is_resolved: true })
+      .eq('id', reportId);
+
+    if (error) {
+      toast({
+        title: 'خطأ',
+        description: 'حدث خطأ أثناء تحديث الملاحظة',
+        variant: 'destructive',
+      });
+    } else {
+      toast({
+        title: 'تم التحديث',
+        description: 'تم وضع علامة "تم الحل" على الملاحظة',
+      });
+      fetchReports();
+    }
+  };
+
+  const handleDeleteReport = async (reportId: string) => {
+    if (!confirm('هل أنت متأكد من حذف هذه الملاحظة؟')) return;
+
+    const { error } = await supabase
+      .from('topic_reports')
+      .delete()
+      .eq('id', reportId);
+
+    if (error) {
+      toast({
+        title: 'خطأ',
+        description: 'حدث خطأ أثناء حذف الملاحظة',
+        variant: 'destructive',
+      });
+    } else {
+      toast({
+        title: 'تم الحذف',
+        description: 'تم حذف الملاحظة بنجاح',
+      });
+      fetchReports();
+    }
+  };
+
+  const handleViewTopic = (topicId: string) => {
+    const topic = topics.find(t => t.id === topicId);
+    if (topic) {
+      window.open(`/?topic=${topicId}`, '_blank');
+    }
+  };
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate('/');
@@ -405,6 +517,14 @@ const Admin = () => {
   const filteredTopics = topics.filter(topic => {
     if (selectedGender !== 'all' && topic.gender !== selectedGender) return false;
     if (selectedLevel !== 'all' && topic.education_level !== selectedLevel) return false;
+    return true;
+  });
+
+  // تصفية التقارير
+  const filteredReports = reports.filter(report => {
+    if (reportFilter === 'unresolved' && report.is_resolved) return false;
+    if (reportFilter === 'resolved' && !report.is_resolved) return false;
+    if (reportTypeFilter !== 'all' && report.report_type !== reportTypeFilter) return false;
     return true;
   });
 
@@ -431,10 +551,14 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="topics" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-6">
+          <TabsList className="grid w-full grid-cols-3 mb-6">
             <TabsTrigger value="topics" className="font-body">
               <Radio className="w-4 h-4 ml-2" />
               المواضيع ({topics.length})
+            </TabsTrigger>
+            <TabsTrigger value="reports" className="font-body">
+              <AlertCircle className="w-4 h-4 ml-2" />
+              الملاحظات ({reports.filter(r => !r.is_resolved).length})
             </TabsTrigger>
             <TabsTrigger value="banner" className="font-body">
               <ImageIcon className="w-4 h-4 ml-2" />
@@ -553,6 +677,138 @@ const Admin = () => {
               <p className="text-center text-white/70 font-body py-8">
                 {topics.length === 0 ? 'لا توجد مواضيع بعد' : 'لا توجد مواضيع تطابق الفلاتر المحددة'}
               </p>
+            )}
+          </TabsContent>
+
+          <TabsContent value="reports" className="space-y-4">
+            {/* فلاتر التقارير */}
+            <ModernCard className="p-4 mb-4">
+              <div className="flex items-center gap-2 mb-4">
+                <Filter className="w-5 h-5 text-primary" />
+                <h3 className="font-heading font-bold text-foreground">تصفية الملاحظات</h3>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <Label className="font-body mb-2 block">الحالة</Label>
+                  <Select value={reportFilter} onValueChange={(v: any) => setReportFilter(v)}>
+                    <SelectTrigger className="font-body">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">الكل</SelectItem>
+                      <SelectItem value="unresolved">غير محلولة</SelectItem>
+                      <SelectItem value="resolved">محلولة</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label className="font-body mb-2 block">نوع الطلب</Label>
+                  <Select value={reportTypeFilter} onValueChange={setReportTypeFilter}>
+                    <SelectTrigger className="font-body">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">الكل</SelectItem>
+                      <SelectItem value="delete">طلب حذف</SelectItem>
+                      <SelectItem value="edit">اقتراح تعديل</SelectItem>
+                      <SelectItem value="add">اقتراح إضافة</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground font-body mt-3">
+                عرض {filteredReports.length} من {reports.length} ملاحظة
+              </p>
+            </ModernCard>
+
+            {/* قائمة التقارير */}
+            {filteredReports.map((report) => (
+              <ModernCard key={report.id} className="p-4">
+                <div className="space-y-3">
+                  {/* رأس التقرير */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="font-heading font-bold text-foreground">
+                          {report.custom_topics?.title || 'موضوع محذوف'}
+                        </h3>
+                        {report.is_resolved && (
+                          <Badge className="bg-green-500">
+                            <CheckCircle className="w-3 h-3 ml-1" />
+                            تم الحل
+                          </Badge>
+                        )}
+                      </div>
+                      
+                      <div className="flex flex-wrap gap-2 items-center text-sm mb-2">
+                        <Badge variant="outline" className={
+                          report.report_type === 'delete' ? 'border-red-500 text-red-500' :
+                          report.report_type === 'edit' ? 'border-blue-500 text-blue-500' :
+                          'border-green-500 text-green-500'
+                        }>
+                          {report.report_type === 'delete' ? '🗑️ طلب حذف' :
+                           report.report_type === 'edit' ? '✏️ اقتراح تعديل' :
+                           '➕ اقتراح إضافة'}
+                        </Badge>
+                        <span className="text-muted-foreground">•</span>
+                        <span className="text-muted-foreground">
+                          {new Date(report.created_at).toLocaleDateString('ar-SA')} - {new Date(report.created_at).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
+
+                      {/* نص الملاحظة */}
+                      <div className="bg-muted p-3 rounded-lg">
+                        <p className="text-sm font-body whitespace-pre-wrap">
+                          {report.note_text}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* أزرار التحكم */}
+                  <div className="flex gap-2 flex-wrap pt-2 border-t">
+                    <ModernButton
+                      size="sm"
+                      variant="glass"
+                      onClick={() => handleViewTopic(report.topic_id)}
+                    >
+                      <Eye className="w-4 h-4 ml-1" />
+                      عرض الموضوع
+                    </ModernButton>
+                    
+                    {!report.is_resolved && (
+                      <ModernButton
+                        size="sm"
+                        variant="glass"
+                        onClick={() => handleResolveReport(report.id)}
+                        className="bg-green-500 hover:bg-green-600 text-white"
+                      >
+                        <CheckCircle className="w-4 h-4 ml-1" />
+                        تم الحل
+                      </ModernButton>
+                    )}
+                    
+                    <ModernButton
+                      size="sm"
+                      variant="neon"
+                      onClick={() => handleDeleteReport(report.id)}
+                      className="bg-red-500 hover:bg-red-600"
+                    >
+                      <Trash2 className="w-4 h-4 ml-1" />
+                      حذف الملاحظة
+                    </ModernButton>
+                  </div>
+                </div>
+              </ModernCard>
+            ))}
+            
+            {filteredReports.length === 0 && (
+              <ModernCard className="p-8 text-center">
+                <AlertCircle className="w-12 h-12 mx-auto mb-3 text-muted-foreground" />
+                <p className="text-muted-foreground font-body">
+                  {reports.length === 0 ? 'لا توجد ملاحظات بعد' : 'لا توجد ملاحظات تطابق الفلاتر المحددة'}
+                </p>
+              </ModernCard>
             )}
           </TabsContent>
 

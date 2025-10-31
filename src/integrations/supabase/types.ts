@@ -98,6 +98,44 @@ export type Database = {
         }
         Relationships: []
       }
+      topic_reports: {
+        Row: {
+          created_at: string
+          id: string
+          is_resolved: boolean
+          note_text: string
+          report_type: string
+          topic_id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_resolved?: boolean
+          note_text: string
+          report_type: string
+          topic_id: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_resolved?: boolean
+          note_text?: string
+          report_type?: string
+          topic_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "topic_reports_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "custom_topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
