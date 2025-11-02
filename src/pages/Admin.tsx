@@ -5,7 +5,7 @@ import { ModernCard } from '@/components/ui/modern-card';
 import { ModernButton } from '@/components/ui/modern-button';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { LogOut, Trash2, Radio, Home, Edit, Filter, Image as ImageIcon, ExternalLink, ToggleLeft, ToggleRight, ChevronUp, ChevronDown, AlertCircle, CheckCircle, Eye } from 'lucide-react';
+import { LogOut, Trash2, Radio, Home, Edit, Filter, Image as ImageIcon, ExternalLink, ToggleLeft, ToggleRight, ChevronUp, ChevronDown, AlertCircle, CheckCircle, Eye, UserPlus, Users } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -45,6 +45,14 @@ interface TopicReport {
   };
 }
 
+interface Admin {
+  id: string;
+  user_id: string;
+  role: string;
+  created_at: string;
+  user_email?: string;
+}
+
 const Admin = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -63,6 +71,9 @@ const Admin = () => {
   const [reports, setReports] = useState<TopicReport[]>([]);
   const [reportFilter, setReportFilter] = useState<'all' | 'unresolved' | 'resolved'>('unresolved');
   const [reportTypeFilter, setReportTypeFilter] = useState<string>('all');
+  const [admins, setAdmins] = useState<Admin[]>([]);
+  const [newAdminEmail, setNewAdminEmail] = useState('');
+  const [isAddingAdmin, setIsAddingAdmin] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -119,6 +130,7 @@ const Admin = () => {
         fetchTopics();
         fetchBanner();
         fetchReports();
+        fetchAdmins();
       } else {
         toast({
           title: 'غير مصرح',
@@ -171,6 +183,134 @@ const Admin = () => {
       .order('created_at', { ascending: false });
     
     if (data) setReports(data as TopicReport[]);
+  };
+
+  const fetchAdmins = async () => {
+    const { data } = await supabase
+      .from('user_roles')
+      .select('*')
+      .eq('role', 'admin')
+      .order('created_at', { ascending: false });
+    
+    if (data) {
+      setAdmins(data as Admin[]);
+    }
+  };
+
+  const handleAddAdmin = async () => {
+    if (!newAdminEmail || !newAdminEmail.includes('@')) {
+      toast({
+        title: 'خطأ',
+        description: 'يرجى إدخال بريد إلكتروني صحيح',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsAddingAdmin(true);
+
+    try {
+      // البحث عن المستخدم بالبريد الإلكتروني
+      const { data: { users }, error: searchError } = await supabase.auth.admin.listUsers();
+      
+      if (searchError) throw searchError;
+
+      const user = users?.find((u: any) => u.email === newAdminEmail);
+
+      if (!user) {
+        toast({
+          title: 'خطأ',
+          description: 'لم يتم العثور على مستخدم بهذا البريد الإلكتروني',
+          variant: 'destructive',
+        });
+        setIsAddingAdmin(false);
+        return;
+      }
+
+      // التحقق من أنه ليس مسؤولاً بالفعل
+      const { data: existingRole } = await supabase
+        .from('user_roles')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .maybeSingle();
+
+      if (existingRole) {
+        toast({
+          title: 'تنبيه',
+          description: 'هذا المستخدم مسؤول بالفعل',
+        });
+        setIsAddingAdmin(false);
+        return;
+      }
+
+      // إضافة دور المسؤول مع البريد الإلكتروني
+      const { error: insertError } = await supabase
+        .from('user_roles')
+        .insert({
+          user_id: user.id,
+          role: 'admin',
+          user_email: user.email
+        });
+
+      if (insertError) throw insertError;
+
+      toast({
+        title: 'تم بنجاح',
+        description: 'تم إضافة المسؤول الجديد',
+      });
+
+      setNewAdminEmail('');
+      fetchAdmins();
+    } catch (error) {
+      console.error('Error adding admin:', error);
+      toast({
+        title: 'خطأ',
+        description: 'حدث خطأ أثناء إضافة المسؤول',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsAddingAdmin(false);
+    }
+  };
+
+  const handleRemoveAdmin = async (adminId: string, userId: string) => {
+    // التحقق من عدم حذف آخر مسؤول
+    if (admins.length <= 1) {
+      toast({
+        title: 'تحذير',
+        description: 'لا يمكن حذف آخر مسؤول في النظام',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (!confirm('هل أنت متأكد من إزالة صلاحيات المسؤول لهذا المستخدم؟')) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('user_roles')
+        .delete()
+        .eq('id', adminId);
+
+      if (error) throw error;
+
+      toast({
+        title: 'تم بنجاح',
+        description: 'تم إزالة صلاحيات المسؤول',
+      });
+
+      fetchAdmins();
+    } catch (error) {
+      console.error('Error removing admin:', error);
+      toast({
+        title: 'خطأ',
+        description: 'حدث خطأ أثناء إزالة المسؤول',
+        variant: 'destructive',
+      });
+    }
   };
 
   const handleBannerImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -570,7 +710,7 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="topics" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-6">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-6">
             <TabsTrigger value="topics" className="font-body">
               <Radio className="w-4 h-4 ml-2" />
               المواضيع ({topics.length})
@@ -581,7 +721,11 @@ const Admin = () => {
             </TabsTrigger>
             <TabsTrigger value="banner" className="font-body">
               <ImageIcon className="w-4 h-4 ml-2" />
-              البنر الإعلاني
+              البنر
+            </TabsTrigger>
+            <TabsTrigger value="admins" className="font-body">
+              <Users className="w-4 h-4 ml-2" />
+              المسؤولين ({admins.length})
             </TabsTrigger>
           </TabsList>
 
@@ -946,6 +1090,92 @@ const Admin = () => {
                   آخر تحديث: {new Date(banner.created_at).toLocaleDateString('ar-SA')}
                 </p>
               )}
+            </ModernCard>
+          </TabsContent>
+
+          <TabsContent value="admins" className="space-y-4">
+            {/* إضافة مسؤول جديد */}
+            <ModernCard className="p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <UserPlus className="w-5 h-5 text-primary" />
+                <h3 className="font-heading font-bold text-foreground">إضافة مسؤول جديد</h3>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="admin-email" className="font-body mb-2 block">
+                    البريد الإلكتروني للمستخدم
+                  </Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="admin-email"
+                      type="email"
+                      value={newAdminEmail}
+                      onChange={(e) => setNewAdminEmail(e.target.value)}
+                      placeholder="user@example.com"
+                      className="font-body flex-1"
+                      disabled={isAddingAdmin}
+                    />
+                    <ModernButton
+                      onClick={handleAddAdmin}
+                      disabled={isAddingAdmin || !newAdminEmail}
+                      className="bg-green-500 hover:bg-green-600"
+                    >
+                      <UserPlus className="w-4 h-4 ml-1" />
+                      {isAddingAdmin ? 'جاري الإضافة...' : 'إضافة'}
+                    </ModernButton>
+                  </div>
+                  <p className="text-xs text-muted-foreground font-body mt-2">
+                    يجب أن يكون المستخدم مسجلاً في النظام مسبقاً
+                  </p>
+                </div>
+              </div>
+            </ModernCard>
+
+            {/* قائمة المسؤولين */}
+            <ModernCard className="p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <Users className="w-5 h-5 text-primary" />
+                <h3 className="font-heading font-bold text-foreground">المسؤولون الحاليون ({admins.length})</h3>
+              </div>
+              
+              <div className="space-y-3">
+                {admins.map((admin) => (
+                  <div
+                    key={admin.id}
+                    className="flex items-center justify-between p-4 bg-muted rounded-lg hover:bg-muted/80 transition-colors"
+                  >
+                    <div className="flex-1">
+                      <p className="font-body font-semibold text-foreground">
+                        {admin.user_email}
+                      </p>
+                      <p className="text-xs text-muted-foreground font-body mt-1">
+                        منذ: {new Date(admin.created_at).toLocaleDateString('ar-SA')}
+                      </p>
+                    </div>
+                    
+                    <ModernButton
+                      size="sm"
+                      variant="neon"
+                      onClick={() => handleRemoveAdmin(admin.id, admin.user_id)}
+                      className="bg-red-500 hover:bg-red-600"
+                      disabled={admins.length <= 1}
+                      title={admins.length <= 1 ? 'لا يمكن حذف آخر مسؤول' : 'إزالة المسؤول'}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </ModernButton>
+                  </div>
+                ))}
+                
+                {admins.length === 0 && (
+                  <div className="text-center py-8">
+                    <Users className="w-12 h-12 mx-auto mb-3 text-muted-foreground" />
+                    <p className="text-muted-foreground font-body">
+                      لا يوجد مسؤولون حالياً
+                    </p>
+                  </div>
+                )}
+              </div>
             </ModernCard>
           </TabsContent>
         </Tabs>

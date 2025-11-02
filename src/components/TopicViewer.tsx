@@ -17,7 +17,7 @@ const TopicViewer = () => {
   const { toast } = useToast();
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
-  const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('medium');
+  const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large' | 'xlarge'>('medium');
   const isMobile = useIsMobile();
 
   if (!currentTopic) return null;
@@ -652,19 +652,19 @@ const TopicViewer = () => {
                   variant="glass" 
                   size="sm"
                   onClick={() => {
-                    const sizes: Array<'small' | 'medium' | 'large'> = ['small', 'medium', 'large'];
+                    const sizes: Array<'small' | 'medium' | 'large' | 'xlarge'> = ['small', 'medium', 'large', 'xlarge'];
                     const currentIndex = sizes.indexOf(fontSize);
                     const nextIndex = (currentIndex + 1) % sizes.length;
                     setFontSize(sizes[nextIndex]);
                     toast({
                       title: "تم تغيير حجم الخط",
-                      description: sizes[nextIndex] === 'small' ? 'صغير' : sizes[nextIndex] === 'medium' ? 'متوسط' : 'كبير',
+                      description: sizes[nextIndex] === 'small' ? 'صغير' : sizes[nextIndex] === 'medium' ? 'متوسط' : sizes[nextIndex] === 'large' ? 'كبير' : 'ضخم',
                     });
                   }}
                   className={`font-body ${preferences?.gender === 'girls' ? 'bg-[#e91e63] hover:bg-[#c2185b]' : 'bg-[#3b82f6] hover:bg-[#2563eb]'} text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300`}
                   title="حجم الخط"
                 >
-                  <BookOpen className="w-5 h-5" />
+                  <span className="text-lg font-bold">Aa</span>
                 </ModernButton>
                 
                 {/* زر الإدارة */}
@@ -717,7 +717,7 @@ const TopicViewer = () => {
         )}
 
         {/* التبويبات الثمانية */}
-        <Tabs defaultValue="introduction" className={`w-full ${fontSize === 'small' ? 'text-sm' : fontSize === 'large' ? 'text-lg' : 'text-base'}`} dir="rtl">
+        <Tabs defaultValue="introduction" className={`w-full ${fontSize === 'small' ? 'text-sm' : fontSize === 'large' ? 'text-lg' : fontSize === 'xlarge' ? 'text-xl' : 'text-base'}`} dir="rtl">
           <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 gap-2 bg-transparent p-2 h-auto mb-8">
             <TabsTrigger 
               value="introduction" 
