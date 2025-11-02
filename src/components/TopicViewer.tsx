@@ -717,7 +717,7 @@ const TopicViewer = () => {
         )}
 
         {/* التبويبات الثمانية */}
-        <Tabs defaultValue="introduction" className={`w-full ${fontSize === 'small' ? 'text-sm' : fontSize === 'large' ? 'text-lg' : fontSize === 'xlarge' ? 'text-2xl' : 'text-base'}`} dir="rtl">
+        <Tabs defaultValue="introduction" className={`w-full ${fontSize === 'small' ? 'text-sm' : fontSize === 'large' ? 'text-lg' : fontSize === 'xlarge' ? 'text-3xl' : 'text-base'}`} dir="rtl">
           <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 gap-2 bg-transparent p-2 h-auto mb-8">
             <TabsTrigger 
               value="introduction" 
