@@ -573,6 +573,9 @@ const TopicViewer = () => {
 
   // دالة للحصول على المحتوى حسب المرحلة التعليمية
   const getContentByLevel = (content: any) => {
+    // التحقق من وجود المحتوى أولاً
+    if (!content) return null;
+    
     if (!preferences) return content.middle || content;
     
     switch (preferences.educationLevel) {
@@ -851,7 +854,7 @@ const TopicViewer = () => {
                 </ModernCardHeader>
                 <ModernCardContent>
                   <div className="space-y-4">
-                    {getContentByLevel(currentTopic.content.didYouKnow).map((fact: string, index: number) => (
+                    {getContentByLevel(currentTopic.content.didYouKnow)?.map((fact: string, index: number) => (
                       <div key={index} className="flex items-start gap-3">
                         <div className="bg-yellow-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mt-1">
                           {index + 1}
@@ -877,7 +880,7 @@ const TopicViewer = () => {
                 </ModernCardHeader>
                 <ModernCardContent>
                   <div className="mb-4 text-xs text-[hsl(var(--primary))] font-medium bg-[hsl(var(--primary))]/10 rounded-full py-1 px-3 inline-block">
-                    طول النص: {getContentByLevel(currentTopic.content.morningWord).length} حرف
+                    طول النص: {getContentByLevel(currentTopic.content.morningWord)?.length || 0} حرف
                   </div>
                   <p className="text-base font-body leading-relaxed text-foreground">
                     {getContentByLevel(currentTopic.content.morningWord)}
@@ -897,7 +900,7 @@ const TopicViewer = () => {
                 </ModernCardHeader>
                 <ModernCardContent>
                   <div className="space-y-6">
-                    {getContentByLevel(currentTopic.content.miscellaneous).map((item: any, index: number) => (
+                    {getContentByLevel(currentTopic.content.miscellaneous)?.map((item: any, index: number) => (
                       <div key={index}>
                         <div className="mb-3">
                           <Badge variant="secondary" className="text-xs font-body">
@@ -928,7 +931,7 @@ const TopicViewer = () => {
                 </ModernCardHeader>
                 <ModernCardContent>
                   <div className="space-y-6">
-                    {getContentByLevel(currentTopic.content.questions).map((qa: any, index: number) => (
+                    {getContentByLevel(currentTopic.content.questions)?.map((qa: any, index: number) => (
                       <div key={index}>
                         <div className="flex items-start gap-3 mb-4">
                           <Badge variant="secondary" className="text-xs font-body">س{index + 1}</Badge>
